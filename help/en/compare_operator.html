@@ -1,0 +1,40 @@
+<h1 class="top">Compare operator</h1>
+
+<h2>The block</h2>
+<img src="help/img/compare_op.png" alt="compare block" class="leftFloatIMG">
+<p class="text" style="margin-top: 0px;">
+    This block symbolises the compare operations in SQL. 
+    The compare operation compares two expressions of the same type, 
+    for example a numeric value with a numeric value or a number function with a numeric value.<br>
+    The compare operator returns true, if the compare is successful, and false, if not.<br>
+    It is used either in the "WHERE"-section directly or with the 
+    <span  class="boolLinks pointer" onclick="fetchthelink('Help/AND_BOOL.html', '#5aa68c');">'AND'-block </span> or 
+    <span  class="boolLinks pointer" onclick="fetchthelink('Help/OR_BOOL.html', '#5aa68c');">'OR'-block </span> .
+    You can also use it in the 
+    "HAVING"-statement of the "GROUP BY" clause.<br/>
+    There are four colour gradiens, symbolizing the <a href="#type" class="boolLinks">type</a>,  which you are comparing.
+</p>
+<h2> Functionality</h2>
+<img src="help/img/compare_op_change.png" alt="change the compare operation" class="rightFloatIMG">
+<p class="text zeromargin"> In this block is one dropdown holding the various compare operations. So you can choose your compare 
+    operation from the dropdown as you see on the left.
+    <br>Depending on which type of value you are plugging in the first input, the compare operator will change 
+    it's colour to a colour gradient,as you see in th picture below.<br>For more information on the meaning of the colour gradient see 
+    <a href="#type" class="boolLinks" >'The types'</a>. </p>
+<img src="help/img/compare_op_type_change.png" alt="type change" class="leftFloatIMG">
+<p class="text zeromargin"> Please make sure that the second value, which you want to compare, has the same type 
+    ( the same colour) as the first one. If not the block will pop out.</p>
+<img src="help/img/compare_op_like.png" alt="type change" class="rightFloatIMG">
+<p class="text zeromargin">One special compare operation, in terms of colouring and corresponding values, is 'like'.  
+    If you choose like in the dropdown, the block will change the colour and, if there are blocks, unplug all blocks which are not from the 
+    textual type(colour brown).</p>
+<h2 id="type">The types</h2>
+<img src="help/img/compare_op_numeric.png" alt="Type numeric" class="img" style="margin-top: 10px;">
+<p class="text"> This colour gradient , cyan to violet,  symbolises a numeric value compare.</p>
+<img src="help/img/compare_op_text.png" alt="Type text" class="img">
+<p class="text"> This colour gradient, cyan to brown, symbolises a textual value compare.</p>
+<img src="help/img/compare_op_date.png" alt="Type date" class="img">
+<p class="text"> This colour gradient,cyan to tapestry, symbolises a date value compare.</p>
+<img src="help/img/compare_op_bool.png" alt="Type bool" class="img">
+<p class="text"> This colour ,cyan, symbolises a boolean value compare</p>
+<div id="aliasback"></div>

@@ -1,0 +1,658 @@
+/*******************************************************************************
+ * The SQLXML class has functions that helps to generate a blockly compatible
+ * XML format to use in the Blockly SQL Generator.
+ ******************************************************************************/
+function SQLXML() {
+
+  var xml = null;
+  var sqlHelp = null;
+
+  var pSelect = null;
+  var pInsert = null;
+  var pUpdate = null;
+
+  var __construct = function() {
+    sqlHelp = new SQLHelper();
+
+    pSelect = new SQLStatement();
+    pInsert = new SQLStatement();
+    pUpdate = new SQLStatement();
+  }()
+
+  this.printSQLOnWorkspace = function(node) {
+    createXMLHeader();
+    xml.appendChild(node);
+
+    console.log(xml);
+
+    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+    Blockly.mainWorkspace.render();
+
+    delete pSelect;
+    delete pInsert;
+    delete pUpdate;
+    delete sqlHelp;
+  };
+
+  this.createSelect = function (parsed) {
+    pSelect = parsed;
+
+    var fields = {};
+    var mutations = {};
+    var values = {};
+    var statements = {};
+
+    console.log(pSelect);
+
+    if (pSelect.selection) {
+      var next = document.createElement("next");
+      next.appendChild(pSelect.columns);
+      pSelect.selection.appendChild(next);
+      statements["select"] = pSelect.selection;
+    } else {
+      statements["select"] = pSelect.columns;
+    }
+
+    for (var blockKey in pSelect.columns.getElementsByTagName("block")) {
+      var block = pSelect.columns.getElementsByTagName("block")[blockKey];
+
+      if (typeof block === "object") {  /* Change groupfunction_factor into normal groupfunction */
+        if (block.getAttribute("type") === "groupfunction_factor")
+          block.setAttribute("type", "groupfunction");
+      }
+    }
+
+    checkTables(pSelect.tables, pSelect.columns);
+
+    if (pSelect.where)
+      values["Clause"] = pSelect.where;
+
+    if (pSelect.groupby) {
+      checkTables(pSelect.tables, pSelect.groupby.expressions);
+      if (pSelect.groupby.having) {
+        mutations["groupbyhaving"] = 1;
+        statements["group_by_have"] = pSelect.groupby.expressions;
+        values["having"] = pSelect.groupby.having;
+      } else {
+        mutations["groupby"] = 1;
+        statements["group_by"] = pSelect.groupby.expressions;
+      }
+    }
+
+    if (pSelect.orderby) {
+      checkTables(pSelect.tables, pSelect.orderby.expressions);
+      mutations["orderby"] = 1;
+      statements["order_by"] = pSelect.orderby.expressions;
+      mutations["sortDirection"] = fields["sort"] =
+        (pSelect.orderby.direction) ? pSelect.orderby.direction.toLowerCase() : "asc";
+    }
+
+    if (pSelect.limit) {
+      mutations["limit"] = 1;
+      values["limit"] = pSelect.limit;
+    }
+
+    var selectBlock = createBlock(
+      "select",
+      statements,
+      values,
+      fields,
+      mutations
+    );
+
+    return selectBlock;
+  };
+
+  this.createInsert = function(parsed) {
+    var insertBlock = null;
+    var values = [];
+    var valuesCnt = 0;
+
+    pInsert = parsed;
+
+    if (pInsert.columns === '*')
+      pInsert.columns = sqlHelp.getAllColumnsByTable(pInsert.table);
+
+//      if (pInsert.columns.length !== pInsert.values.length)
+//        console.warn("Columns and Values has not the same length!");
+
+    for (var parsedColumn in pInsert.columns) {
+      var key = "set" + valuesCnt;
+      var tableNode = this.createTableVar({ "table" : [pInsert.table], "column" : [pInsert.columns[valuesCnt]] });
+      var valueNode = pInsert.values[parsedColumn];
+
+      var toBlock = createBlock("to", [], {
+        "A" : tableNode,
+        "B" : valueNode
+      }, [], {
+        "colour" : "#000000"
+      });
+
+      values[key] = toBlock;
+      valuesCnt++
+    }
+
+    // , "colorhue" : "30"
+
+    insertBlock = createBlock(
+      "insert",
+      [],
+      values,
+      [],
+      { "set" : valuesCnt - 1}
+    );
+
+    return insertBlock;
+  };
+
+  this.createUpdate = function(parsed) {
+    var updateBlock = null;
+    var whereBlocks = null;
+    var values = [];
+    var valuesCnt = 0;
+
+    pUpdate = parsed;
+
+    for (var parsedColumn in pUpdate.columns) {
+        var key = "set" + valuesCnt;
+        var tableBlock = this.createTableVar({ "table" : [pUpdate.table], "column" : [pUpdate.columns[valuesCnt]] });
+        var valueBlock = pUpdate.values[parsedColumn];
+        var toBlock = createBlock("to", [], {
+          "A" : tableBlock,
+          "B" : valueBlock
+        }, [], {
+          "colour" : "#000000"
+        });
+
+        values[key] = toBlock;
+        valuesCnt++
+      }
+
+    values["Clause"] = pUpdate.where;
+
+    updateBlock = createBlock(
+      "update",
+      [],
+      values,
+      [], {
+        "set" : valuesCnt - 1,
+        "colorhue" : "#000000"
+    });
+
+    return updateBlock;
+  };
+
+  this.addAlias = function(node, value) {
+    var mutation = node.getElementsByTagName("mutation")[0];
+
+    node.appendChild(
+      createField("VAR", value)
+    );
+
+    if (mutation)
+      mutation.setAttribute("alias", 1);
+    else {
+      node.appendChild(
+        createMutation({ "alias" : 1 })
+      );
+    }
+      
+    return node;
+  };
+
+  this.createTo = function(column, value) {
+    return createBlock(
+      "to",
+      [], {
+        "A" : column,
+        "B" : value
+      },
+      [],
+      { "colour" : "#000000" }
+    );
+  };
+
+  this.addTable = function(currentTableNode, nextTableNode) {
+    var next = document.createElement("next");
+    var currentNext = currentTableNode.getElementsByTagName("next");
+
+    next.appendChild(nextTableNode);
+
+    if (currentNext.length === 0)
+      currentTableNode.appendChild(next);
+    else
+      currentNext[currentNext.length - 1].getElementsByTagName("block")[0].appendChild(next);
+
+    return currentTableNode;
+  };
+
+  /**
+   * Creating Table Block by column and table.
+   * If the column is null, the column will be
+   * searched in the existing tables.
+   *
+   * @param column {String} - Parsed columnName
+   * @param table {String} - Parsed tableName
+   * @return tableBode {XML} - TableBlock as XML
+   */
+  this.createTable = function(column, table) {
+    if (!table)
+      table = sqlHelp.getTableOfColumn(column);
+
+    return createBlock(
+        "tables_and_columns",
+        [],
+        [],
+        { "tabele" : table,
+          "Column" : column }
+      );
+  };
+
+  /* TODO: Separation between variables blocks and table_column blocks ! */
+  this.createTableVar = function(value) {
+    var tableName = null;
+    var columnName = value.column;
+
+    if (value.table)
+      tableName = value.table;
+    else
+      tableName = sqlHelp.getTableOfColumn(value.column);
+
+    return createBlock(
+        "tables_and_columns_var",
+        [],
+        [],
+        { "tabele" : tableName,
+          "Column" : columnName }
+      );
+  };
+
+  this.createNumberFunction = function(func, expression_a, expression_b) {
+    var values = { "object" : expression_a };
+
+    if (expression_b)
+      values["number"] = expression_b;
+
+    return createBlock(
+      "numberfunction",
+      [],
+      values,
+      { "number_function" : func },
+      { "numberfunction" : func }
+    );
+  };
+
+  this.createCharFunction = function(func, expression_a, expression_b, expression_c) {
+    var values = { "option" : expression_a};
+
+    if (expression_b)
+      values["num"] = expression_b;
+
+    if (expression_c)
+      values["option2"] = expression_c;
+
+    return createBlock(
+      "charfunction",
+      [],
+      values,
+      { "char_function" : func },
+      { "charfunction" : func }
+    );
+  }
+
+  this.createDateFunction = function(func, date) {
+    var fields = { "date_function" : func };
+
+    console.log(date);
+
+    return createBlock(
+      "datefunction",
+      [],
+      [],
+      fields
+    );
+  };
+
+  /**
+   * Creating Math Block.
+   *
+   * @param operand_a {XML} - BlockXML of the first operand
+   * @param operand_b {XML} - BlockXML of the second operand
+   * @return mathBlock {XML} - MathBlock as XML
+   */
+  this.createMath = function(operand_a, operand_b, operator) {
+    return createBlock(
+      "terms_simple_expressions",
+      [],
+      { "A" : operand_a, "B" : operand_b },
+      { "OP" : operator },
+      { "op" : operator,
+      "colour" : "#5ba58c" }
+    );
+  };
+
+  this.createAnd = function(factor_a, factor_b) {
+    var values = { "A" : factor_a, "B" : factor_b };
+
+    return andBlock = createBlock(
+        "logical_conjunction",
+        [],
+        values,
+        { "operator" : "AND"}
+      );
+  };
+
+  this.createOr = function(factor_a, factor_b) {
+    var values = { "A" : factor_a, "B" : factor_b };
+
+    return createBlock(
+      "logical_conjunction",
+      [],
+      values,
+      { "operator" : "OR"}
+    );
+  };
+
+  this.createCompareOperator =
+    function(expression_a, expression_b, comp) {
+      var fields = {};
+
+      if (expression_a) {
+        if (expression_a.type === "tables_and_columns_var")
+          expression_a.type = "tables_and_columns";
+
+        fields.A = expression_a;
+      }
+
+      if (expression_b) {
+        if (expression_b.type === "tables_and_columns_var")
+          expression_b.type = "tables_and_columns";
+
+        fields.B = expression_b;
+      }
+      
+      return createBlock(
+              "compare_operator",
+              [],
+              fields,
+              { "OP" : comp },
+              { "op" : comp,
+              "colour" : "#5ba58c" }
+            );
+  };
+
+  this.createString = function(value) {
+    return createBlock(
+      'string',
+      [],
+      [],
+      {"String" : value}
+    );
+  };
+
+  this.createNumber = function(value) {
+    return createBlock(
+      "num",
+      [],
+      [],
+      { "NUM" : value }
+    );
+  };
+
+  this.createDate = function(value) {
+    return createBlock(
+      "date",
+      [],
+      [],
+      { "Date_" : value }
+    );
+  };
+
+  this.negate = function(value) {
+    return createBlock(
+      "conditions",
+      [],
+      { "A" : value }
+    );
+  };
+
+  this.createBool = function(value) {
+    return createBlock(
+      "bool",
+      [],
+      [],
+      {"BOOL" : (value === true) ? 1 : 0}
+    );
+  };
+
+  this.createNumberFunction =
+    function(func, expression_a, expression_b) {
+      var values = {};
+
+      if (expression_a)
+        values["object"] = expression_a;
+
+      if (expression_b)
+        values["number"] = expression_b;
+
+      return createBlock(
+              "numberfunction",
+              [],
+              values,
+              [],
+              { "number_function" : func.toLowerCase(),
+                "colorHue" : "#000000" }
+            );
+    };
+
+  this.createGroupFunction = function (func, expressions, alias) {
+    var mutations = { 
+      "group_function" : func.toLowerCase(), 
+      "colour" : "#000000" 
+    };
+    
+    var fields = { "group" : expressions };
+    var block =  createBlock(
+      "groupfunction",
+      [],
+      fields,
+      [],
+      mutations
+    );
+    
+    console.log(alias);
+
+    if (alias)
+      return this.addAlias(block, alias);
+    
+    return block;
+  };
+
+  this.createGroupFunctionFactor =
+    function(func, expressions) {
+      return createBlock(
+        "groupfunction_factor",
+        [],
+        { "group" : expressions },
+        [],
+        { "group_function" : func.toLowerCase(),
+          "colour" : "#000000" }
+      );
+  };
+
+  this.createDistinct = function() {
+    return createBlock(
+      "distinct"
+    );
+  };
+
+/******************************************************************************
+ * PRIVATE FUNCTIONS                                                          *
+ *                                                                            *
+ * HELPING TO CREATE XML NODES                                                *
+ ******************************************************************************/
+
+  /**
+   * Creating a Statement Tag to represent a blockly Statement.
+   *
+   * @param name {String} - Name of the statement.
+   * @return statementNode {XML} - Created Statement Node.
+   */
+  var createStatement = function(name) {
+    var statementNode = document.createElement("statement");
+    statementNode.setAttribute("name", name);
+
+    return statementNode;
+  }.bind(this);
+
+  /**
+   * Creating a Field Tag to represent a blockly Field.
+   *
+   * @param name {String} - FieldName.
+   * @param value {String} - Value of the Field.
+   * @return fieldNode {XML} - Created Field Node.
+   */
+  var createField = function(name, value) {
+    var fieldNode = document.createElement("field");
+    fieldNode.setAttribute("name", name);
+    fieldNode.textContent = value;
+
+    return fieldNode;
+  }.bind(this);
+
+  /**
+   * Creating a Mutation Tag to represent a blockly Mutation.
+   *
+   * @param attributes {Object} - Attributes that should be added to the mutation by key value.
+   * @return mutationNode {XML} - Created Mutation Node.
+   */
+  var createMutation = function(attributes) {
+    var mutationNode = document.createElement("mutation");
+
+    for (var attributeKey in attributes) {
+      var attribute = attributes[attributeKey];
+      mutationNode.setAttribute(attributeKey, attribute);
+    }
+
+    return mutationNode;
+  }.bind(this);
+
+  /**
+   * Creating a Value Tag to represent a blockly Value.
+   *
+   * @param name {String} - Name of the value.
+   * @return valueNode {XML} - Created Value Node.
+   */
+  var createValue = function(name) {
+    var valueNode = document.createElement("value");
+    valueNode.setAttribute("name", name);
+    return valueNode;
+  }.bind(this);
+
+  /**
+   * Creating a Block Tag to represent a Blockly Block.
+   *
+   * @param type {String} - Name of the block that should be created.
+   * @param statements {Object} - Creating statements by key/value structure.
+   * @param values {Object} - Creating values by key/value structure.
+   * @param fields {Object} - Creating fields by key/value structure.
+   * @param mutations {Object} - Creating mutations by key/value structure.
+   * @return blockNode {XML} - Created Block Node.
+   */
+  var createBlock = function(type, statements, values, fields, mutations) {
+    var blockNode = document.createElement("block");
+    blockNode.setAttribute("type", type);
+
+    /* Adding mutation */
+    if (mutations) {
+      var mutationNode = createMutation(mutations);
+      blockNode.appendChild(mutationNode);
+    }
+
+    /* Adding statements */
+    for (var statementKey in statements) {
+      var statement = statements[statementKey];
+      var statementNode = createStatement(statementKey);
+      if (statement)
+        statementNode.appendChild(statement);
+
+      blockNode.appendChild(statementNode);
+    }
+
+    /* Adding values */
+    for (var valueKey in values) {
+      var value = values[valueKey];
+      var valueNode = createValue([valueKey]);
+
+      if (value)
+        valueNode.appendChild(value);
+
+      blockNode.appendChild(valueNode);
+    }
+
+    /* Adding fields */
+    for (var fieldKey in fields) {
+      var fieldNode = createField(fieldKey, fields[fieldKey]);
+      blockNode.appendChild(fieldNode);
+    }
+
+    return blockNode;
+  }.bind(this);
+
+  var createXMLHeader = function() {
+    xml = document.createElement("xml");
+    xml.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+  }.bind(this);
+
+  var checkTables = function(tables, columnsXML) {
+    var tableBlocks = columnsXML.getElementsByTagName("field");
+    var tablesColumns = {};
+
+    /* Getting columns of parsed tables */
+    for (var tableKey in tables) {
+      var table = tables[tableKey].tablename;
+      tablesColumns[table] = sqlHelp.getAllColumnsByTable(table);
+    }
+
+    for (var i = 0; i < tableBlocks.length; i += 2) {
+      /* Check only table and column nodes by checking the type of the parent node */
+      if (tableBlocks[i].parentNode.getAttribute("type") === "tables_and_columns") {
+        var table = i;
+        var column = i + 1;
+        var tableName = null;
+        var columnName = null;
+
+        if (tableBlocks[table]) {
+          tableName = tableBlocks[table].innerHTML;
+        }
+
+        if (tableBlocks[column])
+          columnName = tableBlocks[column].innerHTML;
+
+        if (Object.keys(tablesColumns).length === 1 && 
+            tableName === "" && 
+            columnName === "*") {
+          console.log("ARGH!");
+          console.log(Object.keys(tablesColumns)[0]);
+          tableBlocks[table].innerHTML = Object.keys(tablesColumns)[0];
+        }
+
+        for (var tableNameKey in tablesColumns) {
+          var columns = tablesColumns[tableNameKey];
+
+          //if (columnName === "*" && !hasTable)
+          //  tableBlocks[table].innerHTML = tableNameKey;
+
+          for (var x = 0; x < columns.length; x++) {
+            if (columns[x] === columnName) {
+              tableBlocks[table].innerHTML = tableNameKey;
+            }
+          }
+        }
+
+      }
+    }
+
+  }.bind(this);
+
+} /* End of Class */

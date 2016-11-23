@@ -1,0 +1,73 @@
+<h1 class="top">Subselect (section 'WHERE')</h1>
+<h2>The block</h2>
+<img src="help/img/wsubselect.png" alt="and Block" class="leftFloatIMG">
+<p class="leftFloat left">
+    The subselect block is used in the 'WHERE'-section of the 
+    <span class="groupLinks pointer" onclick="fetchthelink('Help/select.html', '#63a65a');">'SELECT' Block</span> with the 
+    <span class="groupLinks pointer" onclick="fetchthelink('Help/compare_operator.html', '#5aa68c');"> compare operator</span>. It symbolises the subquery structure.
+    All the other blocks, like tables, functions and operators are plugged in it.<br> It also can be mutated.<br>
+    If you want to learn more about how to mutate the block please, see <a href="#func" class="groupLinks"> 'Functionality'</a>.<br>
+    The not mutated subselect block is divided in two sections. The 'SELECT'-section and the 'WHERE'-section.
+    If you want to leran more about the sections please take a look at the <span class="groupLinks pointer" onclick="fetchthelink('Help/select.html', '#63a65a');">'SELECT' block</span>.
+    This block also changes the colour, to symbolize <a href="#type" class="groupLinks">the types</a> used in SQL.
+</p>
+<h2 id="func" style="margin-top: 15px;">Functionality</h2>
+<p class="text"> To mutate the block, you click on the 
+    <span style="color: #A00;">star-icon</span> and a new workspace appears.<br/></p>
+<img src="help/img/wsubselect_muated.png" alt="How to mutate the select Block" class="img" >
+<p class="text">In this workspace you can drop blocks into an 'ADD'-block to expand the select-block. 
+    So for each droped block one new input appears. Like you see in the picture above.<br/>
+    If you want to reduce the number of inputs, you click on the star icon and pull the blocks out of the 'ADD' block.<br/>
+    The blocks in this workspace are the SQL clauses <a href="#gb" class="groupLinks">'GROUP BY'</a>,
+    <a href="#gbh" class="groupLinks">GROUP BY' with 'HAVING</a>, 
+    <a href="#ob" class="groupLinks">'ORDER BY'</a>, <a href="#lim" class="groupLinks">'LIMIT'</a> and an <a href="#as" class="groupLinks">'ALIAS'</a> . 
+    In the section <a href="#clauses" class="groupLinks"> 'Clauses'</a> you will learn more about them.
+</p> 
+<h2 id="func" style="margin-top: 15px;">Clauses</h2> 
+<p class="text"> In the mutator workspace there are five blocks, four of them symbolising the clauses, 
+    'GROUP BY',GROUP BY' with 'HAVING, 'ORDER BY' and 'LIMIT', in SQL and one symbolises the 'ALIAS'.
+    Notice that the first three clauses could be used with 'LIMIT' and 'ALIAS' but <span style="font-weight: bold;"> not</span> with each other. 
+    'LIMIT'  and 'ALIAS' can also be used alone.
+</p>
+<h3 id="as"> Alias </h3>
+<img src="help/img/wsubselect_as.png" alt="Group by" class="leftFloatIMG" style='margin-top:10px'>
+<p class="text"> The 'ALIAS' textfield is used if you want to give this subselect a special name in the result. 
+    To use the name later there is a 
+    <span class="groupLinks pointer" onclick="fetchthelink('Help/fieldname_get.html', '#63a65a');">alias variable</span>.
+</p>
+<h3 id="gb"> GROUP BY </h3>
+<img src="help/img/wsubselect_group.png" alt="Group by" class="rightFloatIMG" style='margin-top:10px'>
+<p class="text"> The 'GROUP BY' input is used if you use a 
+    <span class="groupLinks pointer" onclick="fetchthelink('Help/groupfunction/avg.html', '#63a65a');">groupfunction</span>. 
+    If you use 'GROUP BY' be sure to use the same tables in the group, which you used in the select.<br>
+    Notice that only the table should be used, which are not in a groupfunction.<br> You can use this clause with the 'LIMIT' clause</p>
+<h3 id="gbh"> GROUP BY with HAVING</h3>
+<img src="help/img/wsubselect_group_have.png" alt="Group by having" class="leftFloatIMG" style='margin-top:10px'>
+<p class="text">The 'GROUP BY' with 'HAVING' input is used if you use a 
+    <span class="groupLinks pointer" onclick="fetchthelink('Help/groupfunction/avg.html', '#63a65a');">groupfunction</span> and want to requiere the order. 
+    If you use 'GROUP BY' be sure to use the same tables in the group, which you used in the select.
+    <br>Notice that only the table should be used which are not in a groupfunction.<br>
+    In the 'HAVING' input you need to use a 
+    <span class="groupLinks pointer" onclick="fetchthelink('Help/compare_operator.html', '#5aa68c');"> compare operator</span>.<br> You can use this clause with the 'LIMIT' clause</p>
+<h3 id="ob"> ORDER BY </h3>
+<img src="help/img/wsubselect_order.png" alt="order by" class="rightFloatIMG" style='margin-top:10px'>
+<p class="text">The 'ORDER BY' input is used if you want to order your result after a specific order. 
+    If you use 'ORDER BY' be sure to use one of tables in the 'ORDER BY', which is also used in the select. 
+    You also can use the alias variable here. You can sort your results ascendant or descandent.<br> 
+    You can use this clause with the 'LIMIT' clause.</p>
+<h3 id="lim"> LIMIT </h3>
+<img src="help/img/wsubselect_limit.png" alt="limit" class="leftFloatIMG" style='margin-top:10px'>
+<p class="text">The 'Limit' input is used if you want to limit your result after. 
+    It is used with a number variable and you can use tit with the other clauses</p>
+<h2 id ="type" style="margin-top: 15px;">The types</h2>
+<img src="help/img/wsubselect_type_list.png" alt="Type list" class="img" style="margin-top: 10px;">
+<p class="text"> This colour gradient, apple green to cyan, symbolises a list of columns of the database</p>
+<img src="help/img/wsubselect_type_int.png" alt="Type numeric" class="img" >
+<p class="text"> This colour gradient, violet to cyan,  symbolises the numeric values of the database</p>
+<img src="help/img/wsubselect_type_text.png" alt="Type text" class="img">
+<p class="text"> This colour gradient, brown to cyan, symbolises the textual values of the database</p>
+<img src="help/img/wsubselect_type_date.png" alt="Type date" class="img">
+<p class="text"> This colour gradient, tapestry to cyan, symbolises the date values of the database</p>
+<img src="help/img/wsubselect_type_bool.png" alt="Type bool" class="img">
+<p class="text"> This colour, cyan, symbolises the boolean values of the database</p>
+<div id="aliasback"></div>

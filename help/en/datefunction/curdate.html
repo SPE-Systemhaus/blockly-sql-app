@@ -1,0 +1,369 @@
+<h1 class="top">Date function</h1>
+<h2>The block</h2>
+<img src="help/img/date_sys.png" alt="conversion" class="leftFloatIMG">
+<p class="leftFloat left">
+    The date function block has varous functions. You can <a href="#extract" style="text-decoration:none;color:#a55984">extract</a>,
+    <a href="#date_add" style="text-decoration:none;color:#a55984">summarize</a>,
+    <a href="#date_add" style="text-decoration:none;color:#a55984">substract</a> a date.
+    You also can get the <a href="#sysdate" style="text-decoration:none;color:#a55984">systemdate</a>,
+    <a href="#now" style="text-decoration:none;color:#a55984">today</a> and the 
+    <a href="#curdate" style="text-decoration:none;color:#a55984">current date</a>.
+    Extract the <a href="#date" style="text-decoration:none;color:#a55984">date part </a>, 
+    the <a href="#month" style="text-decoration:none;color:#a55984">month</a>, 
+    the <a href="#year" style="text-decoration:none;color:#a55984">year</a> or the 
+    <a href="#last_day" style="text-decoration:none;color:#a55984">last day</a> of a month of a date value, with the help of this block.
+    You even can convert a date <a href="#string"  style="text-decoration:none;color:#a55984">to text</a>.
+    <br>The block is used with the compare operator and the date value or column.
+</p>
+
+<h2> Functions</h2>
+<h3 id="extract">Extract</h3>
+<img src="help/img/date_extract.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The extract function uses a date value or column and a specifier. To use the function you plug the date value or column or 
+    <a href="#sysdate" style="text-decoration:none;color:#a55984">systemdate</a>,
+    <a href="#now" style="text-decoration:none;color:#a55984">today</a>, 
+    <a href="#curdate" style="text-decoration:none;color:#a55984">current date</a> into the function.<br>
+    Then you need to choose a time unit. If you want to learn more about time units please klick on the table below.  
+<p class="text" > <img id="pU" onclick="toggleTable('eUnit', 'plus');" src="help/img/black22.png" alt="More" class="pointer toogleimg">Unit</p>
+
+<table class="toggleTable dcoltab" id="eUnit">
+    <thead>
+        <tr>
+            <th>Unit</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody >  
+        <tr class="totabbody dcol">
+            <td>MICROSECOND</td>
+            <td>Extract the microseconds of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>SECOND</td>
+            <td>Extract the seconds of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>MINUTE</td>
+            <td>Extract the minute of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>HOUR</td>
+            <td>Extract the hour of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>DAY</td>
+            <td>Extract the day of a date</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>WEEK</td>
+            <td>Extract the week of a date</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>MONTH</td>
+            <td>Extract the month of a date</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>QUARTER</td>
+            <td>Extract the quarter of a date</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>YEAR</td>
+            <td>Extract the year of a date</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>SECOND_MICROSECOND</td>
+            <td>Extract the seconds and microseconds of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>MINUTE_MICROSECOND</td>
+            <td>Extract the microseconds, seconds and minutes of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>MINUTE_SECOND</td>
+            <td>Extract the seconds and minutes of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>HOUR_MICROSECOND</td>
+            <td>Extract the microseconds, seconds , minutes and hours of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>HOUR_SECOND</td>
+            <td>Extract the seconds , minutes and hours of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>HOUR_MINUTE</td>
+            <td>Extract the minutes and hours of a time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>DAY_MICROSECOND</td>
+            <td>Extract the microseconds, seconds , minutes ,hours and day of a date and  time </td>
+        </tr>  
+        <tr class="totabbody dcol">
+            <td>DAY_SECOND</td>
+            <td>Extract the seconds , minutes ,hours and day of a date and  time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>DAY_MINUTE</td>
+            <td>Extract the minutes ,hours and day of a date and  time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>DAY_HOUR</td>
+            <td>Extract the hours and day of a date and  time</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>YEAR_MONTH</td>
+            <td>Extract the day and month of a date</td>
+        </tr>
+    </tbody>  
+</table>
+<h3 id="date_add">Addition and substracation of dates</h3>
+<img src="help/img/date_sub.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The functions to substract and sum dates are nearly the same.<br>
+    To use the function you plug the date value or column or <a href="#sysdate" style="text-decoration:none;color:#a55984">systemdate</a>,
+    <a href="#now" style="text-decoration:none;color:#a55984">today</a>, 
+    <a href="#curdate" style="text-decoration:none;color:#a55984">current date</a> into the function.<br>
+    Then you need to choose a time unit. Please notice that the time unit an the value need to be the same. 
+    If you want to learn more about time units please klick on the table below.  
+<p class="text" > <img id="pl" onclick="toggleTable('dUnit', 'pl');" src="help/img/black22.png" alt="More" class="pointer toogleimg">Unit</p>
+
+<table class="toggleTable dcoltab" id="dUnit">
+    <thead>
+        <tr>
+            <th>Unit</th>
+            <th>Expected variable Format</th>
+        </tr>
+    </thead>
+    <tbody >  
+        <tr class="totabbody dcol">
+            <td>MICROSECOND</td>
+            <td>MICROSECONDS</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>SECOND</td>
+            <td>SECONDS</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>MINUTE</td>
+            <td>MINUTES</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>HOUR</td>
+            <td>HOURS</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>DAY</td>
+            <td>DAYS</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>WEEK</td>
+            <td>WEEKS</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>MONTH</td>
+            <td>MONTHS</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>QUARTER</td>
+            <td>QUARTERSS</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>YEAR</td>
+            <td>YEARS</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>SECOND_MICROSECOND</td>
+            <td>'SECONDS.MICROSECONDS'</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>MINUTE_MICROSECOND</td>
+            <td>'MINUTES:SECONDS.MICROSECONDS'</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>MINUTE_SECOND</td>
+            <td>'MINUTES:SECONDS'</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>HOUR_MICROSECOND</td>
+            <td>'HOURS:MINUTES:SECONDS.MICROSECONDS'</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>HOUR_SECOND</td>
+            <td>'HOURS:MINUTES:SECONDS'</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>HOUR_MINUTE</td>
+            <td>'HOURS:MINUTES'</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>DAY_MICROSECOND</td>
+            <td>'DAYS HOURS:MINUTES:SECONDS.MICROSECONDS' </td>
+        </tr>  
+        <tr class="totabbody dcol">
+            <td>DAY_SECOND</td>
+            <td>'DAYS HOURS:MINUTES:SECONDS'</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>DAY_MINUTE</td>
+            <td>'DAYS HOURS:MINUTES'</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>DAY_HOUR</td>
+            <td>'DAYS HOURS'</td>
+        </tr>
+        <tr class="totabbody dcol">
+            <td>YEAR_MONTH</td>
+            <td>'YEARS-MONTHS'</td>
+        </tr>
+    </tbody>  
+</table>
+<h3 id="sysdate">Systemdate</h3>
+<img src="help/img/date_sys.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The sysdate function returns the systemdate. The time when the function is exectuted is called systemdate. 
+    It could be used to compare a date column or value with the systemdate. <br>
+    You also can use it in date functions. The format is :  'YYYY-MM-DD HH:MM:SS'</p>
+<h3 id="now">Now</h3>
+<img src="help/img/date_now.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">Like the sysdate function, the now function returns the time, when the function began to execute. 
+    It could be used to compare a date column or value with the now. <br>
+    You also can use it in date functions. The format is :  'YYYY-MM-DD HH:MM:SS'</p>
+<h3 id="curdate">Current date</h3>
+<img src="help/img/date_cur.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">Like the sysdate and now function, the current date function returns the time, dependig on the context in which it is used. 
+    Its the most common function of this three time functions. It could be used to compare a date column or value with the current date. <br>
+    You also can use it in date functions. The format depending on the context is :  'YYYY-MM-DD' or YYYYMMDD</p>
+<h3 id="date">Date</h3>
+<img src="help/img/date.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The date function extracts the date part of a date time expression, eg. of a date column. 
+    It could be used in the compare operation. <br>
+    You also can use it in date functions. 
+<h3 id="last_day">Last day of month</h3>
+<img src="help/img/date_last.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The last day function returns the last day of a month of the plugged in date value or column. 
+    It could be used to compare operator.<br>
+    You also can use it in date functions.</p>
+    <h3 id="month">Month</h3>
+<img src="help/img/date_month.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The last day function returns the month of the plugged in date value or column. It could be used with the compare operator.<br>
+    You also can use it in date functions.</p>
+    <h3 id="year">Year</h3>
+<img src="help/img/date_month.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The last day function returns the month of the plugged in date value or column. It could be used with the compare operator.<br>
+    You also can use it in date functions.</p>
+<h3  id="string">To string</h3>
+<img src="help/img/date_char.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The to string function is the inverse function of 'TO DATE'. IT uses a date value and a specifier. </p>
+<p class="text">To use the function, you need to plug in the date type in the function block. This is shown in the picture below.</p>
+<img src="help/img/date_char_use.png" alt="Function to date" class="img" >
+<p class="text">To change the default specifier, just click in text field. There are many specifieres.<br>
+    The “%” character is required before format specifier characters. 
+    If you want to learn more about the specifiers, please take a look at the table below.</p>
+<p class="text" > <img id="plus" onclick="toggleTable('spec','plus');" src="help/img/black22.png" alt="More" class="pointer toogleimg">Specifier </p>
+    <table class="toggleTable bcol" id="spec">
+        <thead>
+        <tr>
+            <th>Specifier</th>
+            <th>Description</th>
+            </tr>
+        </thead>
+        <tbody >
+            <tr class="totabbody bcol">
+                <td>%a</td>
+                <td>Abbreviated weekday name (Sun..Sat)</td>
+            </tr>  
+            <tr class="totabbody bcol">
+                <td>%b</td>
+                <td>Abbreviated month name (Jan..Dec)</td>
+            </tr>
+            <tr class="totabbody  bcol">
+                <td>%c or %m </td>
+                <td>Month, numeric (0..12)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%D</td>
+                <td>Day of the month with English suffix (0th, 1st, 2nd, 3rd, …)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%d or %e</td>
+                <td>Day of the month, numeric (00..31)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%f</td>
+                <td>Microseconds (000000..999999)</td>
+            </tr> 
+            <tr class="totabbody bcol">
+                <td>%H or %k</td>
+                <td>Hour (00..23)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%h or %I or %l</td>
+                <td>Hour (01..12)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%i</td>
+                <td>Minutes, numeric (00..59)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%j</td>
+                <td>Day of year (001..366)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%M</td>
+                <td>Month name (January..December)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%p</td>
+                <td>AM or PM</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%r</td>
+                <td>Time, 12-hour (hh:mm:ss followed by AM or PM)</td>
+            </tr>
+            <tr class="totabbody  bcol">
+                <td>%S or %s</td>
+                <td>Seconds (00..59)</td>
+            </tr>
+            <tr class="totabbody  bcol">
+                <td>%T</td>
+                <td>Time, 24-hour (hh:mm:ss)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%U</td>
+                <td>Week (00..53), where Sunday is the first day of the week </td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%u</td>
+                <td>Week (00..53), where Monday is the first day of the week</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%V</td>
+                <td>Week (01..53), where Sunday is the first day of the week;used %X</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%v</td>
+                <td>Week (01..53), where Sunday is the first day of the week;used %x</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%w</td>
+                <td>Weekday name (Sunday..Saturday)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%w</td>
+                <td>Day of the week (0=Sunday..6=Saturday)</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%X</td>
+                <td>Year for the week where Sunday is the first day of the week, numeric, four digits; used with %V</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%x</td>
+                <td>Year for the week where Sunday is the first day of the week, numeric, four digits; used with %v</td>
+            </tr>
+            <tr class="totabbody bcol">
+                <td>%Y</td>
+                <td>Year, numeric, four digits</td></tr>
+            <tr class="totabbody bcol">
+                <td>%y</td>
+                <td>Year, numeric (two digits)</td></tr>
+        </tbody>  
+    </table>
+<div id="aliasback"></div>

@@ -1,0 +1,175 @@
+<h1 class="top">Char function</h1>
+<h2>The block</h2>
+<img src="help/img/char_lower.png" alt="conversion" class="leftFloatIMG">
+<p class="leftFloat left">
+    The char function block has various functions. You can get the <a href="#length" style="text-decoration:none;color:#a56d5a">length</a>,the
+    <a href="#ascii" style="text-decoration:none;color:#a56d5a">ascii value</a> and the
+    <a href="#sub_string" style="text-decoration:none;color:#a56d5a">substring</a> . 
+    You also can<a href="#ltrim" style="text-decoration:none;color:#a56d5a">left</a> or
+    <a href="#ltrim" style="text-decoration:none;color:#a56d5a">right trim</a> or 
+    <a href="#lpad" style="text-decoration:none;color:#a56d5a">left</a> or 
+    <a href="#lpad" style="text-decoration:none;color:#a56d5a">right pad </a> a text, make a text with lower cases to 
+    <a href="#lower" style="text-decoration:none;color:#a56d5a">upper cases</a> or  do it 
+    the <a href="#lower" style="text-decoration:none;color:#a56d5a">other way</a> around or 
+    <a href="#replace" style="text-decoration:none;color:#a56d5a">replace</a> it and search the  
+    <a href="#instr" style="text-decoration:none;color:#a56d5a">position</a> of a substring in the text.
+    You can convert a text <a href="#date"  style="text-decoration:none;color:#a56d5a">to date</a>.
+    <br>It is used with the compare operator and the text value or column.
+</p>
+
+<h2> Functions</h2>
+<h3 id="ascii">ASCII</h3>
+<img src="help/img/char_ascii.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The ascii function uses a text value or column. It returns a numeric value between 0 and 255 of the text.</p>
+<h3 id="instr">Position of substring</h3>
+<img src="help/img/char_instr.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text"> The in string function use two text or column values<br> 
+    It returns the position from the second value in the first value.<br> A simple example is shown below.</p>
+<img src="help/img/char_instr_use.png" alt="Function to date" class="img" >
+<h3 id="length">Length</h3>
+<img src="help/img/char_len.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The length function uses a text value or column. It returns the length of the text as numeric value</p>
+<h3 id="lpad">Left and right pad</h3>
+<img src="help/img/char_lpad.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text"> The left and right pad functions use two text or column values and one numeric value.<br> 
+    They left or right pad the first text value with the second value to the length of the numeric value.
+    The numeric values must plugged into the second input.<br> A simple example is shown below.</p>
+<img src="help/img/char_lpad_use.png" alt="Function to date" class="img" >
+<h3 id="lower">Lower and upper cases</h3>
+<img src="help/img/char_lower.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The lower function returns the text value or column with all characters changed to lowercase.<br>
+    The upper case function does this the other way around.</p>
+<h3 id="curdate">Left and right trim</h3>
+<img src="help/img/char_ltrim.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The left and right trim function uses a text value or column. It returns the text trimmed left or right. </p>
+<h3 id="replace">Replace</h3>
+<img src="help/img/char_replace.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The replace function uses three text values or columns. 
+    It returns the first value with all occurrences of the second value replaced by the third value.<br> A simple example is shown below.</p>
+<img src="help/img/char_replace_use.png" alt="Function to date" class="img" >
+<h3 id="substring">Substring</h3>
+<img src="help/img/char_substring.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The substring function uses one text value or column and one numeric value, which need to be plugged into the second input.
+    <br>It returns a substring from first value starting at second value. 
+    <br>It is also possible to use a negative value for the second input. 
+    In this case, the beginning of the substring is the absolut number from the end of the string, rather than the beginning.
+    <br> A simple example is shown below.</p>
+<img src="help/img/char_substring_us.png" alt="Function to date" class="img" >
+<h3  id="date">To date</h3>
+<img src="help/img/char_date.png" alt="Function to date" class="rightFloatIMG" style="margin-top: 12px;">
+<p class="text">The to date function is the inverse function of 'TO STRING'. IT uses a text value and a specifier.
+To use the function you plug in the text type in the function Block. This is shown in the picture below.</p>
+<img src="help/img/char_date_use.png" alt="Function to date" class="img" >
+<p class="text">To change the default specifier, just click in text field. 
+    There are many specifieres.<br>The “%” character is required before format specifier characters. 
+    If you want to learn more about the specifiers, please take a look at the table below.</p>
+<p class="text" > <img id="plus" onclick="toggleTable('spec','plus');" src="help/img/black22.png" alt="More" class="pointer toogleimg">Specifier </p>
+    <table class="toggleTable " id="spec">
+        <thead>
+        <tr>
+            <th>Specifier</th>
+            <th>Description</th>
+            </tr>
+        </thead>
+        <tbody >
+            <tr class="totabbody ">
+                <td>%a</td>
+                <td>Abbreviated weekday name (Sun..Sat)</td>
+            </tr>  
+            <tr class="totabbody">
+                <td>%b</td>
+                <td>Abbreviated month name (Jan..Dec)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%c or %m </td>
+                <td>Month, numeric (0..12)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%D</td>
+                <td>Day of the month with English suffix (0th, 1st, 2nd, 3rd, …)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%d or %e</td>
+                <td>Day of the month, numeric (00..31)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%f</td>
+                <td>Microseconds (000000..999999)</td>
+            </tr> 
+            <tr class="totabbody">
+                <td>%H or %k</td>
+                <td>Hour (00..23)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%h or %I or %l</td>
+                <td>Hour (01..12)</td>
+            </tr>
+            <tr class="totabbody ">
+                <td>%i</td>
+                <td>Minutes, numeric (00..59)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%j</td>
+                <td>Day of year (001..366)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%M</td>
+                <td>Month name (January..December)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%p</td>
+                <td>AM or PM</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%r</td>
+                <td>Time, 12-hour (hh:mm:ss followed by AM or PM)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%S or %s</td>
+                <td>Seconds (00..59)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%T</td>
+                <td>Time, 24-hour (hh:mm:ss)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%U</td>
+                <td>Week (00..53), where Sunday is the first day of the week </td>
+            </tr>
+            <tr class="totabbody">
+                <td>%u</td>
+                <td>Week (00..53), where Monday is the first day of the week</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%V</td>
+                <td>Week (01..53), where Sunday is the first day of the week;used %X</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%v</td>
+                <td>Week (01..53), where Sunday is the first day of the week;used %x</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%w</td>
+                <td>Weekday name (Sunday..Saturday)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%w</td>
+                <td>Day of the week (0=Sunday..6=Saturday)</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%X</td>
+                <td>Year for the week where Sunday is the first day of the week, numeric, four digits; used with %V</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%x</td>
+                <td>Year for the week where Sunday is the first day of the week, numeric, four digits; used with %v</td>
+            </tr>
+            <tr class="totabbody">
+                <td>%Y</td>
+                <td>Year, numeric, four digits</td></tr>
+            <tr class="totabbody">
+                <td>%y</td>
+                <td>Year, numeric (two digits)</td></tr>
+        </tbody>  
+    </table>
+<div id="aliasback"></div>

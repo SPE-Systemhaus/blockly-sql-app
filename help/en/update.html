@@ -1,0 +1,32 @@
+<h1 class="top">Update</h1>
+<h2>The block</h2>
+<img src="help/img/update.png" alt="update Block" class="leftFloatIMG">
+<p class="leftFloat left">
+    The update-block is the block you want to choose, if you want to update specific values in your database. It symbolises the update structure.
+    <br>Blocks, like tables and operators are plugged in it. It also can be mutated.<br>
+    If you want to learn more about how to mutate the block please, see <a href="#func" class="groupLinks"> 'Functionality'</a>.<br>
+    The not mutated update-block is divided in three sections. The 'UPDATE'-section, the 'SET'-section and the 'WHERE'-section. 
+</p>
+<h2 id="func" style="margin-top: 15px;">Functionality</h2>
+<p class="text"> To mutate the block, you click on the 
+    <span style="color: #A00;">star-icon</span> and a new workspace appears.<br/></p>
+<img src="help/img/update_mutate.png" alt="How to mutate the update Block" class="img" >
+<p class="text">In this workspace you can drop blocks into an 'ADD'-block to expand the update-block. 
+    So for each droped block a new input appears. Like you see in the picture above.<br/>
+    If you want to reduce the number of inputs, you click on the star icon and pull the blocks out of the 'ADD' block.<br/>
+    The block in this workspace symbolises the<a href="#set" class="groupLinks">'SET' statement</a>. 
+    In the section <a href="#state" class="groupLinks"> 'Statement'</a> you will learn more about it. <br> 
+    In the 'WHERE'-section you require your update statement. 
+    This section is used like it is used in the 
+    <span class="groupLinks pointer" onclick="fetchthelink('Help/select.html', '#63a65a');">'SELECT' Block</span>.
+    <br>
+    otherwise there will be a warning. <br> Be sure the you use only the same table in the insert Block. 
+    The usage of different Tables is <span style="font-weight: bold;">not</span> provided.</p>
+<h2 id="state" style="margin-top: 15px;">Statement</h2> 
+<p class="text"> In the mutator workspace there is one block symbolising the 'SET'-statement in SQL.
+</p>
+<h3 id="gb"> SET </h3>
+<img src="help/img/update_set.png" alt="Group by" class="img" style='margin-top:10px'>
+<p class="text"> The 'SET' input uses the <span class="groupLinks pointer" onclick="fetchthelink('Help/to.html', '#5aa68c');"> to-operator</span>, as first input, in the compare, the tables and columns value as the update destination and as second input a value, corresponding in type and colour to the first input.
+    <br> This is shown in the picture above. Be sure to use only tables and columns you use in the 'UPDATE'-section,<br>
+    otherwise there will be a warning.</p>
