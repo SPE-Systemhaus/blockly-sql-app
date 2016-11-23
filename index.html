@@ -4,24 +4,29 @@
         <meta charset="utf-8">
         <title>Blockly SQL Abfrage Generator</title>
 		
-        <!-- DEBUG (Google-Closure-Library is needed!) -->
-        <script type="text/javascript" src="libs/blockly/blockly_uncompressed.js"></script>
-        <script type="text/javascript" src="libs/blockly/blocks_compressed.js"></script>
-        <script type="text/javascript" src="libs/blockly/generators/sql.js"></script>
-        <script type="text/javascript" src="libs/blockly/generators/sql/commands.js"></script>
-        <script type="text/javascript" src="libs/blockly/generators/sql/functions.js"></script>
-        <script type="text/javascript" src="libs/blockly/generators/sql/operators.js"></script>
-        <script type="text/javascript" src="libs/blockly/generators/sql/tables.js"></script>
-        <script type="text/javascript" src="libs/blockly/generators/sql/values.js"></script>
-        <script type="text/javascript" src="libs/blockly/msg/messages.js"></script>
+       <!-- DEBUG (Google-Closure-Library is needed!) -->
+        <script type="text/javascript" src="../common/libs/blockly/blockly_uncompressed.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/blocks_compressed.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/generators/sql.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/generators/sql/commands.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/generators/sql/functions.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/generators/sql/operators.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/generators/sql/tables.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/generators/sql/values.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/msg/messages.js"></script>
         <!-- DEBUG -->
 
         <!-- RELEASE -->
-        <!-- <script type="text/javascript" src="libs/blockly/blockly_compressed.js"></script>
-        <script type="text/javascript" src="libs/blockly/blocks_compressed.js"></script>
-        <script type="text/javascript" src="libs/blockly/sql_compressed.js"></script>
-        <script type="text/javascript" src="libs/blockly/msg/js/en.js"></script> -->
+        <!-- <script type="text/javascript" src="../common/libs/blockly/blockly_compressed.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/blocks_compressed.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/sql_compressed.js"></script>
+        <script type="text/javascript" src="../common/libs/blockly/msg/js/en.js"></script> -->
         <!-- RELEASE -->
+
+        <!-- Adding Blockly plugins -->
+        <script type="text/javascript" src="../common/plugins/colour-gradient/colour-gradient.js"></script>
+        <script type="text/javascript" src="../common/plugins/help/help.js"></script>
+        <script type="text/javascript" src="../common/plugins/type-indicator/type-indicator.js"></script>
 
         <!-- Adding SQLBlockly Addon -->
 		<script type="text/javascript" src="dist/SQLBlockly.min.js"></script>
@@ -92,6 +97,6 @@
             
         </div>
 
-        <script type="text/javascript" src="libs/ace/ace.js"></script>  
+        <script type="text/javascript" src="../common/libs/ace/ace.js"></script>  
     </body>
 </html>

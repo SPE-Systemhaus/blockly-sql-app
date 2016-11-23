@@ -10,7 +10,7 @@
 		{
 			toolbox: Toolbox,
 			trashcan: true,
-			media: 'libs/blockly/media/',
+			media: '../common/libs/blockly/media/',
 			zoom: {
 				controls: true,
 				wheel: true,
