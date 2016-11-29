@@ -25,7 +25,7 @@ module.exports = function(grunt) {
       },
     concat: {
       dist: {
-        src: ['src/**/*.js', 'build/SQLParser.js'],
+        src: ['lang/**/*.js', 'src/**/*.js', 'build/SQLParser.js'],
         dest: 'build/<%= pkg.name %>.concat.js',
       },
     },

@@ -149,7 +149,6 @@ function getTableDropdowndataFromXML() {
         optionsForTabeles[j][1] = Table[j][0];
     }
     return optionsForTabeles;
-
 }
 /*------------------------------------------------------------------------------
  * Get data for the column dropdown from global variable Column
@@ -259,6 +258,42 @@ function getColumDatafromXML(tabledata, type) {
 
     return optionForColums;
 }
+
+/**
+ * This functions returns an array with columns, which can 
+ * be used in Blockly DropDownFieldValues.
+ * 
+ * @param {String} tableName Name of the table, which should return all columns.
+ * @pram {bool} withAll Return with '*' as column or not as first entry. 
+ * @return {Array} optionsForColumns Every Column of the requested table.
+ */
+function getColumnDropdowndataFromXML(tableName, withAll) {
+    var optionsForColumns = new Array();
+    
+    for (var i = 0; i < Column.length; i++) {
+        if (Column[i][0] === tableName) {
+            if (withAll) {
+                optionsForColumns[0] = new Array();
+                optionsForColumns[0][0] = "*";
+                optionsForColumns[0][1] = "*";
+            }
+
+            for (var j = 1; j < Column[i].length; j++) {
+                var optCnt = j;
+
+                if (!withAll)
+                    optCnt = j - 1;
+
+                optionsForColumns[optCnt] = new Array();
+                optionsForColumns[optCnt][0] = Column[i][j][1];
+                optionsForColumns[optCnt][1] = Column[i][j][1];
+            }
+        }
+    }
+
+    return optionsForColumns;
+}
+
 
 /*-----------------------------------------------------------------------------
  * Checking inputs
@@ -431,14 +466,15 @@ function colourTheParent(block) {
     var parent = block.getParent();
     var gradient = new ColourGradient();
 
-    if (parent) {       
+    if (parent) {
         if (parent.getColour !== block.getColour() &&
             Blockly.dragMode_ === Blockly.DRAG_NONE) {
             switch(parent.type) {
                 case "compare_operator" :
                 case "conditions" :
                 case "logical_conjunction" :
-                    gradient.setHorizontalGradient(parent, block);
+                case "to":
+                    gradient.setHorizontalGradient(/*parent,*/ block);
                     break;
             }
         }
@@ -498,7 +534,7 @@ function fetchthelink(link, color) {
         j.innerHTML = string;
         if (Title == "Alias variable")
             window.location.hash = "#alias";
-    } else {   
+    } else {
         switch (Title) {    //catching the back-button link
             case "Alias variable" :
                 e.open("GET", "Help/fieldname_get.html ", !1);
@@ -636,14 +672,11 @@ function fetchthelink(link, color) {
  * @param picture -symbolizes the picture, which toggles the element
  *----------------------------------------------------------------------------*/
 
-function toggleTable(table, picture)
-{
-
+function toggleTable(table, picture) {
     if (document.getElementById(table).style.display == "table") {
         document.getElementById(table).style.display = "none";
         document.getElementById(picture).src = "Files/help_screens/black22.png";
         document.getElementById(picture).alt = "More ";
-
     } else {
         document.getElementById(picture).src = "Files/help_screens/minus42.png";
         document.getElementById(table).style.display = "table";

@@ -26,11 +26,12 @@
 	getdb('first');
 	initCodeEditor();
 
-	workspace.addChangeListener(onBlockChange);
+	//workspace.addChangeListener(onBlockChange);
 }
 
 function onBlockChange(event) {
-	generateSQLCode();
+	closeErrorBox();
+	closeTextArea();
 }
 
 function initCodeEditor() {
@@ -39,6 +40,7 @@ function initCodeEditor() {
 	editor.getSession().setMode("ace/mode/sql");
 	editor.setHighlightActiveLine(false);
 	editor.getSession().setUseWrapMode(true);
+	editor.$blockScrolling = Infinity;
 }
 
 function parsingSQL() {
@@ -85,6 +87,7 @@ function choosedb() {
 		document.getElementById("wait").style.display = "block";
 	}
 }
+
 /*------------------------------------------------------------------
  * Function contact the db, in cause of a db change
  *
@@ -113,6 +116,7 @@ function selectdb() {
 		Blockly.mainWorkspace.clear();
 	}
 }
+
 /*------------------------------------------------------------------
  * Function to handle the data from db
  *
@@ -125,6 +129,7 @@ function getdb(task) {
 		getData();
 	}
 }
+
 /*------------------------------------------------------------------
  * Function to save the XML, which holds the block
  *
@@ -154,6 +159,7 @@ function save() {
 		}
 	}
 }
+
 /*------------------------------------------------------------------
  * Function to load teh XML, which holds the block
  *
@@ -173,8 +179,7 @@ function load() {
 			area.value = '';
 			help.style.display = "none";
 			close.style.visibility = 'hidden';
-		}
-		else {
+		} else {
 			if (document.getElementById('showTestSQL').style.display == 'block') {
 				var help = document.getElementById('showTestSQL');
 				var close = document.getElementById('closed');
@@ -220,7 +225,7 @@ function showtext() {
 }
 
 function generateSQLCode() {
-	var code = Blockly.SQL.workspaceToCode(Blockly.mainWorkspace);
+	var code = BlocklyPlugins.SQLGen.workspaceToCode(Blockly.mainWorkspace);
 	editor.setValue(code);
 }
 
@@ -244,6 +249,11 @@ function opentextarea() {
 	document.getElementById('writeSQL').style.display = 'block';
 	document.getElementById('closea').style.visibility = 'visible';
 }
+
+function closeTextArea() {
+	document.getElementById("writeSQL").style.display = "none";	
+}
+
 /*------------------------------------------------------------------
  * Setting the textarea tooltip
  *----------------------------------------------------------------*/
@@ -252,6 +262,7 @@ function settooltip() {
 	a.innerHTML = "To convert your statemt into blocks, just type it in.<br> Be sure to check you spelling and set all the blanks.<br> Then klick ok.";
 	a.style.display = 'block';
 }
+
 /*------------------------------------------------------------------
  * Closing the textarea tooltip
  *----------------------------------------------------------------*/

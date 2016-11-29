@@ -1,0 +1,22 @@
+{
+  "name": "SQLBlockly",
+  "description": "",
+  "main": "",
+  "authors": [
+    "michael <mk@spe-systemhaus.de>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "../common/plugins",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "blockly-events": "^1.0.2",
+    "blockly-type-indicator": "^1.0.2"
+  }
+}

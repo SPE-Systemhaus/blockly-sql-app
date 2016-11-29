@@ -979,14 +979,13 @@ function checksub(object) {
     }
 }
 /*------------------------------------------------------------------------------
- * Checking the colours to avoid recolouring
+ * Checking the colours to avoid recolouring if colours already match.
  * 
  * @param[type} object- the object which is going to colour the parent
  * @param[type} parent - the object which is going to be coloured
  * @return sameColour - the value which starts or suppresses the colouring
  *----------------------------------------------------------------------------*/
 function checkColour(object, parent) {
-
     var col = object.getColour();
     var pcol = parent.getColour();
     var gcol = 0
@@ -999,18 +998,13 @@ function checkColour(object, parent) {
         if (pcol == 7115) {
             if (gcol == 115 || gcol == 7115 || gcol == 0)
                 sameColour = true;
-        } else
-        {
+        } else {
             sameColour = false;
         }
-    }
-    else {
-
-        if (col == 160 && pcol == 160)
-        {
+    } else {
+        if (col == 160 && pcol == 160) {
             sameColour = true;
-        }
-        else {
+        } else {
             if (pcol == 4330 && col == 330
                     || pcol == 330 && col == 330
                     || pcol == 1160 && col == 330)
@@ -1025,22 +1019,19 @@ function checkColour(object, parent) {
                 {
                     if (gcol == 2555 || gcol == 6255 || gcol == 0)
                         sameColour = true;
-                }
-                else {
+                } else {
                     if (pcol == 5015 && col == 15
                             || pcol == 15 && col == 15
                             || pcol == 3160 && col == 255)
                     {
                         if (gcol == 15 || gcol == 5015 || gcol == 0)
                             sameColour = true;
-                    }
-                    else {
+                    } else {
                         if (pcol == 7115 && col == 115
                                 || pcol == 115 && col == 115) {
                             if (gcol == 115 || gcol == 7115 || gcol == 0)
                                 sameColour = true;
                         }
-
                     }
                 }
             }
@@ -1058,43 +1049,36 @@ function checkColour(object, parent) {
     }
     return sameColour;
 }
+
 /*------------------------------------------------------------------------------
  * Checking the values of the update and insert block
  * 
  * @param[type} object- the object, which inputs are going to be checked
  *----------------------------------------------------------------------------*/
-function checkUpdate(object)
-{
+function checkUpdate(object) {
     var msg = null;
     if (object.getInputTargetBlock('up') != null) {//evaluate which objetc ware checking
         var target = object.getInputTargetBlock('up');
-
         var table = target.getFieldValue('tabele');
+
         while (target != null) {
-            if (target.type == 'tables_and_colums')
-            {
-                if (target.childBlocks_.length > 0)
-                {
+            if (target.type == 'tables_and_colums') {
+                if (target.childBlocks_.length > 0) {
                     var childoftarget = target.childBlocks_[0];
                     var tmp = childoftarget.getFieldValue('tabele');
-                    if (tmp == table)
-                    {
+                    if (tmp == table) {
                         msg = null;
                         object.setWarningText(msg);
                         target = childoftarget;
-                    } else
-                    {
+                    } else {
                         msg = "All tables must be the same. Please use the same table used in the first block.";
                         object.setWarningText(msg);
                         target = null;
                     }
-                }
-                else
+                } else
                     target = null;
-            }
-            else
-            {
-//any input type, whch is not tables and colums , will be unpluged
+            } else {
+                //any input type, whch is not tables and colums , will be unpluged
                 target.unplug(true, true);
                 target = null;
             }
@@ -1106,8 +1090,7 @@ function checkUpdate(object)
  * 
  * @param[type} object- the object which inputs will be checked
  *----------------------------------------------------------------------------*/
-function checkSetUpdate(object)
-{
+function checkSetUpdate(object) {
     if (object.getInputTargetBlock('up') != null) {
         var target = object.getInputTargetBlock('up');
 
