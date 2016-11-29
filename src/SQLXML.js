@@ -132,8 +132,6 @@ function SQLXML() {
       valuesCnt++
     }
 
-    // , "colorhue" : "30"
-
     insertBlock = createBlock(
       "insert",
       [],
@@ -201,14 +199,15 @@ function SQLXML() {
   };
 
   this.createTo = function(column, value) {
+    var fields = {
+      "A" : column,
+      "B" : value
+    };
+    
     return createBlock(
       "to",
-      [], {
-        "A" : column,
-        "B" : value
-      },
-      [],
-      { "colour" : "#000000" }
+      [], 
+      fields
     );
   };
 
@@ -235,35 +234,48 @@ function SQLXML() {
    * @param table {String} - Parsed tableName
    * @return tableBode {XML} - TableBlock as XML
    */
-  this.createTable = function(column, table) {
+  this.createTable = function(column, table) {   
     if (!table)
       table = sqlHelp.getTableOfColumn(column);
+    
+    var fields = { 
+      "tabele" : table,
+      "Column" : column 
+    };
+
+    var mutations = fields;
 
     return createBlock(
-        "tables_and_columns",
-        [],
-        [],
-        { "tabele" : table,
-          "Column" : column }
-      );
+      "tables_and_columns",
+      [],
+      [], 
+      fields,
+      mutations
+    );
   };
 
-  /* TODO: Separation between variables blocks and table_column blocks ! */
   this.createTableVar = function(value) {
-    var tableName = null;
-    var columnName = value.column;
+    var table = null;
+    var column = value.column;
 
     if (value.table)
-      tableName = value.table;
+      table = value.table;
     else
-      tableName = sqlHelp.getTableOfColumn(value.column);
+      table = sqlHelp.getTableOfColumn(value.column);
+
+    var fields = {
+      "tabele" : table,
+      "Column" : column
+    };
+    
+    var mutations = fields;
 
     return createBlock(
         "tables_and_columns_var",
         [],
         [],
-        { "tabele" : tableName,
-          "Column" : columnName }
+        fields,
+        mutations
       );
   };
 

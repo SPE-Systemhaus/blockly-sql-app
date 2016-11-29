@@ -1,3 +1,5 @@
+var sqlHelp = null;
+
 /*******************************************************************************
  * Inside this file the SQL Blocks will be defined and initialized.
  ******************************************************************************/
@@ -8,6 +10,8 @@
  * @returns {String} Toolbox sidebar blocks
  */
 Blockly.Blocks['init'] = function () {
+    sqlHelp = new SQLHelper();
+
     return '<xml id="toolbox" style="display: none">' +
                '<category name="commands">' +
                    '<block type="select"></block>' +
@@ -65,14 +69,15 @@ Blockly.Blocks['insert'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
+        this.gradient = new ColourGradient();
         this.setColour("#74A55B");
-        this.appendDummyInput('bl');
+        this.appendDummyInput("bl");
         this.appendDummyInput("ins")
-                .appendField(Blockly.Msg.INSERT_VALUES);
-        this.appendValueInput('set0')
-                .setCheck("TO")
-                .appendField(Blockly.Msg.SET);
-        this.setTooltip('');
+            .appendField(Blockly.Msg.INSERT_VALUES);
+        this.appendValueInput("set0")
+            .setCheck("TO")
+            .appendField(Blockly.Msg.SET);
+        this.setTooltip("");
         this.duplicate_ = false;
         this.setMutator(new Blockly.Mutator(["into"]));
         this.setCount_ = 0;
@@ -201,15 +206,28 @@ Blockly.Blocks['insert'] = {
         if (!this.workspace)
             return;
 
+        var stopHeight = this.getInput("bl").renderHeight + this.getInput("ins").renderHeight;
+
+        this.gradient.setVerticalGradient(
+            this, {
+                "start" : "#5BA58C",
+                "stop" : this.getColour()
+            }, {
+                "start" : 0,
+                "stop" : stopHeight
+            }
+        );
+
+
         var empty = 0;
         if (Blockly.Block.dragMode_ == 0) {
             //No type checking and colouring , while the block is dragged
             //check update input
             if (this.getInputTargetBlock('set0'))
                 checkInsertSET(this);   //check set statement
-                
+
             for (var d = 0; d <= this.setCount_; d++)
-                if (this.getInputTargetBlock('set' + d) == null || 
+                if (this.getInputTargetBlock('set' + d) == null ||
                     this.getInputTargetBlock('set' + d).childBlocks_.length == 0)
                     empty++;
 
@@ -236,6 +254,7 @@ Blockly.Blocks['update'] = {
      * @this Blockly.Block
      */
     init: function () {
+        this.gradient = new ColourGradient();
         this.setHelpUrl(this.type);
         this.setColour("#74A55B");
         this.appendDummyInput('bl');
@@ -287,22 +306,19 @@ Blockly.Blocks['update'] = {
         if (this.setCount_) {
             for (var x = 1; x <= this.setCount_; x++) {
                 var setInput = this.appendValueInput('set' + x)
-                        .setCheck("TO")
-                        .appendField(Blockly.Msg.SET);
+                                   .setCheck("TO")
+                                   .appendField(Blockly.Msg.SET);
                 // sort the inputs after type
                 var temp = this.inputList;
                 var tin = new Array();
                 var b = 0;
                 var d = 0;
-                for (var a = 0; a < temp.length; a++)
-                {
-                    if (temp[a].name == setInput.name)
-                    {
+                for (var a = 0; a < temp.length; a++) {
+                    if (temp[a].name == setInput.name) {
                         b = a;
                         tin = temp[a];
                         for (var c = 0; c < temp.length; c++) {
-                            if (temp[c].name == 'Clause')
-                            {
+                            if (temp[c].name == 'Clause') {
                                 d = c;
                             }
                         }
@@ -364,15 +380,12 @@ Blockly.Blocks['update'] = {
                     var tin = new Array();
                     var b = 0;
                     var d = 0;
-                    for (var a = 0; a < temp.length; a++)
-                    {
-                        if (temp[a].name == setInput.name)
-                        {
+                    for (var a = 0; a < temp.length; a++) {
+                        if (temp[a].name == setInput.name) {
                             b = a;
                             tin = temp[a];
                             for (var c = 0; c < temp.length; c++) {
-                                if (temp[c].name == 'Clause')
-                                {
+                                if (temp[c].name == 'Clause') {
                                     d = c;
                                 }
                             }
@@ -418,23 +431,30 @@ Blockly.Blocks['update'] = {
      * @method onchange
      * @this Blockly.Block
      */
-    onchange: function ()
-    {
+    onchange: function () {
         if (!this.workspace)
             return;
+
+        var stopHeight = this.getInput("bl").renderHeight + this.getInput("up").renderHeight;
+
+        this.gradient.setVerticalGradient(
+            this, {
+                "start" : "#5BA58C",
+                "stop" : this.getColour()
+            }, {
+                "start" : 0,
+                "stop" : stopHeight
+            }
+        );
+
         if (Blockly.Block.dragMode_ == 0) {
             //No type checking and colouring , while the block is dragged
             checkUpdate(this);
-            if (this.getInputTargetBlock('set0'))
-            {
+            if (this.getInputTargetBlock('set0')) {
                 checkSetUpdate(this);
-            }
-            if (this.getInputTargetBlock('up') == null) {
-                this.setColour(7115);
             }
         }
     }
-
 };
 /*------------------------------------------------------------------------------
  * select-is the top level of the select comand. It is the default
@@ -706,7 +726,7 @@ Blockly.Blocks['select'] = {
 
         var msg = null;
 
-        var stopColor = this.getColour();       
+        var stopColor = this.getColour();
         var children = this.getChildren();
 
         for (var childKey in children) {
@@ -714,24 +734,25 @@ Blockly.Blocks['select'] = {
             if (child.type === "tables_and_columns") {
                 if (child.getChildren().length === 0) {
                     stopColor = child.getColour();
-                    break;    
+                    break;
                 }
             }
         }
 
         this.gradient.setVerticalGradient(
-            this, { 
+            this, {
                 "start" : "#5BA58C",
-                "stop" : stopColor 
-            }, 
-            this.getInput("select").renderHeight,
-            this.getInput("Clause").renderHeight
+                "stop" : stopColor
+            }, {
+                "start" : this.getInput("select").renderHeight,
+                "stop" : this.getInput("Clause").renderHeight
+            }
         );
 
-                
-        // No type checking and colouring , while the block is dragged   
+
+        // No type checking and colouring , while the block is dragged
         if (Blockly.dragMode_ === Blockly.DRAG_NONE) {
-            
+
             if (this.groupByCount_) {
                 if (!this.getInputTargetBlock('group_by'))
                     msg = null;
@@ -876,6 +897,7 @@ Blockly.Blocks['sub_select'] = {
     init: function () {
         this.setHelpUrl(this.type);
         this.setColour("#74A55B");
+        this.gradient = new ColourGradient();
         this.appendDummyInput("bla");
         this.appendStatementInput("select")
                 .appendField(Blockly.Msg.SUBSELECT)
@@ -901,10 +923,10 @@ Blockly.Blocks['sub_select'] = {
      * @this Blockly.Block
      */
     mutationToDom: function () {
-        if (!this.limitCount_ && 
-            !this.groupByCount_ && 
-            !this.groupByHavingCount_ && 
-            !this.aliasCount_ && 
+        if (!this.limitCount_ &&
+            !this.groupByCount_ &&
+            !this.groupByHavingCount_ &&
+            !this.aliasCount_ &&
             !this.orderByCount_
            )
             return null;
@@ -956,7 +978,7 @@ Blockly.Blocks['sub_select'] = {
           this.contextMenuMsg_ = Blockly.Msg.VARIABLES_SET_CREATE_GET;
           this.contextMenuType_ = 'fieldname_get';
         }
-        
+
         if (this.groupByCount_)
           this.appendStatementInput('group_by')
               .setCheck(["table_column", "name"])
@@ -1000,7 +1022,7 @@ Blockly.Blocks['sub_select'] = {
             connection.connect(asBlock.previousConnection);
             connection = asBlock.nextConnection;
         }
-        
+
         if (this.groupByCount_) {
             var groupByBlock = createBlock(workspace, 'group_by');
             connection.connect(groupByBlock.previousConnection);
@@ -1037,9 +1059,9 @@ Blockly.Blocks['sub_select'] = {
         if (this.aliasCount_)
             this.removeInput('VALUE');
         this.aliasCount_ = 0;
-        
+
         // Disconnect the limit input blocks and remove the inputs.
-        if (this.limitCount_) 
+        if (this.limitCount_)
             this.removeInput('limit');
         this.limitCount_ = 0;
 
@@ -1198,6 +1220,30 @@ Blockly.Blocks['sub_select'] = {
     onchange: function () {
         if (!this.workspace)
             return;
+        
+        var stopColor = this.getColour();
+        var children = this.getChildren();
+        var selectHeight = this.getInput("select").renderHeight;
+
+        for (var childKey in children) {
+            var child = children[childKey];
+            if (child.type === "tables_and_columns") {
+                if (child.getChildren().length === 0) {
+                    stopColor = child.getColour();
+                    break;
+                }
+            }
+        }
+
+        this.gradient.setVerticalGradient(
+            this, {
+                "start" : "#5BA58C",
+                "stop" : stopColor
+            }, {
+                "start" : selectHeight,
+                "stop" : this.getHeightWidth().height - selectHeight
+            }
+        );
 
         var msg = null;
         if (Blockly.Block.dragMode_ == 0) {
@@ -1222,8 +1268,6 @@ Blockly.Blocks['sub_select'] = {
                     }
                 }
             }
-            if (this.getInputTargetBlock('select') == null)
-                this.setColour(7115);
         }
         this.setWarningText(msg);
     }
@@ -1247,6 +1291,7 @@ Blockly.Blocks['sub_select_where'] = {
     init: function () {
         this.setHelpUrl(this.type);
         this.setColour("#74A55B");
+        this.gradient = new ColourGradient();
         this.appendDummyInput("bla");
         this.appendStatementInput("select")
                 .appendField(Blockly.Msg.SUBSELECT)
@@ -1274,11 +1319,11 @@ Blockly.Blocks['sub_select_where'] = {
         var container = document.createElement('mutation');
         var colour = this.getColour();
         container.setAttribute('color', colour);
-        
-        if (!this.limitCount_ && 
-            !this.groupByCount_ && 
-            !this.groupByHavingCount_ && 
-            !this.aliasCount_ && 
+
+        if (!this.limitCount_ &&
+            !this.groupByCount_ &&
+            !this.groupByHavingCount_ &&
+            !this.aliasCount_ &&
             !this.orderByCount_)
             return null;
 
@@ -1315,7 +1360,7 @@ Blockly.Blocks['sub_select_where'] = {
         var colour = xmlElement.getAttribute("color");
         if (!colour)
             colour = this.getColour();
-        
+
         this.setColour(colour);
         if (this.aliasCount_) {
             //Alias
@@ -1361,7 +1406,7 @@ Blockly.Blocks['sub_select_where'] = {
         var containerBlock = createBlock(workspace, 'ADD');
         containerBlock.setColour(115);
         var connection = containerBlock.getInput('STACK').connection;
-        
+
         if (this.aliasCount_) {
             var asBlock = createBlock(workspace, 'alias');
             connection.connect(asBlock.previousConnection);
@@ -1402,14 +1447,14 @@ Blockly.Blocks['sub_select_where'] = {
 
         this.aliasCount_ = 0;
         // Disconnect the limit input blocks and remove the inputs.
-        if (this.limitCount_) {
+        if (this.limitCount_)
             this.removeInput('limit');
-        }
+
         this.limitCount_ = 0;
         // Disconnect all the group by input blocks and remove the inputs.
-        if (this.groupByCount_) {
+        if (this.groupByCount_)
             this.removeInput('group_by');
-        }
+
         this.groupByCount_ = 0;
         // Disconnect all the group by having input blocks and remove the inputs.
         if (this.groupByHavingCount_) {
@@ -1561,6 +1606,30 @@ Blockly.Blocks['sub_select_where'] = {
         if (!this.workspace)
             return;
 
+        var stopColor = this.getColour();
+        var children = this.getChildren();
+        var selectHeight = this.getInput("select").renderHeight;
+
+        for (var childKey in children) {
+            var child = children[childKey];
+            if (child.type === "tables_and_columns") {
+                if (child.getChildren().length === 0) {
+                    stopColor = child.getColour();
+                    break;
+                }
+            }
+        }
+
+        this.gradient.setVerticalGradient(
+            this, {
+                "start" : "#5BA58C",
+                "stop" : stopColor
+            }, {
+                "start" : selectHeight,
+                "stop" : this.getHeightWidth().height - selectHeight
+            }
+        );
+
         if (Blockly.Block.dragMode_ == 0) {
             //No colouring and type checking, while dragging the block
             if (this.groupByCount_) {   //Checking the inputs of GROUP BY
@@ -1571,10 +1640,10 @@ Blockly.Blocks['sub_select_where'] = {
                 }
             }
 
-            if (this.getInputTargetBlock('select') == null) {
+            /* if (this.getInputTargetBlock('select') == null) {
                 //Colouring th block
                 this.setColour("#74A55B");
-            }
+            } */
         }
     }
 };
@@ -1595,78 +1664,54 @@ Blockly.Blocks['tables_and_columns'] = {
      * @this Blockly.Block
      */
     init: function () {
+        var table = Column[0][0];
+        var column = "*";
         this.setHelpUrl(this.type);
-        this.gradient = new ColourGradient();
         this.setColour("#74A55B");       
-        this.setup(this, '', 0, '', '');
+        this.setup(table, column);
         this.setPreviousStatement(true, ["table_column", "group_function", "sub_select", "otherfunction", "name"]);
         this.setNextStatement(true, ["table_column", "group_function", "sub_select", "otherfunction", "name"]);
         this.setTooltip('');
     },
     /**
-     * The setup function is beeing called on the initialziation and on
-     * every update. It appends the object dummy and is reloading the
-     * path from Directories.
+     * The setup function gets a table and column and updates the SQL 
+     * tables and columns and sets the given values.
      *
      * @method setup
-     * @param input the actual blockly object
-     * @param directory checks the type of fielddropdown value 'table'
-     * @param index has the count of the container
+     * @param {String} table Name of selected table.
+     * @param {String} column Name of selected column.
      * @this Blockly.Block
      */
-    setup: function (input, directory, index, pick, col) {
-        var table = getTableDropdowndataFromXML();
-        var tabledata = table[index][0];
-
-        var dropdown = new Blockly.FieldDropdown(table, function (option) {
-            this.sourceBlock_.updateShape(option);
-
-        });
-        if (directory != '') {
-            dropdown.setValue(directory);
-        }
-
-        var between = getColumDatafromXML(tabledata);
-        var column = new Array();
-        Colours = new Array();
-        Colours[0] = table[index][0];
-        for (var i = 0; i < between.length; i++) {
-            column[i] = new Array();
-            column[i][0] = between[i][0];
-            column[i][1] = between[i][1];
-            //Filling the array for the colour
-            Colours[i + 1] = new Array();
-            Colours[i + 1][0] = between[i][0];
-            Colours[i + 1][1] = between[i][2];
-
-        }
-
-        var dropCol = new Blockly.FieldDropdown(column, function (option) {
-            this.sourceBlock_.updateShape2(option);
-        });
-
-        for (var j = 0; j < column.length; j++) {
-            //setting the column value  if its determined and the depending colour
-          if (column[j][1] == pick) {
-            dropCol.setValue(column[j][1]);
-            if (pick == Colours[j + 1][0]) {
-              col = Colours[j + 1][1];
-              break;
+    setup: function (table, column) {
+        var block = this;      
+        var tableDropdown = new Blockly.FieldDropdown(
+            getTableDropdowndataFromXML(), 
+            function (table) {
+                block.updateShape(table, "*");
             }
-          } else {
-            if (j == column.length - 1) {
-              //if not set default colour
-              col = Colours[1][1];
-              break;
-            }
-          }
-        }
-        input.setColour(col);
-        input.appendDummyInput('Table')
-             .setAlign(Blockly.ALIGN_RIGHT)
-             .appendField(dropdown, 'tabele')
-             .appendField(" ", 'space')
-             .appendField(dropCol, "Column");
+        );
+
+        var columnDropdown = new Blockly.FieldDropdown(
+             getColumnDropdowndataFromXML(table, true), 
+             function (column) {
+                var table = block.getFieldValue("tabele");
+                block.updateShape(table, column);
+             }
+        );
+
+        /* Setting dropdown values for table and column */
+        tableDropdown.setValue(table);
+        columnDropdown.setValue(column);
+
+        block.setColour(
+            sqlHelp.getTypeColour(table, column)
+        );
+
+        block.appendDummyInput('Table')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(tableDropdown, 'tabele')
+            .appendField(" ", 'space')
+            .appendField(columnDropdown, "Column");
     },
     /**
      * The mutationToDom function creates the mutator element in the
@@ -1678,14 +1723,13 @@ Blockly.Blocks['tables_and_columns'] = {
      * @return container selected container
      * @this Blockly.Block
      */
-    mutationToDom: function () {
-        var container = document.createElement('mutation');
+    mutationToDom: function() {
         var table = this.getFieldValue('tabele');
         var column = this.getFieldValue('Column');
-        var colour = this.getColour();
+        var container = document.createElement('mutation');
         container.setAttribute('tabele', table);
         container.setAttribute('Column', column);
-        container.setAttribute('color', colour);
+
         return container;
     },
     /**
@@ -1699,70 +1743,23 @@ Blockly.Blocks['tables_and_columns'] = {
      * @this Blockly.Block
      */
     domToMutation: function (xmlElement) {
-        this.updateShape(xmlElement.getAttribute("tabele"));
-        this.setFieldValue(xmlElement.getAttribute("Column"), 'Column');
-        var colour = xmlElement.getAttribute("color");
-        
-        if (!colour)
-            colour = this.getColour();
-
-        this.setColour(colour);
+        var table = xmlElement.getAttribute("tabele");
+        var column = xmlElement.getAttribute("Column");
+        this.updateShape(table, column);    
     },
     /**
      * The updateShape function is refreshing the tables-Array
-     * and is creating a new block with the choosen directory.
-     *
-     * @param directory has the selected directory value
+     * and is creating a new block with the choosen table 
+     * and column.
+     * 
+     * @param table Name of the selecting table.
+     * @param column Name of the selecting column.
      * @method updateShape
      * @this Blockly.Block
      */
-    updateShape: function (directory) {
-        var col = this.getColour();
-        var pick = this.getFieldValue('Column');
-        var table = getTableDropdowndataFromXML();
-        if (directory != false) {
-            this.removeInput('Table');
-
-            for (var i = 0; i < table.length - 1; i++)
-                if (table [i][0] == directory)
-                    break;
-
-            this.setup(this, directory, i, pick, col);
-        }
-    },
-    /* The updateShape2 function is refreshing the colour of the block,
-     * based on the type set in the column dropdown
-     *
-     * @param {type} director-directory of the column dropdown
-     * @return {undefined}
-     * @this Blockly.Block
-     */
-    updateShape2: function (directory) {
-        //Check if the Colours array is filled for the Table
-        var tabdir = this.getFieldValue('tabele');
-        if (Colours[0] == tabdir) {
-            //if its filled colour the block after the column name
-            for (var j = 1; j < Colours.length; j++) {
-                if (Colours[j][0] == directory) {
-                    this.setColour(Colours[j][1]);
-                    break;
-                }
-            }
-        } else {
-            //if not refill the Colours Array
-            var c = getColumDatafromXML(tabdir);
-            Colours[0] = tabdir;//Setting Colours[0] to the tablename
-            for (var t = 0; t < c.length; t++)
-            {//Refill the array
-                Colours[t + 1] = new Array();
-                Colours[t + 1][0] = c[t][0];
-                Colours[t + 1][1] = c[t][2];
-                if (Colours[t + 1][0] == directory)
-                {//Setting the blocks colour
-                    this.setColour(Colours[t + 1][1]);
-                }
-            }
-        }
+    updateShape: function (table, column) {
+        this.removeInput('Table');
+        this.setup(table, column);
     },
     /**
      * onchange evaluates the input of the group by/group by having and colours
@@ -1775,31 +1772,24 @@ Blockly.Blocks['tables_and_columns'] = {
         if (!this.workspace)
             return;
         
-        
+        var parent = this.getParent();
 
-        //Only colour and check the input if block is not dragged
-        if (Blockly.dragMode_ == Blockly.DRAG_NONE) {
-            if (this.getParent()) {
-                var p = this.getParent();
-                //give the parent the colour
-                var check = checkColour(this, p);
-                //only if ist has not the same colour
-                if (!check) {
-                    colourTheParent(this);
-                } else {
-                    if (p.getColour() < 4000) {
-                        setgradientheight(p.parentBlock_);
+        if (parent) {
+            colourTheParent(this);
+
+            if (parent.type == 'select' || 
+                parent.type == 'sub_select' || 
+                parent.type == 'sub_select_where') {
+                    //evaluate the group by input if there is this input
+                    if (parent.getInput('group_by_have') || 
+                        parent.getInput('group_by')) {
+                            groupbyval(parent);
                     }
                 }
-                if (p.type == 'select' || p.type == 'sub_select' || p.type == 'sub_select_where')
-                    //evaluate the group by input if there is this input
-                    if (p.getInput('group_by_have') || p.getInput('group_by')) {
-                        groupbyval(p);
-                    }
-            }
         }
     }
 };
+
 /*------------------------------------------------------------------------------
  * table_and_columns_int-represents the tables and columns with integer values
  * of a specified SQL database. Can be used with clauses, functions and operators.
@@ -1816,82 +1806,61 @@ Blockly.Blocks['tables_and_columns_var'] = {
      * @this Blockly.Block
      */
     init: function () {
+        var table = Column[0][0];
+        var column = Column[0][1][1];
+        
         this.setHelpUrl(this.type);
-        this.setup(this, '', 0, '', '');
+        this.setColour("#74A55B");       
+        this.setup(table, column);
         this.setTooltip('');
+
+        this.lastConnectedParent = null;
     },
     /**
-     * The setup function is beeing called on the initialziation and on
-     * every update. It appends the object dummy and is reloading the
-     * path from Directories.
+     * The setup function gets a table and column and updates the SQL 
+     * tables and columns and sets the given values.
      *
      * @method setup
-     * @param input the actual blockly object
-     * @param dirtabvar checks the type of fielddropdown value 'table'
-     * @param index has the count of the container
+     * @param {String} table Name of selected table.
+     * @param {String} column Name of selected column.
      * @this Blockly.Block
      */
-    setup: function (input, dirtabvar, index, pick, col)
-    {
-        var table = getTableDropdowndataFromXML();
-
-        var tabledata = table[index][0];
-
-        var dropdown = new Blockly.FieldDropdown(table, function (option) {
-            this.sourceBlock_.updateShape(option);
-
-        });
-        if (dirtabvar != '') {
-            dropdown.setValue(dirtabvar);
-        }
-
-        var between = getColumDatafromXML(tabledata, "cols");
-        var column = new Array();
-        Colour = new Array();
-        Colour[0] = tabledata;
-        for (var i = 0; i < between.length; i++)
-        {
-            column[i] = new Array();
-            column[i][0] = between[i][0];
-            column[i][1] = between[i][1];
-            //Filling the array for the colour
-            Colour[i + 1] = new Array();
-            Colour[i + 1][0] = between[i][0];
-            Colour[i + 1][1] = between[i][2];
-        }
-        var dropCol = new Blockly.FieldDropdown(column, function (option) {
-            this.sourceBlock_.updateShape2(option);
-
-        });
-        for (var j = 0; j < column.length; j++)
-        {
-            //setting the column value  if its determined and the depending colour
-            if (column[j][1] == pick)
-            {
-                dropCol.setValue(column[j][1]);
-                if (pick == Colour[j + 1][0])
-                {
-                    col = Colour[j + 1][1];
-                    break;
-                }
+    setup: function (table, column) {
+        var block = this;      
+        var tableDropdown = new Blockly.FieldDropdown(
+            getTableDropdowndataFromXML(), 
+            function (table) {
+                block.updateShape(table, "*");
             }
-            else {
-                if (j == column.length - 1)
-                {
-                    //if not set default colour
-                    col = Colour[1][1];
-                    break;
-                }
-            }
-        }
-        input.setColour(col);
-        input.appendDummyInput('Table')
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField(dropdown, 'tabele')
-                .appendField(" ", 'Abstand')
-                .appendField(dropCol, "Column");
-        input.setOutput(true, "table_column_var");
+        );
+        var columnDropdown = new Blockly.FieldDropdown(
+             getColumnDropdowndataFromXML(table, false), 
+             function (column) {
+                var table = block.getFieldValue("tabele");
+                block.updateShape(table, column);
+             }
+        );
 
+        console.log(getColumnDropdowndataFromXML(table, false));
+
+        /* Setting dropdown values for table and column */
+        tableDropdown.setValue(table);
+        columnDropdown.setValue(column);
+
+        console.log(table);
+        console.log(column);
+
+        block.setColour(
+            sqlHelp.getTypeColour(table, column)
+        );
+
+        block.appendDummyInput('Table')
+             .setAlign(Blockly.ALIGN_RIGHT)
+             .appendField(tableDropdown, 'tabele')
+             .appendField(" ", 'Abstand')
+             .appendField(columnDropdown, "Column");
+
+        block.setOutput(true, "table_column_var");
     },
     /**
      * The mutationToDom function creates the mutator element in the
@@ -1904,13 +1873,12 @@ Blockly.Blocks['tables_and_columns_var'] = {
      * @this Blockly.Block
      */
     mutationToDom: function () {
-        var container = document.createElement('mutation');
         var table = this.getFieldValue('tabele');
         var column = this.getFieldValue('Column');
-        var colour = this.getColour();
+        var container = document.createElement('mutation');
         container.setAttribute('tabele', table);
         container.setAttribute('Column', column);
-        container.setAttribute('colourHue_', colour);
+
         return container;
     },
     /**
@@ -1924,67 +1892,22 @@ Blockly.Blocks['tables_and_columns_var'] = {
      * @this Blockly.Block
      */
     domToMutation: function (xmlElement) {
-        this.updateShape(xmlElement.attributes [0].value);
-        this.setFieldValue(xmlElement.attributes [1].value, 'Column');
-        var colour = xmlElement.attributes [2].value;
-        this.setColour(colour);
+        var table = xmlElement.getAttribute("tabele");
+        var column = xmlElement.getAttribute("Column");
+        this.updateShape(table, column);    
     },
     /**
      * The updateShape function is refreshing the tables-Array
      * and is creating a new block with the choosen directory.
      *
-     * @param dirtabvar has the selected directory value
+     * @param table Name of the selecting table.
+     * @param column Name of the selecting column.
      * @method updateShape
      * @this Blockly.Block
      */
-    updateShape: function (dirtabvar) {
-        var col = this.getColour();
-        var pick = this.getFieldValue('Column');
-        var table = getTableDropdowndataFromXML();
-        
-        if (dirtabvar != false) {
-            this.removeInput('Table');
-
-            for (var i = 0; i < table.length; i++)
-                if (table [i][0] == dirtabvar)
-                    break;
-
-            this.setup(this, dirtabvar, i, pick, col);
-        }
-    },
-    /* The updateShape2 function is refreshing the colour of the block,
-     * based on the type set in the column dropdown
-     *
-     * @param dirtabvar-directory of the column dropdown
-     * @return {undefined}
-     * @this Blockly.Block
-     */
-    updateShape2: function (directory) {
-        var tabdir = this.getFieldValue('tabele');
-        //Check if the Colour array is filled for the table
-        if (Colour[0] == tabdir) {
-            //If its filled colour the block after the column
-            for (var j = 1; j < Colour.length; j++)
-            {
-                if (Colour[j][0] == directory)
-                {
-                    this.setColour(Colour[j][1]);
-                    break;
-                }
-            }
-        } else {
-            //if not refill the array for the table
-            var c = getColumDatafromXML(tabdir);
-            Colour[0] = tabdir;
-            for (var t = 0; t < c.length; t++) {
-                Colour[t + 1] = new Array();
-                Colour[t + 1][0] = c[t][0];
-                Colour[t + 1][1] = c[t][2];
-                if (Colour[t + 1][0] == directory) { //Setting the colour of the block
-                    this.setColour(Colour[t + 1][1]);
-                }
-            }
-        }
+    updateShape: function (table, column) {
+        this.removeInput('Table');
+        this.setup(table, column);
     },
     /**
      * onchange sets the colour and checks the inputs of the compare_operator
@@ -1995,26 +1918,27 @@ Blockly.Blocks['tables_and_columns_var'] = {
     onchange: function () {
         if (!this.workspace)
             return;
+        
+        var parent = this.getParent();
+        colourTheParent(this);
 
-        if (Blockly.dragMode_ == Blockly.DRAG_NONE) { //No color Change, type checking, while dragging the Block
-            if (this.getParent()) {
-                var parent = this.getParent();
-                var check = checkColour(this, parent);
-
-                //Setting colour of the parent-block if its not the same
-                if (!check)
-                    colourTheParent(this);
-
-                if (parent.type == 'compare_operator') {
-                    //checking inputs of compare
-                    var direpar = parent.getFieldValue('OP');
-                    checkTableInputsCompare(parent, direpar);
-                }
+        if (parent) {
+            if (parent.type == 'compare_operator') {
+                //checking inputs of compare
+                var direpar = parent.getFieldValue('OP');
+                checkTableInputsCompare(parent, direpar);
             }
+
+            this.lastConnectedParent = parent;
+        } else {    /* Resetting color if disonnected */
+            if (this.lastConnectedParent)
+                this.lastConnectedParent.setColour(
+                    this.lastConnectedParent.getColour()
+                );
         }
     }
-
 };
+
 /*------------------------------------------------------------------------------
  * Operators
  *----------------------------------------------------------------------------*/
@@ -2033,50 +1957,17 @@ Blockly.Blocks['to'] = {
      * @method init
      * @this Blockly.Block
      */
-    init:
-      function () {
+    init: function () {
         this.setHelpUrl(this.type);
-        this.setColour(160);
+        this.setColour("#5BA58C");
         this.appendValueInput("A")
-                .setCheck("table_column_var");
+            .setCheck("table_column_var");
         this.appendValueInput("B")
-                .appendField(Blockly.Msg.TO)
-                .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "sub_select", "number", "string"]);
+            .appendField(Blockly.Msg.TO)
+            .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "sub_select", "number", "string"]);
         this.setOutput(true, 'TO');
         this.setTooltip('');
-      },
-    /**
-     * The mutationToDom function creates the mutator element in the
-     * XML DOM and filling it with the path attribute.
-     * It is beeing called whenever the block is beeing written
-     * to XML.
-     *
-     * @method mutationToDom
-     * @return container selected container
-     * @this Blockly.Block
-     */
-    mutationToDom:
-      function () {
-          var container = document.createElement('mutation');
-          var colour = this.getColour();
-          container.setAttribute("colour", colour);
-          return container;
-      },
-    /**
-     * The domToMutation function gets the mutator attribute from the
-     * XML and restore it in the JavaScript DOM.
-     * It is beeing called whenever the block is beeing restored
-     * to the Workspace.
-     *
-     * @method domToMutation
-     * @param xmlElement has the xmlDom inside
-     * @this Blockly.Block
-     */
-    domToMutation:
-      function (xmlElement) {
-          var colour = xmlElement.attributes [0].value;
-          this.setColour(colour);
-      },
+    },
     /**
      * onchange sets the colour of the to block
      *
@@ -2087,12 +1978,9 @@ Blockly.Blocks['to'] = {
       if (!this.workspace)
           return;
 
+      //No type checking and colouring , while the block is dragged  
       if (Blockly.Block.dragMode_ == 0) {
-        //No type checking and colouring , while the block is dragged
         checkTableInputsCompare(this, 'EQ');
-        if (this.getInputTargetBlock('A') == null) {
-            this.setColour(160);
-        }
       }
     }
 };
@@ -2305,23 +2193,26 @@ Blockly.Blocks['compare_operator'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent(this);
+        //colourTheParent(this);
 
-        /* if (Blockly.dragMode_ === Blockly.DRAG_NONE) {
+        /* 
+        if (Blockly.dragMode_ === Blockly.DRAG_NONE) {
           //No checking of type ans colour changes, while the block is dragged
           //Setting the colour of the block if there are no inputs
         if (this.getInputTargetBlock('A') == null) {
             if (dir != 'like') {
-                colourTheParent(this);      
+                colourTheParent(this);
             }
           }
-          
-          if (this.getParent()) {
+
+        if (this.getParent()) {
             //checking inputs of the block
             if (this.getParent().type != 'update' && this.getParent().type != 'insert')
                 checkTableInputsCompare(this, dir);
-          }
-        } */
+        }
+          
+        } 
+        */
     }
 };
 /*------------------------------------------------------------------------------
@@ -3408,7 +3299,7 @@ Blockly.Blocks['otherfunction'] = {
 
         if (dirother != '') {
             dropdown.setValue(dirother);
-            
+
             if (dirother == 'decode') {
                 input.setMutator(false);
                 input.appendValueInput('object')
@@ -3504,7 +3395,7 @@ Blockly.Blocks['otherfunction'] = {
         var colour = this.getColour();
         container.setAttribute('other_function', functions);
         container.setAttribute('color', colour);
-        
+
         if (this.getInput('expr')) {
             var expr = this.getInput('expr');
             container.setAttribute('expr', expr);
@@ -3558,7 +3449,7 @@ Blockly.Blocks['otherfunction'] = {
         var containerBlock = createBlock(workspace, 'ADD');
         containerBlock.setColour(115);
         var connection = containerBlock.getInput('STACK').connection;
-        
+
         for (var x = 2; x <= this.valueCount_; x++) {
             var newInput = createBlock(workspace, 'more');
             connection.connect(newInput.previousConnection);
@@ -3639,7 +3530,7 @@ Blockly.Blocks['otherfunction'] = {
 
             if (this.getInput('object'))
                 this.removeInput('object');
-            
+
             if (this.getInput('expr'))
                 this.removeInput('expr');
 
@@ -3709,8 +3600,8 @@ Blockly.Blocks['otherfunction'] = {
                 if (dir == "decode") {
                     if (this.parentBlock_) {    //Colour the parent
                         var p = this.parentBlock_;
-                        if (p.type == 'select' || 
-                            p.type == 'sub_select' || 
+                        if (p.type == 'select' ||
+                            p.type == 'sub_select' ||
                             p.type == 'sub_select_where'
                           ) {
                             if (this.parentBlock_) {
@@ -3806,7 +3697,7 @@ Blockly.Blocks['charfunction'] = {
                     var nInput = input.appendValueInput("option3")
                             .setAlign(Blockly.ALIGN_RIGHT)
                             .setCheck(["string", "table_colum_var"]);
-                    
+
                     //Restore the childblocks
                     if (this.valueConnection1_)
                         ifInput.connection.connect(this.valueConnection1_);
@@ -4108,7 +3999,7 @@ Blockly.Blocks['datefunction'] = {
                     };
                     return HelpURL[op];
                 });
-                
+
                 input.setTooltip(Blockly.Msg.Date_FUNCTION_TOOLTIP_ADD_MONTHS);
 
                 if (this.valueConnection1_) //Restore the childblocks
@@ -4127,7 +4018,7 @@ Blockly.Blocks['datefunction'] = {
                                    .appendField('FROM')
                                    .setAlign(Blockly.ALIGN_LEFT)
                                    .setCheck(["date", "datefunction", "table_column_var"]);
-                
+
                 input.setHelpUrl('datefunction_extract');
                 input.setTooltip(Blockly.Msg.DATE_FUNCTION_TOOLTIP_EXTRACT);
 
@@ -4135,9 +4026,9 @@ Blockly.Blocks['datefunction'] = {
                     ifInput.connection.connect(this.valueConnection1_);
             }
 
-            if (dirdate == 'last_day' || 
-                dirdate == 'month' || 
-                dirdate == 'year' || 
+            if (dirdate == 'last_day' ||
+                dirdate == 'month' ||
+                dirdate == 'year' ||
                 dirdate == "date"
                ) {
                 var ifInput = input.appendValueInput('object')
