@@ -55,6 +55,41 @@ function checkInsertStatement(object) {
 }
 
 /*------------------------------------------------------------------------------
+ * Checking the values of the update and insert block
+ * 
+ * @param[type} object- the object, which inputs are going to be checked
+ *----------------------------------------------------------------------------*/
+function checkUpdate(object) {
+    if (object.getInputTargetBlock('up') != null) {//evaluate which objetc ware checking
+        var target = object.getInputTargetBlock('up');
+        var table = target.getFieldValue('tabele');
+
+        while (target != null) {
+            if (target.type == 'tables_and_colums') {
+                if (target.childBlocks_.length > 0) {
+                    var childoftarget = target.childBlocks_[0];
+                    var tmp = childoftarget.getFieldValue('tabele');
+                    if (tmp == table) {
+                        msg = null;
+                        object.setWarningText(msg);
+                        target = childoftarget;
+                    } else {
+                        msg = Blockly.Msg.CHECK_UPDATE_DIFFERENT_TABLES;
+                        object.setWarningText(msg);
+                        target = null;
+                    }
+                } else
+                    target = null;
+            } else {
+                //any input type, whch is not tables and colums , will be unpluged
+                target.unplug(true, true);
+                target = null;
+            }
+        }
+    }
+}
+
+/*------------------------------------------------------------------------------
  * Checking the variable inputs of the group-function. Sets an alert if there 
  * are to much variables.
  * 
@@ -224,20 +259,19 @@ function groupbyval(object) {
                 }
             }
         }
-        if (object.getInput('group_by')
-                || object.getInput('group_by_have')
-                || object.getInput('order_by'))
-        {
+
+        if (object.getInput('group_by') || 
+            object.getInput('group_by_have') ||
+            object.getInput('order_by')) {
+
             var gt = new Array();
+
             if (object.getInput('group_by')) {
                 child = object.getInputTargetBlock('group_by');
-            }
-            else
-            {
+            } else {
                 if (object.getInput('group_by_have')) {
                     child = object.getInputTargetBlock('group_by_have');
-                } else
-                {
+                } else {
                     if (object.getInput('order_by')) {
                         child = object.getInputTargetBlock('order_by');
                     }
@@ -245,9 +279,7 @@ function groupbyval(object) {
             }
 
             while (child != null) {
-
-                if (child.type == 'tables_and_colums')
-                {
+                if (child.type == 'tables_and_colums') {
                     d++;
                     gt[0] = new Array();
                     gt[0][0] = child.getFieldValue('tabele');
@@ -257,60 +289,53 @@ function groupbyval(object) {
                     if (d > a) {
                         child.unplug(true, true);
                         break;
-                    }
-                    else {
+                    } else {
                         if (d < a) {
                             if (object.getInput('order_by')) {
                                 object.setWarningText(null);
                             } else {
-                                object.setWarningText("Not engought Tables. Please use all tables used in select");
+                                object.setWarningText(Blockly.Msg.GROUP_BY_NOT_ENOUGH_TABLES);
                             }
-                            object.setWarningText("Not engought Tables. Please use all tables used in select");
-                        }
-                        else {
+                            object.setWarningText(Blockly.Msg.GROUP_BY_NOT_ENOUGH_TABLES);
+                        } else {
                             if (d = a) {
                                 object.setWarningText(null);
                             }
                         }
                     }
-//Compare the values
-                    for (var x = 0; x < tablecolumn.length; x++)
-                    {
+                    
+                    //Compare the values
+                    for (var x = 0; x < tablecolumn.length; x++) {
                         if (gt[0][0] == tablecolumn[x][0])
                         {
-                            if (gt[0][1] != tablecolumn[x][1] && tablecolumn[x][1])
-                            {
-                                msg = "Wrong column. Please use only tables and columns which are in the select.";
-                            }
-                            else {
+                            if (gt[0][1] != tablecolumn[x][1] && tablecolumn[x][1]) {
+                                msg = Blockly.Msg.GROUP_BY_WRONG_COLUMN;
+                            } else {
                                 msg = null;
                                 tablecolumn.splice(x, 1);
                                 break;
                             }
                         }
                         else {
-                            if (gt[0][0] != tablecolumn[x][0])
-                            {
-                                msg = "Wrong table.Please use only tables and columns which are in the select.";
+                            if (gt[0][0] != tablecolumn[x][0]) {
+                                msg = Blockly.Msg.GROUP_BY_WRONG_COLUMN;
                             }
-
                         }
                     }
+
                     child.setWarningText(msg);
 
                     if (child.childBlocks_.length > 0) {
                         child = child.childBlocks_[y];
-                    }
-                    else
+                    } else
                         child = null;
-                }
-                else {
-                    if (child.type = "fieldname_get")
-                    {
+                } else {
+                    if (child.type = "fieldname_get") {
                         d++;
                         gt[0] = new Array();
                         gt[0][0] = child.getFieldValue('VAR');
-//Compare the number of values
+                        
+                        //Compare the number of values
                         if (d > a) {
                             child.unplug(true, true);
                             break;
@@ -320,7 +345,7 @@ function groupbyval(object) {
                                 if (object.getInput('order_by')) {
                                     object.setWarningText(null);
                                 } else {
-                                    object.setWarningText("Not engought Tables. Please use all tables used in select");
+                                    object.setWarningText(Blockly.Msg.GROUP_BY_NOT_ENOUGH_TABLES);
                                 }
                             }
                             else {
@@ -329,12 +354,11 @@ function groupbyval(object) {
                                 }
                             }
                         }
-//compare the values
-                        for (var x = 0; x < tablecolumn.length; x++)
-                        {
-                            if (gt[0][0] != tablecolumn[x][0])
-                            {
-                                msg = "Wrong alias. Please use only alias which are used in subselects."
+                        
+                        //compare the values
+                        for (var x = 0; x < tablecolumn.length; x++) {
+                            if (gt[0][0] != tablecolumn[x][0]) {
+                                msg = Blockly.Msg.GROUP_BY_WRONG_ALIAS;
                             }
                             else {
                                 msg = null;
@@ -343,10 +367,10 @@ function groupbyval(object) {
                                 break;
                             }
                         }
+
                         child.setWarningText(msg);
                         child = null;
-                    }
-                    else {
+                    } else {
                         child.unplug(true, true);
                         child = null;
                     }
@@ -363,118 +387,77 @@ function groupbyval(object) {
  *----------------------------------------------------------------------------*/
 function checkTableInputsCompare(object, directory) {
     var field = "";
-    if (directory != 'like' && directory != 'isnull' && directory != 'isnotnull' && Blockly.Block.dragMode_ == 0)
+    if (directory != 'like' && directory != 'isnull' && directory != 'isnotnull')
 //Using dragmode_ == 0, so that the inputs are only checked if the Block is not dragged.
 //Corrects unlikly dragbehaviour
     {//valid parameter
         var Block = object.getInputTargetBlock('A');
-//var Block2 = object.getInputTargetBlock('B');
-        if (Block != null)
-        {//Do nothing 
-            var Block2 = object.getInputTargetBlock('B');
-            if (Block2 == null) {
-            }
-        }
-        else
-        {
-            if (Block == null)
-            {
-
-            }
-        }
+        var Block2 = object.getInputTargetBlock('B');
         var col = typeof Block.getColour() !== "null" ? Block.getColour() : 0;
         var col2 = typeof Block.getColour() !== "null" ? Block2.getColour() : 0;
-        if (col == 15)
-        {
-            if (col2 == 15 || Block2.type == "sub_select_where")
-            {
+
+        if (!Block2)
+            return;
+
+        if (col == 15) {
+            if (col2 == 15 || Block2.type == "sub_select_where") {
                 //Do nothing 
-            }
-            else {
+            } else {
                 if (Block2.type == 'charfunction') {
 
                     field = Block2.getFieldValue('char_function');
-                    if (field == 'length'
-                            || field == 'ascii') {
+                    if (field == 'length' ||
+                        field == 'ascii') {
                         //don't link the blocks with wrong type
                         Block2.unplug(true, true);
                     }
-                }
-                else
-                    //don't link the blocks with wrong type
+                } else  //don't link the blocks with wrong type
                     Block2.unplug(true, true);
             }
-        }
-        else
-        {
-            if (col == 330)
-            {
+        } else {
+            if (col == 330) {
                 if (col2 == 330 || Block2.type == "sub_select_where") {
-                } else
-                    //don't link the blocks with wrong type
+                } else  //don't link the blocks with wrong type
                     Block2.unplug(true, true);
-            } else
-            {
-                if (col == 255)
-                {
+            } else {
+                if (col == 255) {
                     if (col2 == 255 || Block2.type == "sub_select_where" || Block2.type == 'charfunction' && Block2.getFieldValue('char_function') == 'length'
                             || Block2.type == 'charfunction' && Block2.getFieldValue('char_function') == 'ascii') {
-                    }
-                    else
-                        //don't link the blocks with wrong type
+                    } else //don't link the blocks with wrong type
                         Block2.unplug(true, true);
-                }
-                else
-                {
-                    if (col == 160)
-                    {
-
+                } else {
+                    if (col == 160) {
                         if (col2 == 160 || Block2.type == "sub_select_where") {
-                        }
-                        else
-                            //don't link the blocks with wrong type
+                        } else //don't link the blocks with wrong type
                             Block2.unplug(true, true);
                     }
                 }
             }
         }
-    }
-    else
-    {
-        if (Blockly.Block.dragMode_ == 0 && directory == 'like')
-                //Using dragmode_ == 0, so that the inputs are only checked if the Block is not dragged.
-                        //Corrects unlikly dragbehaviour
-                        {
-                            //valid parameter
-                            var Blockl = object.getInputTargetBlock('A');
-                            if (Blockl != null) {
-                                col = Blockl.getColour();
-                                if (Blockl.type == 'string' || Blockl.type == 'tables_and_colums_var' && col == 15)
-                                {
-                                }
-                                else {
-                                    Blockl.unplug(true, true);
-                                }
+    } else {
+        if (directory == 'like') {
+            //valid parameter
+            var Blockl = object.getInputTargetBlock('A');
+            if (Blockl != null) {
+                col = Blockl.getColour();
+                if (Blockl.type == 'string' || Blockl.type == 'tables_and_colums_var' && col == 15) {
+                } else {
+                    Blockl.unplug(true, true);
+                }
 
-                                var Blocks = object.getInputTargetBlock('B');
-                                if (Blocks != null) {
-                                    var cols = Blocks.getColour();
-                                    if (Blockl.type == 'string' && Blocks.type != 'string'
-                                            || Blockl.type == 'tables_and_colums_var' && col == 15 && Blocks.type != 'string'
-                                            || Blockl.type == 'tables_and_colums_var' && col == 15 && Blocks.type == 'tables_and_colums_var' && cols != 15) {
-                                        //don't link the blocks with wrong type
-                                        Blocks.unplug(true, true);
-                                    }
-                                }
-                                else {
-                                }
-                            }
-                            else
-                            {
-                            }
-
-                        }
+                var Blocks = object.getInputTargetBlock('B');
+                if (Blocks != null) {
+                    var cols = Blocks.getColour();
+                    if (Blockl.type == 'string' && Blocks.type != 'string'
+                            || Blockl.type == 'tables_and_colums_var' && col == 15 && Blocks.type != 'string'
+                            || Blockl.type == 'tables_and_colums_var' && col == 15 && Blocks.type == 'tables_and_colums_var' && cols != 15) {
+                        //don't link the blocks with wrong type
+                        Blocks.unplug(true, true);
+                    }
+                }
             }
+        }
+    }
 }
 
 /*------------------------------------------------------------------------------
@@ -493,11 +476,9 @@ function numberfunctioneval(object) {
         if (directory == 'mod' || directory == 'power' || directory == 'round' || directory == 'truncate')
         {
             var secondBlock = object.getInputTargetBlock('number');
-
             var col = variableBlocks.getColour();
             //first valid parameter
-            if (variableBlocks.type == 'tables_and_colums_var' && col != 255)
-            {
+            if (variableBlocks.type == 'tables_and_colums_var' && col != 255) {
                 //don't link the blocks on this level
                 variableBlocks.unplug(true, true);
             }
@@ -1110,42 +1091,6 @@ function checkColour(object, parent) {
         }
     }
     return sameColour;
-}
-
-/*------------------------------------------------------------------------------
- * Checking the values of the update and insert block
- * 
- * @param[type} object- the object, which inputs are going to be checked
- *----------------------------------------------------------------------------*/
-function checkUpdate(object) {
-    var msg = null;
-    if (object.getInputTargetBlock('up') != null) {//evaluate which objetc ware checking
-        var target = object.getInputTargetBlock('up');
-        var table = target.getFieldValue('tabele');
-
-        while (target != null) {
-            if (target.type == 'tables_and_colums') {
-                if (target.childBlocks_.length > 0) {
-                    var childoftarget = target.childBlocks_[0];
-                    var tmp = childoftarget.getFieldValue('tabele');
-                    if (tmp == table) {
-                        msg = null;
-                        object.setWarningText(msg);
-                        target = childoftarget;
-                    } else {
-                        msg = "All tables must be the same. Please use the same table used in the first block.";
-                        object.setWarningText(msg);
-                        target = null;
-                    }
-                } else
-                    target = null;
-            } else {
-                //any input type, whch is not tables and colums , will be unpluged
-                target.unplug(true, true);
-                target = null;
-            }
-        }
-    }
 }
 
 /*------------------------------------------------------------------------------
