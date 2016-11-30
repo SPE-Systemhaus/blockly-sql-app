@@ -520,7 +520,8 @@ VALUE_LIST
     ;
 
 VALUE
-    : QUOTED_STRING
+    : %empty
+    | QUOTED_STRING
     | IDENTIFIER_LEX
         { $$ = sqlXML.createString($1); }
     | MINUS IDENTIFIER_LEX
@@ -598,16 +599,17 @@ EXPR
     ;
 
 QUOTED_STRING
-    : QUOTE IDENTIFIER_LEX QUOTE
-        { $$ = sqlXML.createString($2); }
+    : QUOTE QUOTE
+        { $$ = sqlXML.createString(""); console.log("EMPTY_STRING!"); }
     | QUOTE NUMBER_LEX QUOTE
+        { $$ = sqlXML.createString($2); }
+    | QUOTE IDENTIFIER_LEX QUOTE
         { $$ = sqlXML.createString($2); }
     ;
 
 SCHEMA_NAME
     : IDENTIFIER_LEX PERIOD
     ;
-
 
 DATETIME
     : QUOTE DATE_LEX QUOTE
