@@ -1683,6 +1683,11 @@ Blockly.Blocks['tables_and_columns'] = {
      * @this Blockly.Block
      */
     setup: function (table, column) {
+        
+        console.log("===BLA===");
+        console.log(table);
+        console.log(column);
+
         var block = this;      
         var tableDropdown = new Blockly.FieldDropdown(
             getTableDropdowndataFromXML(), 

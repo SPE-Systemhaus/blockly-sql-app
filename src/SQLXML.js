@@ -120,13 +120,11 @@ function SQLXML() {
       var key = "set" + valuesCnt;
       var tableNode = this.createTableVar({ "table" : [pInsert.table], "column" : [pInsert.columns[valuesCnt]] });
       var valueNode = pInsert.values[parsedColumn];
-
-      var toBlock = createBlock("to", [], {
+      var fields = {
         "A" : tableNode,
         "B" : valueNode
-      }, [], {
-        "colour" : "#000000"
-      });
+      };
+      var toBlock = createBlock("to", [], fields);
 
       values[key] = toBlock;
       valuesCnt++
@@ -203,7 +201,7 @@ function SQLXML() {
       "A" : column,
       "B" : value
     };
-    
+
     return createBlock(
       "to",
       [], 
@@ -618,6 +616,7 @@ function SQLXML() {
 
   var checkTables = function(tables, columnsXML) {
     var tableBlocks = columnsXML.getElementsByTagName("field");
+    var mutations = columnsXML.getElementsByTagName("mutation");
     var tablesColumns = {};
 
     /* Getting columns of parsed tables */
@@ -625,6 +624,8 @@ function SQLXML() {
       var table = tables[tableKey].tablename;
       tablesColumns[table] = sqlHelp.getAllColumnsByTable(table);
     }
+
+    var mutationCnt = 0;
 
     for (var i = 0; i < tableBlocks.length; i += 2) {
       /* Check only table and column nodes by checking the type of the parent node */
@@ -644,8 +645,6 @@ function SQLXML() {
         if (Object.keys(tablesColumns).length === 1 && 
             tableName === "" && 
             columnName === "*") {
-          console.log("ARGH!");
-          console.log(Object.keys(tablesColumns)[0]);
           tableBlocks[table].innerHTML = Object.keys(tablesColumns)[0];
         }
 
@@ -660,9 +659,13 @@ function SQLXML() {
               tableBlocks[table].innerHTML = tableNameKey;
             }
           }
-        }
-
+        }         
       }
+      
+      /* Update table and column in mutation tags */
+      mutations[mutationCnt].setAttribute("tabele", tableBlocks[table].innerHTML);
+      mutations[mutationCnt].setAttribute("Column", tableBlocks[column].innerHTML);
+      mutationCnt++;
     }
 
   }.bind(this);
