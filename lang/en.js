@@ -221,3 +221,7 @@ Blockly.Msg.INTO_TOOLTIP = "Adding INTO.";
  */
 Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN = "Attention you are inserting two values in the same column. Please choose another column.";
 Blockly.Msg.CHECK_INSERT_DIFFERENT_TABLES = "Attention you are using different tables. Please use the same table in the whole insert.";
+Blockly.Msg.CHECK_UPDATE_DIFFERENT_TABLES = "All tables must be the same. Please use the same table used in the first block.";
+Blockly.Msg.GROUP_BY_NOT_ENOUGH_TABLES = "Not enough Tables. Please use all tables used in select";
+Blockly.Msg.GROUP_BY_WRONG_COLUMN = "Wrong column. Please use only tables and columns which are in the select.";
+Blockly.Msg.GROUP_BY_WRONG_ALIAS = "Wrong alias. Please use only alias which are used in subselects.";

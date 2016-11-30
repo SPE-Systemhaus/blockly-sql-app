@@ -101,7 +101,6 @@ function SQLHelper() {
 
   this.getTypeColour = function(table, column) {
     var columns = sqlHelp.getAllColumnsWithTypeByTable(table);
-    var color = "#000000";
 
     if (column === "*")
       return "#74A55B";
@@ -120,22 +119,23 @@ function SQLHelper() {
           case "double":
           case "float":
           case "decimal":
-              color = "#6C5DA4";
-              break;
+              return "#6C5DA4";
           case "varchar":
           case "text":
-              color = "#A56D5B";
-              break;
+          case "string":
+              return "#A56D5B";
           case "date":
           case "datetime":
-              color = "#A55B80";
-              break;
+              return "#A55B80";
+          case "bool":
+          case "boolean":
+              return "#A55B80";
           case "blob":
-              break;
+              return "#000000";
+          default:
+              return "#000000";
       }
     }
-
-    return color;
   };
 
 }

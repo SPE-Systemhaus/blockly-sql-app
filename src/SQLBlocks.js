@@ -430,13 +430,13 @@ Blockly.Blocks['update'] = {
             }
         );
 
-        if (Blockly.Block.dragMode_ == 0) {
+        //if (Blockly.Block.dragMode_ == 0) {
             //No type checking and colouring , while the block is dragged
             checkUpdate(this);
             if (this.getInputTargetBlock('set0')) {
                 checkSetUpdate(this);
             }
-        }
+        //}
     }
 };
 /*------------------------------------------------------------------------------
@@ -1767,12 +1767,12 @@ Blockly.Blocks['tables_and_columns'] = {
             if (parent.type == 'select' || 
                 parent.type == 'sub_select' || 
                 parent.type == 'sub_select_where') {
-                    //evaluate the group by input if there is this input
-                    if (parent.getInput('group_by_have') || 
-                        parent.getInput('group_by')) {
-                            groupbyval(parent);
-                    }
+                //evaluate the group by input if there is this input
+                if (parent.getInput('group_by_have') || 
+                    parent.getInput('group_by')) {
+                        groupbyval(parent);
                 }
+            }
         }
     }
 };
@@ -1797,6 +1797,7 @@ Blockly.Blocks['tables_and_columns_var'] = {
         var column = Column[0][1][1];
 
         this.lastConnectedParent = null;
+        this.columnType = null;
 
         this.setHelpUrl(this.type);
         this.setColour("#74A55B");       
@@ -1902,15 +1903,9 @@ Blockly.Blocks['tables_and_columns_var'] = {
             return;
 
         var parent = this.getParent();
-        colourTheParent(this);
 
         if (parent) {
-            if (parent.type == 'compare_operator') {
-                //checking inputs of compare
-                var direpar = parent.getFieldValue('OP');
-                checkTableInputsCompare(parent, direpar);
-            }
-
+            colourTheParent(this);
             this.lastConnectedParent = parent;
         } else {    /* Resetting color if disonnected */
             if (this.lastConnectedParent)
@@ -1984,7 +1979,7 @@ Blockly.Blocks['compare_operator'] = {
     init: function (dir) {
       this.setHelpUrl(this.type);
       this.setColour("#5BA58C");
-      this.setOutput(true, "LogicOPs");
+      this.setOutput(true, "condition");
       this.setup(this, "EQ");
       this.setInputsInline(false);
     },
@@ -2052,14 +2047,14 @@ Blockly.Blocks['compare_operator'] = {
               input.appendValueInput('A')
                       .setAlign(Blockly.ALIGN_LEFT)
                       .appendField("", 'Abstand')
-                      .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction"]);
+                      .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction", "LogicOPs"]);
 
               input.appendDummyInput()
                       .setAlign(Blockly.ALIGN_LEFT)
                       .appendField(dropdown, "OP");
 
               input.appendValueInput('B')
-                      .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction"]);
+                      .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction", "LogicOPs"]);
               // Assign 'this' to a variable for use in the tooltip closure below.
               //Restoring the inputs
 
@@ -2171,30 +2166,35 @@ Blockly.Blocks['compare_operator'] = {
      * @this Blockly.Block
      */
     onchange: function () {
-        var dir = this.getFieldValue('OP');
         if (!this.workspace)
             return;
 
-        //colourTheParent(this);
+        var inputBlockA = this.getInputTargetBlock("A");
+        var inputBlockB = this.getInputTargetBlock("B");
 
-        /* 
-        if (Blockly.dragMode_ === Blockly.DRAG_NONE) {
-          //No checking of type ans colour changes, while the block is dragged
-          //Setting the colour of the block if there are no inputs
-        if (this.getInputTargetBlock('A') == null) {
-            if (dir != 'like') {
-                colourTheParent(this);
-            }
-          }
+        /* Checking if blocks are comparable: */
+        if (inputBlockB) {
+            var swap = null;
+            var colourA = null;
+            var colourB = null;
 
-        if (this.getParent()) {
-            //checking inputs of the block
-            if (this.getParent().type != 'update' && this.getParent().type != 'insert')
-                checkTableInputsCompare(this, dir);
+            if (inputBlockA.type === "tables_and_columns_var") {
+                var table = inputBlockA.getFieldValue("tabele");
+                var column = inputBlockA.getFieldValue("Column");
+                colourA = sqlHelp.getTypeColour(table, column);
+            } else
+                colourA = inputBlockA.getColour();
+
+            if (inputBlockB.type === "tables_and_columns_var") {
+                var table = inputBlockB.getFieldValue("tabele");
+                var column = inputBlockB.getFieldValue("Column");
+                colourB = sqlHelp.getTypeColour(table, column);
+            } else
+                colourB = inputBlockA.getColour();
+
+            if (colourA !== colourB)
+                inputBlockB.unplug(true, true);
         }
-          
-        } 
-        */
     }
 };
 /*------------------------------------------------------------------------------
@@ -2349,7 +2349,7 @@ Blockly.Blocks['bool'] = {
      */
     init: function () {
       this.setHelpUrl(this.type);
-      this.setColour(160);
+      this.setColour("#A55B80");
       this.appendDummyInput('boolean')
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField(new Blockly.FieldDropdown(bool), "BOOL");
@@ -2394,7 +2394,7 @@ Blockly.Blocks['num'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour(255);
+        this.setColour("#6C5DA4");
         this.appendDummyInput('number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField(new Blockly.FieldTextInput("0", checkNumeric), "NUM");
@@ -2438,7 +2438,7 @@ Blockly.Blocks['string'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour(15);
+        this.setColour("#A56D5B");
         this.appendDummyInput("string")
             .setAlign(Blockly.ALIGN_LEFT)
             .appendField(new Blockly.FieldTextInput(""), "String");
@@ -2491,7 +2491,7 @@ Blockly.Blocks['date'] = {
     init: function () {
 
         this.setHelpUrl(this.type);
-        this.setColour(330);
+        this.setColour("#A55B80");
         this.appendDummyInput()
                 .setAlign(Blockly.ALIGN_LEFT)
                 .appendField(new Blockly.FieldDate("2016-01-01"), "Date_")
