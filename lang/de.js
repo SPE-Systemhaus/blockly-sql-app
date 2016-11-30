@@ -215,3 +215,10 @@ Blockly.Msg.ORDER_BY_TOOLTIP = "Füge ORDER BY hinzu.";
 Blockly.Msg.LIMIT_TOOLTIP = "Füge ein Limit hinzu.";
 Blockly.Msg.SET_TOOLTIP = "Füge eine SET Eingabe.";
 Blockly.Msg.INTO_TOOLTIP = "Füge INTO hinzu.";
+
+
+/**
+ * CheckInput Messages
+ */
+Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN = "Achtung Sie versuchen mehr als einen Wert in diesselbe Spalte einzufügen. Bitte wählen Sie eine andere Spalte aus.";
+Blockly.Msg.CHECK_INSERT_DIFFERENT_TABLES = "Achtung Sie verwenden verschiedene Tabellen in einer INSERT Anweisung. Bitte verwenden Sie pro INSERT Anweisung ausschließlich eine Tabelle.";

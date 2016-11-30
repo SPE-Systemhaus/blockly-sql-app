@@ -1,14 +1,19 @@
-var sqlHelp = null;
-
 /*******************************************************************************
  * Inside this file the SQL Blocks will be defined and initialized.
+ * 
+ * @author Kirsten Schwarz, SPE Systemhaus GmbH (2013-2014)
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)
+ *
  ******************************************************************************/
-/**
+
+var sqlHelp = null;
+
+/*------------------------------------------------------------------------------
  * Initializes the sql blocks.
  * Generating the toolbox and reading rules and items.
  *
  * @returns {String} Toolbox sidebar blocks
- */
+ *----------------------------------------------------------------------------*/
 Blockly.Blocks['init'] = function () {
     sqlHelp = new SQLHelper();
 
@@ -48,12 +53,14 @@ Blockly.Blocks['init'] = function () {
                '</category>' +
            '</xml>';
 };
+
 /*------------------------------------------------------------------------------
  * Commands and tables
  *----------------------------------------------------------------------------*/
+
 /*------------------------------------------------------------------------------
- * insert-is the top level of the insert comand. It is the default
- * object for this command and  contains all available blocks to represent
+ * insert - is the top level of the insert comand. It is the default
+ * object for this command and contains all available blocks to represent
  * a insert-clause.
  *
  * @module sql_blocks
@@ -88,16 +95,9 @@ Blockly.Blocks['insert'] = {
      * @this Blockly.Block
      */
     mutationToDom: function () {
-        if (!this.setCount_)
-            return null;
-
-        var container = document.createElement('mutation');
-        if (this.setCount_)
-            container.setAttribute('set', this.setCount_);
-
-        var colour = this.getColour();
-        container.setAttribute('color', colour);
-        return container;
+        var mutation = document.createElement('mutation');
+        mutation.setAttribute("set", this.setCount_);
+        return mutation;
     },
     /**
      * Parse XML to restore the additional inputs.
@@ -106,19 +106,11 @@ Blockly.Blocks['insert'] = {
      */
     domToMutation: function (xmlElement) {
         this.setCount_ = parseInt(xmlElement.getAttribute('set'), 10);
-        var colour = xmlElement.getAttribute("color");
-
-        if (colour)
-            this.setColour(colour);
-        else
-            this.setColour(this.getColour());
-
-        if (this.setCount_) {
-            for (var x = 1; x <= this.setCount_; x++) {
-                this.appendValueInput('set' + x)
-                        .setCheck("TO")
-                        .appendField(Blockly.Msg.SET);
-            }
+    
+        for (var x = 1; x <= this.setCount_; x++) {
+            this.appendValueInput('set' + x)
+                .setCheck("TO")
+                .appendField(Blockly.Msg.SET);
         }
     },
     /**
@@ -197,7 +189,7 @@ Blockly.Blocks['insert'] = {
         }
     },
     /**
-     * onchange evaluates the input of the set statement  and recolours the
+     * onchange evaluates the input of the set statement and recolours the
      * block
      * @method onchange
      * @this Blockly.Block
@@ -206,8 +198,8 @@ Blockly.Blocks['insert'] = {
         if (!this.workspace)
             return;
 
+        /* Colouring */
         var stopHeight = this.getInput("bl").renderHeight + this.getInput("ins").renderHeight;
-
         this.gradient.setVerticalGradient(
             this, {
                 "start" : "#5BA58C",
@@ -218,25 +210,16 @@ Blockly.Blocks['insert'] = {
             }
         );
 
-
-        var empty = 0;
-        if (Blockly.Block.dragMode_ == 0) {
-            //No type checking and colouring , while the block is dragged
-            //check update input
-            if (this.getInputTargetBlock('set0'))
-                checkInsertSET(this);   //check set statement
-
-            for (var d = 0; d <= this.setCount_; d++)
-                if (this.getInputTargetBlock('set' + d) == null ||
-                    this.getInputTargetBlock('set' + d).childBlocks_.length == 0)
-                    empty++;
-
-            if (empty == this.setCount_ + 1)
-                this.setColour(100);
-        }
+        /* Counting Inputs */
+        this.setCount_ = 0;
+        while (this.getInput('set' + (this.setCount_ + 1)) !== null)
+            this.setCount_++;
+        
+        /* Checking SET TO inputs */
+        checkInsertStatement(this);
     }
-
 };
+
 /*------------------------------------------------------------------------------
  * update-is the top level of the update comand. It is the default
  * object for this command and  contains all available blocks to represent
@@ -478,13 +461,13 @@ Blockly.Blocks['select'] = {
         this.gradient = new ColourGradient();
         this.appendDummyInput("Dummy");
         this.appendStatementInput("select")
-                .appendField(Blockly.Msg.SELECT)
-                .setAlign(Blockly.ALIGN_CENTER)
-                .setCheck(["table_column", "distinct", "group_function", "otherfunction", "sub_select"]);
+            .appendField(Blockly.Msg.SELECT)
+            .setAlign(Blockly.ALIGN_CENTER)
+            .setCheck(["table_column", "distinct", "group_function", "otherfunction", "sub_select"]);
         this.appendValueInput("Clause")
-                .setAlign(Blockly.ALIGN_CENTER)
-                .appendField(Blockly.Msg.WHERE)
-                .setCheck(["BolleanOPs", "LogicOPs", "bool", "condition"]);
+            .setAlign(Blockly.ALIGN_CENTER)
+            .appendField(Blockly.Msg.WHERE)
+            .setCheck(["BolleanOPs", "LogicOPs", "bool", "condition"]);
         this.setTooltip('');
         this.duplicate_ = false;
         this.setMutator(new Blockly.Mutator(["group_by", "group_by_having", "order_by", "limit"]));
@@ -751,7 +734,7 @@ Blockly.Blocks['select'] = {
 
 
         // No type checking and colouring , while the block is dragged
-        if (Blockly.dragMode_ === Blockly.DRAG_NONE) {
+/*        if (Blockly.dragMode_ === Blockly.DRAG_NONE) {
 
             if (this.groupByCount_) {
                 if (!this.getInputTargetBlock('group_by'))
@@ -772,7 +755,7 @@ Blockly.Blocks['select'] = {
                     }
                 }
             }
-
+ */
             /*
 
             if (this.getInputTargetBlock('select') == null) {
@@ -791,7 +774,7 @@ Blockly.Blocks['select'] = {
             }
 
             */
-        }
+    //    }
 
         this.setWarningText(msg);
     }
@@ -817,7 +800,7 @@ Blockly.Blocks['distinct'] = {
         this.appendDummyInput("distinct2")
             .appendField(Blockly.Msg.DISTINCT);
         this.setPreviousStatement(true, "distinct");
-        this.setNextStatement(true, ["table_column", "group_function", "sub_select", "distinct"]);
+        this.setNextStatement(true, ["table_column", "group_function", "sub_select"]);
         this.setTooltip('');
     },
     /**
@@ -846,21 +829,22 @@ Blockly.Blocks['distinct'] = {
      * @method:onchange
      * @this Blockly.Block
      */
-    onchange: function ()
-    {
+    onchange: function () {
         if (!this.workspace)
             return;
 
+        /*
         if (Blockly.Block.dragMode_ == 0) {
+
             if (this.getInputTargetBlock('distinct2')) {
                 var variableBlocks = this.getInputTargetBlock('distinct2');
                 if (this.getInputTargetBlock('distinct2').type == 'tables_and_columns') {
                     if (variableBlocks.childBlocks_.length > 0) {
                         variableBlocks.childBlocks_[0].unplug(true, true);
-
                     }
                 }
             }
+
             //Recolour the Block if there are no inputs
             if (this.getInputTargetBlock('distinct2') == null) {
                 this.setColour(115);
@@ -875,7 +859,10 @@ Blockly.Blocks['distinct'] = {
                     }
                 }
             }
+
         }
+        */
+
     }
 };
 /*------------------------------------------------------------------------------
@@ -1683,11 +1670,6 @@ Blockly.Blocks['tables_and_columns'] = {
      * @this Blockly.Block
      */
     setup: function (table, column) {
-        
-        console.log("===BLA===");
-        console.log(table);
-        console.log(column);
-
         var block = this;      
         var tableDropdown = new Blockly.FieldDropdown(
             getTableDropdowndataFromXML(), 
@@ -1813,13 +1795,13 @@ Blockly.Blocks['tables_and_columns_var'] = {
     init: function () {
         var table = Column[0][0];
         var column = Column[0][1][1];
-        
+
+        this.lastConnectedParent = null;
+
         this.setHelpUrl(this.type);
         this.setColour("#74A55B");       
         this.setup(table, column);
         this.setTooltip('');
-
-        this.lastConnectedParent = null;
     },
     /**
      * The setup function gets a table and column and updates the SQL 
@@ -1846,14 +1828,9 @@ Blockly.Blocks['tables_and_columns_var'] = {
              }
         );
 
-        console.log(getColumnDropdowndataFromXML(table, false));
-
         /* Setting dropdown values for table and column */
         tableDropdown.setValue(table);
         columnDropdown.setValue(column);
-
-        console.log(table);
-        console.log(column);
 
         block.setColour(
             sqlHelp.getTypeColour(table, column)
@@ -1923,7 +1900,7 @@ Blockly.Blocks['tables_and_columns_var'] = {
     onchange: function () {
         if (!this.workspace)
             return;
-        
+
         var parent = this.getParent();
         colourTheParent(this);
 
