@@ -1,3 +1,59 @@
+/*******************************************************************************
+ * Inside this file are the Check functions for the SQL Blocks, to reduce
+ * user errors while building SQL Statements.
+ * 
+ * @author Kirsten Schwarz, SPE Systemhaus GmbH (2013-2014)
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)
+ * 
+ ******************************************************************************/
+
+/*------------------------------------------------------------------------------
+ * Checking the variableinsert
+ * @ param{type} object-symbolizes the block, which uses the function
+ *----------------------------------------------------------------------------*/
+function checkInsertStatement(object) {
+    var sC = object.setCount_;
+    var tab = new Array();
+
+    for (var i = 0; i <= sC; i++) {
+        if (object.getInputTargetBlock('set' + i) != null) {
+            var toElement = object.getInputTargetBlock('set' + i);
+            var insertElement = toElement.getInputTargetBlock('A');
+
+            if (insertElement != null) {
+                tab[i] = new Array();
+                tab[i][0] = insertElement.getFieldValue('tabele');
+                tab[i][1] = insertElement.getFieldValue('Column');
+                if (tab.length > 1) {
+                    if (tab[0][0] == tab[i][0]) { //Compare the Tables 
+                        for (var j = 0; j < tab.length - 1; j++) {
+                            if (tab[j][1] == tab[i][1]) {
+                                if (insertElement.warning) {
+                                    if (insertElement.warning.getText() !== Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN) {
+                                        insertElement.setWarningText(Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN);
+                                    }
+                                } else
+                                    insertElement.setWarningText(Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN);
+                            } else {
+                                insertElement.setWarningText(null);
+                            }
+                        }
+                    } else {
+                        if (insertElement.warning) {
+                            if (insertElement.msg !== Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN) {
+                                insertElement.setWarningText(Blockly.Msg.CHECK_INSERT_DIFFERENT_TABLES);
+                            } else
+                                insertElement.setWarningText(null);
+                        } else
+                            insertElement.setWarningText(null);
+                    }
+                }
+            }
+        } else
+            break;
+    }
+}
+
 /*------------------------------------------------------------------------------
  * Checking the variable inputs of the group-function. Sets an alert if there 
  * are to much variables.
@@ -66,8 +122,7 @@ function groupFunctioneval(object) {
  * 
  * @ param{type} object-symbolizes the block, which uses the function
  *----------------------------------------------------------------------------*/
-function groupbyval(object)
-{
+function groupbyval(object) {
     if (object.getInputTargetBlock('select') != null) {
 //Check the relevant inputs 
         var select = object.getInputTargetBlock('select');
@@ -300,6 +355,7 @@ function groupbyval(object)
         }
     }
 }
+
 /*------------------------------------------------------------------------------
  * Checking the variable inputs. Sets an alert if there are to much variables.
  * 
@@ -466,6 +522,7 @@ function numberfunctioneval(object) {
     }
     object.setWarningText(msg);
 }
+
 /*------------------------------------------------------------------------------
  * Checking the variable inputs of the other-function. Sets an alert if there 
  * are to much variables.
@@ -560,6 +617,7 @@ function othereval(object)
     }
     object.setWarningText(msg);
 }
+
 /*------------------------------------------------------------------------------
  * Checking the variable inputs of the char-function. Sets an alert if there 
  * are to much variables.
@@ -748,6 +806,7 @@ function chareval(object)
 
     object.setWarningText(msg);
 }
+
 /*------------------------------------------------------------------------------
  * Checking the variable inputs of the date-function. Sets an alert if there 
  * are to much variables.
@@ -889,6 +948,7 @@ function dateeval(object) {
     }
     object.setWarningText(msg);
 }
+
 /*------------------------------------------------------------------------------
  * Checking the variable inputs of the math opertaor. Sets an alert if there 
  * are to much variables.
@@ -907,6 +967,7 @@ function checkMathInputs(object)
         }
     }
 }
+
 /*------------------------------------------------------------------------------
  * Checking the compare inputsfor the subselect. 
  * 
@@ -978,6 +1039,7 @@ function checksub(object) {
 
     }
 }
+
 /*------------------------------------------------------------------------------
  * Checking the colours to avoid recolouring if colours already match.
  * 
@@ -1085,6 +1147,7 @@ function checkUpdate(object) {
         }
     }
 }
+
 /*------------------------------------------------------------------------------
  * Checking the values of the 'SET'-section of update or insert
  * 
@@ -1164,53 +1227,4 @@ function checkSetUpdate(object) {
         }
     }
 }
-/*------------------------------------------------------------------------------
- * Checking the variableinsert
- * @ param{type} object-symbolizes the block, which uses the function
- *----------------------------------------------------------------------------*/
-function checkInsertSET(object)
-{
-    var sC = object.setCount_;
-    var tab = new Array();
-    var msg = null;
-    for (var i = 0; i <= sC; i++)
-    {
-        if (object.getInputTargetBlock('set' + i) != null) {
-            var toElement = object.getInputTargetBlock('set' + i);
-            if (toElement.getInputTargetBlock('A') != null)
-            {
-                var insertElement = toElement.getInputTargetBlock('A');
-                tab[i] = new Array();
-                tab[i][0] = insertElement.getFieldValue('tabele');
-                tab[i][1] = insertElement.getFieldValue('Column');
-                if (tab.length > 1)
-                {
-                    if (tab[0][0] == tab[i][0])//Compare the Tables
-                    {
-                        msg = null;
-                        insertElement.setWarningText(msg);
-                        for (var j = 0; j < tab.length - 1; j++)
-                        {
-                            if (tab[j][1] == tab[i][1])
-                            {
-                                msg = "Attention you are inserting two values in the same column. Please choose another column.";
-                                insertElement.setWarningText(msg);
-                            }
-                            else {
-                                msg = null;
-                                insertElement.setWarningText(msg);
-                            }
-                        }
 
-                    }
-                    else {
-                        msg = "Attention you are using different tables. Please cuse the same table in the whole insert.";
-                        insertElement.setWarningText(msg);
-                    }
-                }
-            }
-        } else
-            break;
-
-    }
-}

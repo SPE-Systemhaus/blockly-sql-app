@@ -215,3 +215,9 @@ Blockly.Msg.ORDER_BY_TOOLTIP = "Adding ORDER BY.";
 Blockly.Msg.LIMIT_TOOLTIP = "Adding a limit.";
 Blockly.Msg.SET_TOOLTIP = "Adding a SET.";
 Blockly.Msg.INTO_TOOLTIP = "Adding INTO.";
+
+/**
+ * CheckInput Messages
+ */
+Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN = "Attention you are inserting two values in the same column. Please choose another column.";
+Blockly.Msg.CHECK_INSERT_DIFFERENT_TABLES = "Attention you are using different tables. Please use the same table in the whole insert.";
