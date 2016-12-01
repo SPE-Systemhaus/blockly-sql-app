@@ -29,7 +29,6 @@ function clearInputList(block) {
  *@param {type} url the location of the xml
  *@returns {xhttp.responseXML}
  *----------------------------------------------------------------------------*/
-
 function loadXMLDoc(url) {
     var xhttp = new XMLHttpRequest();
 
@@ -43,7 +42,6 @@ function loadXMLDoc(url) {
  *
  * @returns {xml}
  *----------------------------------------------------------------------------*/
-
 function loadXMDW() {
     var xml = new XMLHttpRequest();
     xml.open('GET', 'samples/newXML.xml', false);
@@ -73,12 +71,10 @@ function getTableDatafromXML() {
  *----------------------------------------------------------------------------*/
 function getXMLColums() {
     var x = xmli;
-
-    //Column.length = 0;
-
     var element;
     var attribut;
     var type;
+
     for (var i = 0; i < x.childNodes.length; i++)
     {
         element = x.childNodes[i];
@@ -132,6 +128,7 @@ function setDropdownValues(values) {
     }
     return optionsForTabeles;
 }
+
 /*------------------------------------------------------------------------------
  * Get dropdown data from global variables
  *----------------------------------------------------------------------------*/
@@ -140,7 +137,6 @@ function setDropdownValues(values) {
  * @param {type} type -represents the type of the table
  * @returns {Array}
  *----------------------------------------------------------------------------*/
-
 function getTableDropdowndataFromXML() {
     var optionsForTabeles = new Array();
     for (var j = 0; j < Table.length; j++) {
@@ -150,6 +146,7 @@ function getTableDropdowndataFromXML() {
     }
     return optionsForTabeles;
 }
+
 /*------------------------------------------------------------------------------
  * Get data for the column dropdown from global variable Column
  *
@@ -294,10 +291,10 @@ function getColumnDropdowndataFromXML(tableName, withAll) {
     return optionsForColumns;
 }
 
-
 /*-----------------------------------------------------------------------------
  * Checking inputs
  *----------------------------------------------------------------------------*/
+
 /*------------------------------------------------------------------------------
  * Checking the text inputs of the of an textinputfiled. Sets an alert if there
  * are to much variables.
@@ -316,13 +313,14 @@ function checkNumeric(text) {
         return text;
     }
 }
+
 /*------------------------------------------------------------------------------
  * Loading the data from database into the Xml and filling the global
  * variables
  *----------------------------------------------------------------------------*/
 function getData() {
     if (window.XMLHttpRequest) {
-// code for IE7+, Firefox, Chrome, Opera, Safari
+        // code for IE7+, Firefox, Chrome, Opera, Safari
         var xmlhttp = new XMLHttpRequest();
     } else { // code for IE6, IE5
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
@@ -337,125 +335,6 @@ function getData() {
     getTableDatafromXML();
     getXMLColums();
 }
-
-/*------------------------------------------------------------------------------
- * Changes to horizontal coloursheme
- *
- * @ param {type} object-symbolizes the block, which uses the function
- * @ param {type} colour-symbolizes the block, which colours the object
- *----------------------------------------------------------------------------*/
-function horizontalColouration(object, colour) {
-    switch (colour.getColour()) {
-        case  15 :
-            //text gradient
-            object.setColour(3160);
-            break;
-        case 160:
-            //bool
-            object.setColour(160);
-            break;
-        case 255:
-            //numeric gradient
-            object.setColour(2160);
-            break;
-        case 330:
-            //date gradient
-            object.setColour(1160);
-    }
-}
-/*------------------------------------------------------------------------------
- * Changes to vertical coloursheme
- *
- * @ param {type} object-symbolizes the block, which uses the function
- * @ param {type} colour-symbolizes the block, which colours the object
- *----------------------------------------------------------------------------*/
-function verticalColouration(object, colour) {
-    switch (colour.getColour()) {
-        case  15 :
-            //text gradient
-            object.setColour(5015);
-            break;
-        case 160:
-            //bool
-            object.setColour(160);
-            break;
-        case 255:
-            //numeric gradient
-            object.setColour(6255);
-            break;
-        case 330:
-            //date gradient
-            object.setColour(4330);
-            break;
-        case 115:
-            //list gradient
-            object.setColour(7115);
-            break;
-    }
-}
-/*------------------------------------------------------------------------------
- * Changes to full coloursheme
- *
- * @ param {type} object-symbolizes the block, which uses the function
- * @ param {type} colour-symbolizes the block, which colours the object
- *----------------------------------------------------------------------------*/
-function fullColouration(object, colour) {
-    switch (colour.getColour()) {
-        //setting the colour
-        case  15 :
-            //text
-            object.setColour(15);
-            break;
-        case 160:
-            //bool
-            object.setColour(160);
-            break;
-        case 255:
-            //numeric
-            object.setColour(255);
-            break;
-        case 330:
-            //date
-            object.setColour(330);
-            break;
-        case 115:
-            //list
-            object.setColour(115);
-            break;
-    }
-}
-/*------------------------------------------------------------------------------
- * Changes vertical to horizontal coloursheme
- *
- * @ param {type} object-symbolizes the block, which uses the function
- * @ param {type} colour-symbolizes the block, which colours the object
- *----------------------------------------------------------------------------*/
-function verticaltohorizontal(object, colour) {
-    switch (colour.getColour()) {
-        case 160:
-            //bool
-            object.setColour(160);
-            break;
-        case 4330:
-            //date gradient
-            object.setColour(1160);
-            break;
-        case 5015:
-            //text gradient
-            object.setColour(3160);
-            break;
-        case 6255:
-            //numeric gradient
-            object.setColour(2160);
-            break;
-        case 7115:
-            //list gradient
-            object.setColour(9160);
-            break;
-    }
-}
-
-
 
 /*------------------------------------------------------------------------------
  * Set the colour of a block, if it is the parent Block of a particular block
@@ -518,303 +397,30 @@ function closehelp() {
     }
 }
 
-/*------------------------------------------------------------------------------
- * Fetchs a link in the help div
- *
- * @param{type} link symolises the link which is klicked
- * @param{type} colour represents the bordercolour
- *----------------------------------------------------------------------------*/
-function fetchthelink(link, color) {
-    var a = window.object.document.getElementById("help"), b = window.object.document.getElementById("content"), c = b.getElementsByTagName("h1"), e = new XMLHttpRequest, f = window.object.document.getElementById("close");
+/**
+ * Getting the colour of the first table_column child. If there is more
+ * than one child, the colour of the block will be taken.
+ * 
+ * @param {Blockly.Block} block Current block.
+ * @return {String} colour The colour of the child or of the current block.
+ */
+function getChildColour(block) {
+    var stopColor = block.getColour();
+    var children = block.getChildren();
 
-    if (link) {
-        coBO = a.style.borderColor;
-        Title = c[0].innerHTML;
-        a.style.borderColor = color;
-        var string = '<span  class="right pointer" style ="color:' + color + '; font-weight: bold;" onclick="fetchthelink();">'
-                + 'BACK'
-                + '</span>';
-
-        e.open("GET", link, !1);
-        e.send("");
-        0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-        b.innerHTML = e.response;
-        var j = window.object.document.getElementById('aliasback');
-        j.innerHTML = string;
-        if (Title == "Alias variable")
-            window.location.hash = "#alias";
-    } else {
-        switch (Title) {    //catching the back-button link
-            case "Alias variable" :
-                e.open("GET", "Help/fieldname_get.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Groupfunction":
-                e.open("GET", "Help/groupfunction/avg.html", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Select":
-                e.open("GET", "Help/select.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Insert":
-                e.open("GET", "Help/insert.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Update":
-                e.open("GET", "Help/update.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Subselect (section 'SELECT')":
-                e.open("GET", "Help/sub_select.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Subselect (section 'WHERE')":
-                e.open("GET", "Help/sub_select_where.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Tables and columns(list)":
-                e.open("GET", "Help/tables_and_colums.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Tables and columns(variable)":
-                e.open("GET", "Help/tables_and_colums.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "OR":
-                e.open("GET", "Help/OR_BOOL.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "NOT":
-                e.open("GET", "Help/conditions.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Numeric variable":
-                e.open("GET", "Help/num.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Text variable":
-                e.open("GET", "Help/string.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Date variable":
-                e.open("GET", "Help/date.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Boolean variable":
-                e.open("GET", "Help/bool.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Distinct":
-                e.open("GET", "Help/distinct.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "Mathematically operator":
-                e.open("GET", "Help/terms_simple_expressions.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-            case "TO":
-                e.open("GET", "Help/to.html ", !1);
-                e.send("");
-                0 < b.childNodes.length && b.removeChild(b.childNodes[0]);
-                b.innerHTML = e.response;
-                a.style.borderColor = coBO;
-                break;
-        }
-    }
-}
-/*------------------------------------------------------------------------------
- * Function to toggle html elements
- *
- * @param table - symbolizes the html element
- * @param picture -symbolizes the picture, which toggles the element
- *----------------------------------------------------------------------------*/
-
-function toggleTable(table, picture) {
-    if (document.getElementById(table).style.display == "table") {
-        document.getElementById(table).style.display = "none";
-        document.getElementById(picture).src = "Files/help_screens/black22.png";
-        document.getElementById(picture).alt = "More ";
-    } else {
-        document.getElementById(picture).src = "Files/help_screens/minus42.png";
-        document.getElementById(table).style.display = "table";
-        document.getElementById(picture).alt = "Less ";
-    }
-}
-/*------------------------------------------------------------------------------
- * Function to set the stop value sof the svg colour gradients
- *
- * @param object -symbolizes the Block, which uses the function
- *----------------------------------------------------------------------------*/
-function setgradientheight(object) {
-    //if (object.getColour() > 160) {
-        var blockHeight = object.svg_.height;
-        var inputs = object.inputList;
-        var selectinputHeight = inputs[0].renderHeight;
-        var whereInputHeight = inputs[1].renderHeight;
-        var startGrad = (100 / blockHeight) * (selectinputHeight + 10);
-        var stopGrad = (100 / blockHeight) * (selectinputHeight + whereInputHeight + 20);
-        var firstGrad = Math.round(startGrad) + "%";
-        var secondGrad = Math.round(stopGrad) + "%";
-        var temp = new Array();
-        if (colprod.length > 0) {
-            for (var x = 0; x < colprod.length; x++) {
-                if (colprod[x][4] == object.getColour())
-                {
-                    if (colprod[x][0] > blockHeight && colprod[x][3] != object.id)
-                    {
-                        temp = colprod[x];
-                    }
-                }
+    /* Get the colour of the first table_column block and set 
+        this on the select block */
+    for (var childKey in children) {
+        var child = children[childKey];
+        if (child.type === "tables_and_columns") {
+            if (child.getChildren().length === 0) {
+                stopColor = child.getColour();
+                return stopColor;
             }
         }
-        if (temp.length > 0) {
-            switch (object.getColour()) {
-                case 6255:
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[4].childNodes[0].setAttribute("offset", temp[1] + '%');
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[4].childNodes[1].setAttribute("offset", temp[2] + '%');
-                    break;
-                case 5015:
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[5].childNodes[0].setAttribute("offset", temp[1] + '%');
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[5].childNodes[1].setAttribute("offset", temp[2] + '%');
-                    break;
-                case 4330:
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[6].childNodes[0].setAttribute("offset", temp[1] + '%');
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[6].childNodes[1].setAttribute("offset", temp[2] + '%');
-                    break;
-                case 7115:
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[7].childNodes[0].setAttribute("offset", temp[1] + '%');
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[7].childNodes[1].setAttribute("offset", temp[2] + '%');
-                    break;
-            }
-        } else {
-            switch (object.getColour()) {
-                case 6255:
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[4].childNodes[0].setAttribute("offset", firstGrad);
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[4].childNodes[1].setAttribute("offset", secondGrad);
-                    break;
-                case 5015:
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[5].childNodes[0].setAttribute("offset", firstGrad);
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[5].childNodes[1].setAttribute("offset", secondGrad);
-                    break;
-                case 4330:
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[6].childNodes[0].setAttribute("offset", firstGrad);
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[6].childNodes[1].setAttribute("offset", secondGrad);
-                    break;
-                case 7115:
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[7].childNodes[0].setAttribute("offset", firstGrad);
-                    object.workspace.svgGroup_.childNodes[1].ownerSVGElement.childNodes[0].childNodes[7].childNodes[1].setAttribute("offset", secondGrad);
-                    break;
-            }
-
-            var z = colprod.length - 1;
-            colprod[z + 1] = new Array();
-            colprod[z + 1][0] = blockHeight;//length of block
-            colprod[z + 1][1] = Math.round(startGrad);//min grad
-            colprod[z + 1][2] = Math.round(stopGrad);//7max grad
-            colprod[z + 1][3] = object.id;//Id of object
-            colprod[z + 1][4] = object.getColour();
-
-        }
-    //}
-}
-/*------------------------------------------------------------------------------
- * Function to set colour of the if-function-block
- *
- * @param object -symbolizes the Block, which uses the function
- * @param child -symbolizes the Block, colours the object
- *----------------------------------------------------------------------------*/
-function colourIF(object, child) {
-    switch (child.getColour()) {
-        //Setting colourgradient and adjusting the stop parameters
-        case  15 :
-            //text gradient
-            object.setColour(15);
-            break;
-        case  5015 :
-            //text gradient
-            object.setColour(15);
-            break;
-        case 160:
-            //bool
-            object.setColour(160);
-            break;
-        case 255:
-            //numeric gradient
-            object.setColour(255);
-            break;
-        case 6255:
-            //numeric gradient
-            object.setColour(255);
-            break;
-        case 330:
-            //date gradient
-            object.setColour(330);
-            break;
-        case 4330:
-            //date gradient
-            object.setColour(330);
-            break;
-        case 115:
-            //list gradient
-            object.setColour(115);
-            break;
-        case 7115:
-            //list gradient
-            object.setColour(115);
-            break;
     }
+
+    return stopColor;
 }
 
 function checkUndefined(value) {

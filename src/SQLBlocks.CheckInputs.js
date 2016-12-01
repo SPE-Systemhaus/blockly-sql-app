@@ -121,6 +121,22 @@ function checkTypeByColour(block) {
     }
 }
 
+/**
+ * Checking if block is numeric. If it is not numeric the block
+ * will be doomed, by unplugging and moving it from the connected
+ * block away.
+ * 
+ * @param {Blockly.Block} block Block that should be checked.
+ */
+function allowOnlyNumeric(block) {
+    if (block) {
+        if (block.getColour() !== SQLBlockly.Colours.number) {
+            block.unplug(true, true);
+            block.moveBy(100, 100);
+        }
+    }
+}
+
 /*------------------------------------------------------------------------------
  * Checking the variable inputs of the group-function. Sets an alert if there 
  * are to much variables.
@@ -184,6 +200,7 @@ function groupFunctioneval(object) {
         }
     }
 }
+
 /*------------------------------------------------------------------------------
  * Checking the variable inputs. Sets an alert if there are to much variables.
  * 
@@ -413,137 +430,12 @@ function groupbyval(object) {
 }
 
 /*------------------------------------------------------------------------------
- * Checking the variable inputs. Sets an alert if there are to much variables.
- * 
- * @ param{type} object-symbolizes the block, which uses the function
- *----------------------------------------------------------------------------*/
-function checkTableInputsCompare(object, directory) {
-    var field = "";
-    if (directory != 'like' && directory != 'isnull' && directory != 'isnotnull')
-//Using dragmode_ == 0, so that the inputs are only checked if the Block is not dragged.
-//Corrects unlikly dragbehaviour
-    {//valid parameter
-        var Block = object.getInputTargetBlock('A');
-        var Block2 = object.getInputTargetBlock('B');
-        var col = typeof Block.getColour() !== "null" ? Block.getColour() : 0;
-        var col2 = typeof Block.getColour() !== "null" ? Block2.getColour() : 0;
-
-        if (!Block2)
-            return;
-
-        if (col == 15) {
-            if (col2 == 15 || Block2.type == "sub_select_where") {
-                //Do nothing 
-            } else {
-                if (Block2.type == 'charfunction') {
-
-                    field = Block2.getFieldValue('char_function');
-                    if (field == 'length' ||
-                        field == 'ascii') {
-                        //don't link the blocks with wrong type
-                        Block2.unplug(true, true);
-                    }
-                } else  //don't link the blocks with wrong type
-                    Block2.unplug(true, true);
-            }
-        } else {
-            if (col == 330) {
-                if (col2 == 330 || Block2.type == "sub_select_where") {
-                } else  //don't link the blocks with wrong type
-                    Block2.unplug(true, true);
-            } else {
-                if (col == 255) {
-                    if (col2 == 255 || Block2.type == "sub_select_where" || Block2.type == 'charfunction' && Block2.getFieldValue('char_function') == 'length'
-                            || Block2.type == 'charfunction' && Block2.getFieldValue('char_function') == 'ascii') {
-                    } else //don't link the blocks with wrong type
-                        Block2.unplug(true, true);
-                } else {
-                    if (col == 160) {
-                        if (col2 == 160 || Block2.type == "sub_select_where") {
-                        } else //don't link the blocks with wrong type
-                            Block2.unplug(true, true);
-                    }
-                }
-            }
-        }
-    } else {
-        if (directory == 'like') {
-            //valid parameter
-            var Blockl = object.getInputTargetBlock('A');
-            if (Blockl != null) {
-                col = Blockl.getColour();
-                if (Blockl.type == 'string' || Blockl.type == 'tables_and_colums_var' && col == 15) {
-                } else {
-                    Blockl.unplug(true, true);
-                }
-
-                var Blocks = object.getInputTargetBlock('B');
-                if (Blocks != null) {
-                    var cols = Blocks.getColour();
-                    if (Blockl.type == 'string' && Blocks.type != 'string'
-                            || Blockl.type == 'tables_and_colums_var' && col == 15 && Blocks.type != 'string'
-                            || Blockl.type == 'tables_and_colums_var' && col == 15 && Blocks.type == 'tables_and_colums_var' && cols != 15) {
-                        //don't link the blocks with wrong type
-                        Blocks.unplug(true, true);
-                    }
-                }
-            }
-        }
-    }
-}
-
-/*------------------------------------------------------------------------------
- * Checking the variable inputs of the number-function. Sets an alert if there 
- * are to much variables.
- * 
- * @ param{type} object- symbolizes the Block, which uses the function
- *-----------------------------------------------------------------------------*/
-function numberfunctioneval(object) {
-    var msg = null;
-    var count = 0;
-    if (object.getInputTargetBlock("object") != null) {
-        var variableBlocks = object.getInputTargetBlock('object');
-        var directory = object.getFieldValue("number_function");
-
-        if (directory == 'mod' || directory == 'power' || directory == 'round' || directory == 'truncate')
-        {
-            var secondBlock = object.getInputTargetBlock('number');
-            var col = variableBlocks.getColour();
-            //first valid parameter
-            if (variableBlocks.type == 'tables_and_colums_var' && col != 255) {
-                //don't link the blocks on this level
-                variableBlocks.unplug(true, true);
-            }
-            //missing variable
-            if (variableBlocks != null && secondBlock == null || variableBlocks == null && secondBlock != null) {
-                count = 4;
-            }
-        }
-        else
-        {
-            var col = variableBlocks.getColour();
-            if (variableBlocks.type == 'tables_and_colums_var' && col != 255)
-            {
-                //don't link the blocks on this level
-                variableBlocks.unplug(true, true);
-
-            }
-        }
-    }
-    if (count == 4) {
-        msg = 'Missing statement.';
-    }
-    object.setWarningText(msg);
-}
-
-/*------------------------------------------------------------------------------
  * Checking the variable inputs of the other-function. Sets an alert if there 
  * are to much variables.
  * 
  * @ param{type} object- symbolizes the Block, which uses the function
  *----------------------------------------------------------------------------*/
-function othereval(object)
-{
+function othereval(object) {
     var msg = null;
 
     var miss = 0;
@@ -569,6 +461,7 @@ function othereval(object)
                 variableBlocks[x + 1].unplug(true, true);
         }
     }
+
     if (directory == 'nvl')
     {
         var a = 0;
@@ -597,6 +490,7 @@ function othereval(object)
             }
         }
     }
+
     if (directory == 'decode')
     {
         var a = 0;
@@ -622,12 +516,15 @@ function othereval(object)
             miss = 1;
         }
     }
+
     if (count == 1) {
         msg = 'Missing statement. Needed ' + miss + 'more';
     }
+
     if (count == 4) {
         msg = 'Missing parameters.Needed minimal 2.';
     }
+
     object.setWarningText(msg);
 }
 
@@ -637,15 +534,14 @@ function othereval(object)
  * 
  * @ param{type} object- symbolizes the block, which uses the function
  *----------------------------------------------------------------------------*/
-function chareval(object)
-{
+function chareval(object) {
     var msg = null;
     var count = 0;
     var miss = 0;
     var variableBlocks = new Array();
     var z = 0;
     var directory = object.getFieldValue("char_function");
-    if (directory == 'lpad' || directory == 'rpad')
+    if (directory == 'lpad' || directory == 'rpad') 
     {
         if (object.getInputTargetBlock("option") != null) {
             variableBlocks[z] = object.getInputTargetBlock("option");
@@ -699,7 +595,7 @@ function chareval(object)
             for (var x = 0; x < variableBlocks.length; x++) {
                 var col = variableBlocks[x].getColour();
 //valid parameters
-                if (variableBlocks[x].type == 'tables_and_colums_var' && col != 15)
+                if (variableBlocks[x].type == 'tables_and_colums_var' && col != SQLBlockly.Colours.string)
                 {
 //don't link the blocks on this level
                     variableBlocks[x].unplug(true, true);
@@ -732,7 +628,7 @@ function chareval(object)
                 for (var x = 0; x < variableBlocks.length; x++) {
                     var col = variableBlocks[x].getColour();
 //first valid parameter
-                    if (variableBlocks[x].type == 'tables_and_colums_var' && col != 15)
+                    if (variableBlocks[x].type == 'tables_and_colums_var' && col != SQLBlockly.Colours.string)
                     {
 //don't link the blocks on this level
                         variableBlocks[x].unplug(true, true);
@@ -758,7 +654,7 @@ function chareval(object)
                     for (var x = 0; x < variableBlocks.length; x++) {
                         var col = variableBlocks[x].getColour();
 //first valid parameter
-                        if (variableBlocks[x].type == 'tables_and_colums_var' && col != 15)
+                        if (variableBlocks[x].type == 'tables_and_colums_var' && col != SQLBlockly.Colours.string)
                         {
 //don't link the blocks on this level
                             variableBlocks[x].unplug(true, true);
@@ -798,7 +694,7 @@ function chareval(object)
 
                             var col = variableBlocks.getColour();
 //first valid parameter
-                            if (variableBlocks.type == 'tables_and_colums_var' && col != 15)
+                            if (variableBlocks.type == 'tables_and_colums_var' && col != SQLBlockly.Colours.string)
                             {
                                 //don't link the blocks on this level
                                 variableBlocks.unplug(true, true);
@@ -963,25 +859,6 @@ function dateeval(object) {
 }
 
 /*------------------------------------------------------------------------------
- * Checking the variable inputs of the math opertaor. Sets an alert if there 
- * are to much variables.
- * 
- * @ param{type} object- symbolizes the Block, which uses the function
- *----------------------------------------------------------------------------*/
-function checkMathInputs(object)
-{
-    var block = object.childBlocks_;
-    for (var i = 0; i < block.length; i++)
-    {
-        var col = block[i].getColour();
-        if (col != 255)
-        {
-            block[i].unplug(true, true);
-        }
-    }
-}
-
-/*------------------------------------------------------------------------------
  * Checking the compare inputsfor the subselect. 
  * 
  * @ param{type} object- symbolizes the Block, which uses the function
@@ -1052,156 +929,3 @@ function checksub(object) {
 
     }
 }
-
-/*------------------------------------------------------------------------------
- * Checking the colours to avoid recolouring if colours already match.
- * 
- * @param[type} object- the object which is going to colour the parent
- * @param[type} parent - the object which is going to be coloured
- * @return sameColour - the value which starts or suppresses the colouring
- *----------------------------------------------------------------------------*/
-function checkColour(object, parent) {
-    var col = object.getColour();
-    var pcol = parent.getColour();
-    var gcol = 0
-    if (parent.parentBlock_) {
-        var gp = parent.parentBlock_;
-        gcol = gp.getColour();
-    }
-    var sameColour = false;
-    if (object.childBlocks_.length > 0) {
-        if (pcol == 7115) {
-            if (gcol == 115 || gcol == 7115 || gcol == 0)
-                sameColour = true;
-        } else {
-            sameColour = false;
-        }
-    } else {
-        if (col == 160 && pcol == 160) {
-            sameColour = true;
-        } else {
-            if (pcol == 4330 && col == 330
-                    || pcol == 330 && col == 330
-                    || pcol == 1160 && col == 330)
-            {
-                if (gcol == 4330 || gcol == 330 || gcol == 0)
-                    sameColour = true;
-            }
-            else {
-                if (pcol == 6255 && col == 255
-                        || pcol == 255 && col == 255
-                        || pcol == 2160 && col == 255)
-                {
-                    if (gcol == 2555 || gcol == 6255 || gcol == 0)
-                        sameColour = true;
-                } else {
-                    if (pcol == 5015 && col == 15
-                            || pcol == 15 && col == 15
-                            || pcol == 3160 && col == 255)
-                    {
-                        if (gcol == 15 || gcol == 5015 || gcol == 0)
-                            sameColour = true;
-                    } else {
-                        if (pcol == 7115 && col == 115
-                                || pcol == 115 && col == 115) {
-                            if (gcol == 115 || gcol == 7115 || gcol == 0)
-                                sameColour = true;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if (parent.nextConnection != null) {
-        if (parent.nextConnection.targetConnection != null) {
-            if (parent.nextConnection.targetConnection.sourceBlock_ != null) {
-                if (sameColour == true && parent.nextConnection.targetConnection.sourceBlock_)
-                {
-                    sameColour = false;
-                }
-            }
-        }
-    }
-    return sameColour;
-}
-
-/*------------------------------------------------------------------------------
- * Checking the values of the 'SET'-section of update or insert
- * 
- * @param[type} object- the object which inputs will be checked
- *----------------------------------------------------------------------------*/
-function checkSetUpdate(object) {
-    if (object.getInputTargetBlock('up') != null) {
-        var target = object.getInputTargetBlock('up');
-
-        var a = 0;
-        var msg = null;
-        var vals = new Array();
-        while (target != null)
-        {
-            if (target.type == 'tables_and_colums')
-            {
-//saving values for comaprison
-                vals[a] = new Array();
-                vals[a][0] = target.getFieldValue('tabele');
-
-                vals[a][1] = target.getFieldValue('Column');
-                a++;
-                if (target.childBlocks_.length > 0)
-                { // setting child block as target
-                    target = target.childBlocks_[0];
-                }
-                else
-                    target = null;
-            }
-            else
-            {
-                target = null;
-            }
-        }
-        var count = object.setCount_;
-        for (var b = 0; b <= count; b++) {
-            if (object.getInputTargetBlock('set' + b)) {
-                var childs = object.getInputTargetBlock('set' + b);
-                var cor = 'set' + b;
-                if (childs.getInputTargetBlock('A'))
-                {
-                    var child = childs.getInputTargetBlock('A');
-
-                }
-                var dir = '';
-
-                if (child != null) {
-                    for (var x = 0; x < vals.length; x++)
-                    {
-//checking if the right tables are pluged in
-                        if (vals[x][0] == child.getFieldValue('tabele'))
-                        {
-                            if (vals[x][1] == child.getFieldValue('Column'))
-                            {
-                                msg = null;
-                                if (childs.getInputTargetBlock('B')) {
-                                    checkTableInputsCompare(childs, dir);
-                                }
-                                vals.splice(x, 1);
-                                break;
-
-                            }
-                            else {
-                                msg = "Wrong column. Please use only tables and columns used in the 'INSERT INTO'.";
-
-                            }
-                        }
-                        else
-                        {
-                            msg = "Wrong table. Please use only tables and columns used in the 'INSERT INTO'.";
-                        }
-                    }
-                    child.setWarningText(msg);
-                    child = null;
-                }
-            }
-        }
-    }
-}
-

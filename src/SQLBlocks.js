@@ -432,9 +432,6 @@ Blockly.Blocks['update'] = {
         );
 
         checkUpdate(this);
-        if (this.getInputTargetBlock('set0')) {
-            checkSetUpdate(this);
-        }
     }
 };
 /*------------------------------------------------------------------------------
@@ -705,33 +702,15 @@ Blockly.Blocks['select'] = {
         if (!this.workspace)
             return;
 
-        var msg = null;
-        var stopColor = this.getColour();
-        var children = this.getChildren();
-
-        /* Get the colour of the first table_column block and set 
-           this on the select block */
-        for (var childKey in children) {
-            var child = children[childKey];
-            if (child.type === "tables_and_columns") {
-                if (child.getChildren().length === 0) {
-                    stopColor = child.getColour();
-                    break;
-                }
-            }
-        }
-
         this.gradient.setVerticalGradient(
             this, {
                 "start" : "#5BA58C",
-                "stop" : stopColor
+                "stop" : getChildColour(this)
             }, {
                 "start" : this.getInput("select").renderHeight,
                 "stop" : this.getInput("Clause").renderHeight
             }
         );
-
-        this.setWarningText(msg);
     }
 };
 /*------------------------------------------------------------------------------
@@ -1102,57 +1081,20 @@ Blockly.Blocks['sub_select'] = {
         if (!this.workspace)
             return;
         
-        var stopColor = this.getColour();
-        var children = this.getChildren();
         var selectHeight = this.getInput("select").renderHeight;
-
-        for (var childKey in children) {
-            var child = children[childKey];
-            if (child.type === "tables_and_columns") {
-                if (child.getChildren().length === 0) {
-                    stopColor = child.getColour();
-                    break;
-                }
-            }
-        }
 
         this.gradient.setVerticalGradient(
             this, {
                 "start" : "#5BA58C",
-                "stop" : stopColor
+                "stop" : getChildColour(this)
             }, {
                 "start" : selectHeight,
                 "stop" : this.getHeightWidth().height - selectHeight
             }
         );
-
-        var msg = null;
-        if (Blockly.Block.dragMode_ == 0) {
-            //No type checking and colouring , while the block is dragged
-            if (this.groupByCount_) {
-                if (!this.getInputTargetBlock('group_by'))
-                    msg = null;
-
-                groupbyval(this);
-            } else {
-                if (this.groupByHavingCount_) {
-                    if (!this.getInputTargetBlock('group_by_have'))
-                        msg = null;
-
-                    groupbyval(this);
-                } else {
-                    if (this.orderByCount_) {
-                        if (!this.getInputTargetBlock('gorder_by'))
-                            msg = null;
-
-                        groupbyval(this);
-                    }
-                }
-            }
-        }
-        this.setWarningText(msg);
     }
 };
+
 /*------------------------------------------------------------------------------
  * sub select-is like the select block, the first block of an select clause.
  *It is the default object for this command and  contains all available blocks
@@ -1487,40 +1429,17 @@ Blockly.Blocks['sub_select_where'] = {
         if (!this.workspace)
             return;
 
-        var stopColor = this.getColour();
-        var children = this.getChildren();
         var selectHeight = this.getInput("select").renderHeight;
-
-        for (var childKey in children) {
-            var child = children[childKey];
-            if (child.type === "tables_and_columns") {
-                if (child.getChildren().length === 0) {
-                    stopColor = child.getColour();
-                    break;
-                }
-            }
-        }
 
         this.gradient.setVerticalGradient(
             this, {
                 "start" : "#5BA58C",
-                "stop" : stopColor
+                "stop" : getChildColour(this)
             }, {
                 "start" : selectHeight,
                 "stop" : this.getHeightWidth().height - selectHeight
             }
         );
-
-        if (Blockly.Block.dragMode_ == 0) {
-            //No colouring and type checking, while dragging the block
-            if (this.groupByCount_) {   //Checking the inputs of GROUP BY
-                groupbyval(this);
-            } else {
-                if (this.groupByHavingCount_) {//Checking the Inputs of GROUP BY HAVING
-                    groupbyval(this);
-                }
-            }
-        }
     }
 };
 
@@ -1662,13 +1581,10 @@ Blockly.Blocks['tables_and_columns'] = {
         if (!this.workspace)
             return;
         
+        colourTheParent(this);
         var parent = this.getParent();
 
-        console.log("onchange");
-
         if (parent) {
-            colourTheParent(this);
-
             if (parent.type == 'select' || 
                 parent.type == 'sub_select' || 
                 parent.type == 'sub_select_where') {
@@ -1723,7 +1639,7 @@ Blockly.Blocks['tables_and_columns_var'] = {
         var tableDropdown = new Blockly.FieldDropdown(
             getTableDropdowndataFromXML(), 
             function (table) {
-                block.updateShape(table, "Choose");
+                block.updateShape(table, "*");
 
                 /* Updating parent block */
                 var parent = block.getParent();
@@ -1859,13 +1775,10 @@ Blockly.Blocks['to'] = {
      * @this Blockly.Block
      */
     onchange: function () {
-      if (!this.workspace)
-          return;
+        if (!this.workspace)
+            return;
 
-      //No type checking and colouring , while the block is dragged  
-      if (Blockly.Block.dragMode_ == 0) {
-        checkTableInputsCompare(this, 'EQ');
-      }
+        checkTypeByColour(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -2186,29 +2099,6 @@ Blockly.Blocks['terms_simple_expressions'] = {
         };
         return TOOLTIPS[op];
       });
-    },
-    /**
-     * Checks if the parameters are valid for the arithmetik expressions
-     * Sends an alert message when they are unvalid
-     *
-     * @method onchange
-     * @this Blockly.Block
-     */
-    onchange: function () {
-      if (!this.workspace)
-          return;
-
-      if (Blockly.Block.dragMode_ == 0) {
-        //No checking of type and colour changes, while the block is dragged
-        if (this.parentBlock_) {
-          var check = checkColour(this, this.parentBlock_);
-          if (!check) {
-              //Set the colour of the parent only if its not the same
-              colourTheParent(this);
-          }
-        }
-        checkMathInputs(this);
-      }
     }
 };
 /*------------------------------------------------------------------------------
@@ -2244,19 +2134,10 @@ Blockly.Blocks['bool'] = {
      * @this Blockly.Block
      */
     onchange: function () {
-      if (!this.workspace)
-        return;
-
-      if (Blockly.Block.dragMode_ == 0) {
-        //No checking of type ans colour changes, while the block is dragged
-        if (this.parentBlock_) {
-          var check = checkColour(this, this.parentBlock_);
-
-          //Set the colour of the parent only if its not the same
-          if (!check)
-            colourTheParent(this);
-        }
-      }
+        if (!this.workspace)
+            return;
+    
+        colourTheParent(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -2325,18 +2206,10 @@ Blockly.Blocks['string'] = {
      * @this Blockly.Block
      */
     onchange: function () {
-        //var msg = null;
-        //var stringValue = this.getFieldValue("String");
-      
         if (!this.workspace)
             return;
         
         colourTheParent();
-        
-        /* if (stringValue == "")
-            msg = SQLBlocks.Msg.Warnings.EMPTY_STRING;
-
-        this.setWarningText(msg); */
     }
 };
 /*------------------------------------------------------------------------------
@@ -2659,7 +2532,6 @@ Blockly.Blocks['groupfunction_factor'] = {
 
         //Check inputs
         //groupFunctioneval(this);
-
     },
     customContextMenu: Blockly.Blocks['fieldname_get'].customContextMenu
 };
@@ -2892,10 +2764,10 @@ Blockly.Blocks['numberfunction'] = {
             var ifInput = input.appendValueInput('object')
                     .appendField(dropdown, 'number_function')
                     .setAlign(Blockly.ALIGN_RIGHT)
-                    .setCheck(["table_column_var", "number"]);
+                    .setCheck(["table_column_var", "number", "numberfunction"]);
             var doInput = input.appendValueInput('number')
                     .setAlign(Blockly.ALIGN_RIGHT)
-                    .setCheck("number");
+                    .setCheck("number", "numberfunction");
             var thisBlock = input;
 
             //restore the childblocks
@@ -2932,7 +2804,7 @@ Blockly.Blocks['numberfunction'] = {
             var ifInput = input.appendValueInput('object')
                                .appendField(dropdown, 'number_function')
                                .setAlign(Blockly.ALIGN_RIGHT)
-                               .setCheck(["table_column_var", "number"]);
+                               .setCheck(["table_column_var", "number", "numberfunction"]);
             var thisBlock = input;
             input.setHelpUrl(function () {
                 var op = thisBlock.getFieldValue('number_function');
@@ -3038,8 +2910,12 @@ Blockly.Blocks['numberfunction'] = {
       if (!this.workspace)
           return;
     
+      /* Forcing only numeric blocks */
+      allowOnlyNumeric(this.getInputTargetBlock("object"));
+      allowOnlyNumeric(this.getInputTargetBlock("number"));
+
+      /* Colouring */
       colourTheParent(this);
-      numberfunctioneval(this);   
     }
 };
 /*------------------------------------------------------------------------------
@@ -3353,7 +3229,7 @@ Blockly.Blocks['otherfunction'] = {
         if (!this.workspace)
             return;
 
-        othereval(this);
+        //othereval(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -3631,15 +3507,8 @@ Blockly.Blocks['charfunction'] = {
         if (!this.workspace)
             return;
 
-        if (Blockly.Block.dragMode_ == 0) {
-            //No type checking and colouring while block is dragged
-            if (this.parentBlock_) {
-                var check = checkColour(this, this.parentBlock_);
-                if (!check) //Set the colour of the parent only if its not the same
-                    colourTheParent(this);
-            }
-            chareval(this); //Checking the inputs
-        }
+        colourTheParent(this);
+        chareval(this); //Checking the inputs
     }
 };
 /*------------------------------------------------------------------------------
@@ -3886,16 +3755,8 @@ Blockly.Blocks['datefunction'] = {
         if (!this.workspace)
             return;
 
-        if (Blockly.Block.dragMode_ == 0) {
-            //No type checking and colouring while block is dragged
-            if (this.parentBlock_) {
-                var check = checkColour(this, this.parentBlock_);
-                if (!check) //Set the colour of the parent only if its not the same
-                    colourTheParent(this);
-            }
-            //Checking the inputs
-            dateeval(this);
-        }
+        colourTheParent(this);
+        dateeval(this);         //Checking the inputs
     }
 };
 
@@ -4017,9 +3878,9 @@ Blockly.Blocks['group_by'] = {
             return;
 
         if (checkUndefined(Blockly.Block.dragMode_) == 0)
-            if (checkUndefined(this.childBlocks_[0]))
-                if (checkUndefined(this.childBlocks_[0].type) != 'limit')
-                    this.childBlocks_[0].unplug(true, true);
+            if (checkUndefined(this.getChildren()[0]))
+                if (checkUndefined(this.getChildren()[0].type) != 'limit')
+                    this.getChildren()[0].unplug(true, true);
     }
 };
 Blockly.Blocks['group_by_having'] = {
@@ -4045,9 +3906,9 @@ Blockly.Blocks['group_by_having'] = {
             return;
 
         if (checkUndefined(Blockly.Block.dragMode_) == 0)
-            if (checkUndefined(this.childBlocks_[0]))
-                if (checkUndefined(this.childBlocks_[0].type) != 'limit')
-                    this.childBlocks_[0].unplug(true, true);
+            if (checkUndefined(this.getChildren()[0]))
+                if (checkUndefined(this.getChildren()[0].type) != 'limit')
+                    this.getChildren()[0].unplug(true, true);
     }
 };
 Blockly.Blocks['order_by'] = {
@@ -4072,9 +3933,9 @@ Blockly.Blocks['order_by'] = {
             return;
 
         if (checkUndefined(Blockly.Block.dragMode_) == 0)
-            if (checkUndefined(this.childBlocks_[0]))
-                if (checkUndefined(this.childBlocks_[0].type) != 'limit')
-                    this.childBlocks_[0].unplug(true, true);
+            if (checkUndefined(this.getChildren()[0]))
+                if (checkUndefined(this.getChildren()[0].type) != 'limit')
+                    this.getChildren()[0].unplug(true, true);
     }
 };
 Blockly.Blocks['limit'] = {
