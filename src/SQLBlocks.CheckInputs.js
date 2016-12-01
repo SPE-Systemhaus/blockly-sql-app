@@ -29,19 +29,19 @@ function checkInsertStatement(object) {
                         for (var j = 0; j < tab.length - 1; j++) {
                             if (tab[j][1] == tab[i][1]) {
                                 if (insertElement.warning) {
-                                    if (insertElement.warning.getText() !== Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN) {
-                                        insertElement.setWarningText(Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN);
+                                    if (insertElement.warning.getText() !== SQLBlocks.Msg.Warnings.TWO_VALUES_SAME_COLUMN) {
+                                        insertElement.setWarningText(SQLBlocks.Msg.Warnings.TWO_VALUES_SAME_COLUMN);
                                     }
                                 } else
-                                    insertElement.setWarningText(Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN);
+                                    insertElement.setWarningText(SQLBlocks.Msg.Warnings.TWO_VALUES_SAME_COLUMN);
                             } else {
                                 insertElement.setWarningText(null);
                             }
                         }
                     } else {
                         if (insertElement.warning) {
-                            if (insertElement.msg !== Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN) {
-                                insertElement.setWarningText(Blockly.Msg.CHECK_INSERT_DIFFERENT_TABLES);
+                            if (insertElement.msg !== SQLBlocks.Msg.Warnings.TWO_VALUES_SAME_COLUMN) {
+                                insertElement.setWarningText(SQLBlocks.Msg.Warnings.DIFFERENT_TABLES);
                             } else
                                 insertElement.setWarningText(null);
                         } else
@@ -74,7 +74,7 @@ function checkUpdate(object) {
                         object.setWarningText(msg);
                         target = childoftarget;
                     } else {
-                        msg = Blockly.Msg.CHECK_UPDATE_DIFFERENT_TABLES;
+                        msg = SQLBlocks.Msg.Warnings.DIFFERENT_TABLES;
                         object.setWarningText(msg);
                         target = null;
                     }
@@ -86,6 +86,38 @@ function checkUpdate(object) {
                 target = null;
             }
         }
+    }
+}
+
+/* Checking if blocks are comparable from the input */
+function checkTypeByColour(block) {
+    var inputBlockA = block.getInputTargetBlock("A");
+    var inputBlockB = block.getInputTargetBlock("B");
+    var colourA = null;
+    var colourB = null;
+
+    if (inputBlockA) {
+        if (inputBlockA.type === "tables_and_columns_var") {
+            var table = inputBlockA.getFieldValue("tabele");
+            var column = inputBlockA.getFieldValue("Column");
+            colourA = sqlHelp.getTypeColour(table, column);
+        } else
+            colourA = inputBlockA.getColour();
+    }
+
+    if (inputBlockB) {
+        if (inputBlockB.type === "tables_and_columns_var") {
+            var table = inputBlockB.getFieldValue("tabele");
+            var column = inputBlockB.getFieldValue("Column");
+            colourB = sqlHelp.getTypeColour(table, column);
+        } else
+            colourB = inputBlockB.getColour();
+    }
+
+    if (colourA !== colourB && colourB !== null && colourA !== null) {
+        //inputBlockB.disconnectUiEffect();
+        inputBlockB.unplug(true, true);  
+        inputBlockB.moveBy(100, 100);          
     }
 }
 
@@ -294,9 +326,9 @@ function groupbyval(object) {
                             if (object.getInput('order_by')) {
                                 object.setWarningText(null);
                             } else {
-                                object.setWarningText(Blockly.Msg.GROUP_BY_NOT_ENOUGH_TABLES);
+                                object.setWarningText(SQLBlocks.Msg.Warnings.NOT_ENOUGH_TABLES);
                             }
-                            object.setWarningText(Blockly.Msg.GROUP_BY_NOT_ENOUGH_TABLES);
+                            object.setWarningText(SQLBlocks.Msg.Warnings.NOT_ENOUGH_TABLES);
                         } else {
                             if (d = a) {
                                 object.setWarningText(null);
@@ -309,7 +341,7 @@ function groupbyval(object) {
                         if (gt[0][0] == tablecolumn[x][0])
                         {
                             if (gt[0][1] != tablecolumn[x][1] && tablecolumn[x][1]) {
-                                msg = Blockly.Msg.GROUP_BY_WRONG_COLUMN;
+                                msg = SQLBlocks.Msg.Warnings.WRONG_COLUMN;
                             } else {
                                 msg = null;
                                 tablecolumn.splice(x, 1);
@@ -318,7 +350,7 @@ function groupbyval(object) {
                         }
                         else {
                             if (gt[0][0] != tablecolumn[x][0]) {
-                                msg = Blockly.Msg.GROUP_BY_WRONG_COLUMN;
+                                msg = SQLBlocks.Msg.Warnings.WRONG_COLUMN;
                             }
                         }
                     }
@@ -345,7 +377,7 @@ function groupbyval(object) {
                                 if (object.getInput('order_by')) {
                                     object.setWarningText(null);
                                 } else {
-                                    object.setWarningText(Blockly.Msg.GROUP_BY_NOT_ENOUGH_TABLES);
+                                    object.setWarningText(SQLBlocks.Msg.Warnings.NOT_ENOUGH_TABLES);
                                 }
                             }
                             else {
@@ -358,7 +390,7 @@ function groupbyval(object) {
                         //compare the values
                         for (var x = 0; x < tablecolumn.length; x++) {
                             if (gt[0][0] != tablecolumn[x][0]) {
-                                msg = Blockly.Msg.GROUP_BY_WRONG_ALIAS;
+                                msg = SQLBlocks.Msg.Warnings.WRONG_ALIAS;
                             }
                             else {
                                 msg = null;
