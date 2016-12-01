@@ -103,7 +103,7 @@ function SQLHelper() {
     var columns = sqlHelp.getAllColumnsWithTypeByTable(table);
 
     if (column === "*")
-      return "#74A55B";
+      return SQLBlockly.Colours.list;
 
     if (column in columns) {
       var type = columns[column];
@@ -119,21 +119,21 @@ function SQLHelper() {
           case "double":
           case "float":
           case "decimal":
-              return "#6C5DA4";
+              return SQLBlockly.Colours.number;
           case "varchar":
           case "text":
           case "string":
-              return "#A56D5B";
+              return SQLBlockly.Colours.string;
           case "date":
           case "datetime":
-              return "#A55B80";
+              return SQLBlockly.Colours.date;
           case "bool":
           case "boolean":
-              return "#A55B80";
+              return SQLBlockly.Colours.boolean;
           case "blob":
-              return "#000000";
+              return SQLBlockly.Colours.undefined;
           default:
-              return "#000000";
+              return SQLBlockly.Colours.undefined;
       }
     }
   };

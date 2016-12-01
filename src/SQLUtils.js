@@ -463,12 +463,16 @@ function verticaltohorizontal(object, colour) {
  * @ param {type} object-symbolizes the block, which uses the function
  *----------------------------------------------------------------------------*/
 function colourTheParent(block) {
+    if (!block)
+        return;
+    
     var parent = block.getParent();
     var gradient = new ColourGradient();
 
     if (parent) {
-        if (parent.getColour !== block.getColour() &&
-            Blockly.dragMode_ === Blockly.DRAG_NONE) {
+        block.lastConnectedParent = parent;
+        
+        if (parent.getColour !== block.getColour()) {
             switch(parent.type) {
                 case "compare_operator" :
                 case "conditions" :
@@ -478,6 +482,11 @@ function colourTheParent(block) {
                     break;
             }
         }
+    } else {    /* Resetting color if disonnected */
+        if (block.lastConnectedParent)
+            block.lastConnectedParent.setColour(
+                block.lastConnectedParent.getColour()
+            );
     }
 }
 

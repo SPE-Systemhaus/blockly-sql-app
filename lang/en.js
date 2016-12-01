@@ -1,3 +1,6 @@
+SQLBlocks = {};
+SQLBlocks.Msg = {};
+
 /**
  * DROPDOWN ENTRIES
  * 
@@ -121,107 +124,126 @@ var bool = [
 /**
  * BLOCKS
  */
-Blockly.Msg.INSERT_VALUES = "INSERT VALUES";
-Blockly.Msg.SET = "SET";
-Blockly.Msg.WHERE = "WHERE"
-Blockly.Msg.UPDATE = "UPDATE";
-Blockly.Msg.SELECT = "SELECT";
-Blockly.Msg.GROUP_BY = "GROUP BY";
-Blockly.Msg.HAVING = "HAVING";
-Blockly.Msg.ORDER_BY = "ORDER BY";
-Blockly.Msg.LIMIT = "LIMIT";
-Blockly.Msg.DISTINCT = "DISTINCT";
-Blockly.Msg.SUBSELECT = "SUBSELECT";
-Blockly.Msg.TO = "TO";
-Blockly.Msg.NOT = "NOT";
-Blockly.Msg.AS = "AS";
-Blockly.Msg.INTERVAL = "INTERVAL";
-Blockly.Msg.ADD = "ADD";
-Blockly.Msg.AND = "AND";
-Blockly.Msg.OR = "OR";
-Blockly.Msg.INTO = "INTO";
-Blockly.Msg.MORE = "New Input";
-Blockly.Msg.VARIABLES_DEFAULT_NAME = " ";
-Blockly.Msg.VARIABLES_GET_ITEM = Blockly.Msg.VARIABLES_DEFAULT_NAME;
+SQLBlocks.Msg.Blocks = {};
+
+SQLBlocks.Msg.Blocks.INSERT_VALUES = "INSERT VALUES";
+SQLBlocks.Msg.Blocks.SET = "SET";
+SQLBlocks.Msg.Blocks.WHERE = "WHERE"
+SQLBlocks.Msg.Blocks.UPDATE = "UPDATE";
+SQLBlocks.Msg.Blocks.SELECT = "SELECT";
+SQLBlocks.Msg.Blocks.GROUP_BY = "GROUP BY";
+SQLBlocks.Msg.Blocks.HAVING = "HAVING";
+SQLBlocks.Msg.Blocks.ORDER_BY = "ORDER BY";
+SQLBlocks.Msg.Blocks.LIMIT = "LIMIT";
+SQLBlocks.Msg.Blocks.DISTINCT = "DISTINCT";
+SQLBlocks.Msg.Blocks.SUBSELECT = "SUBSELECT";
+SQLBlocks.Msg.Blocks.TO = "TO";
+SQLBlocks.Msg.Blocks.NOT = "NOT";
+SQLBlocks.Msg.Blocks.AS = "AS";
+SQLBlocks.Msg.Blocks.INTERVAL = "INTERVAL";
+SQLBlocks.Msg.Blocks.ADD = "ADD";
+SQLBlocks.Msg.Blocks.AND = "AND";
+SQLBlocks.Msg.Blocks.OR = "OR";
+SQLBlocks.Msg.Blocks.INTO = "INTO";
+SQLBlocks.Msg.Blocks.MORE = "New Input";
+SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME = " ";
+SQLBlocks.Msg.Blocks.VARIABLES_GET_ITEM = SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME;
+SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE = "AS";
 
 /**
  * TOOLTIPS
  */
-Blockly.Msg.CONVERSION_FUNCTION_TOOLTIP_DATE_FORMAT = "Uses one date-value and a character set connection. Returns a string with the date containing non-ASCII charcters, specified by the character set.";
-Blockly.Msg.CONVERSION_FUNCTION_TOOLTIP_STR_TO_DATE = "Uses one string-value, containing date and/or time, and a character set connection. Returns a date with the String containing non-ASCII charcters, specified by the character set.";
+SQLBlocks.Msg.Tooltips = {};
 
-Blockly.Msg.DATE_FUNCTION_TOOLTIP_ADD_MONTHS = "Performs date arithmethic.Uses a date-value, and a number choosen with the time-unit. Returns a date specified by the number and the unit";
-Blockly.Msg.DATE_FUNCTION_TOOLTIP_CURDATE="Returns the current date as a value.";
-Blockly.Msg.DATE_FUNCTION_TOOLTIP_EXTRACT = "Extracts a date from a date-value or function.";
-Blockly.Msg.DATE_FUNCTION_TOOLTIP_LAST_DAY = "Uses one date-value. Returns the corresponding value for the last day of the month. ";
-Blockly.Msg.DATE_FUNCTION_TOOLTIP_MONTHS_BETWEEN = "Uses a time unit and two time-values.Returns date-value 2 – date-value1.";
-Blockly.Msg.DATE_FUNCTION_TOOLTIP_NOW = "Returns the current date and time as a value in 'YYYY-MM-DD HH:MM:SS'.";
-Blockly.Msg.DATE_FUNCTION_TOOLTIP_MONTH = "Uses a date-value.Returns the month for date, in the range 1 to 12 for January to December.";
-Blockly.Msg.DATE_FUNCTION_TOOLTIP_YEAR = "Uses a date-value. Returns the year for a date, in the range from 0000 to 9999.";
-Blockly.Msg.DATE_FUNCTION_TOOLTIP_SYSDATE = "Returns the time at which it executes";
+/* COMMANDS */
+SQLBlocks.Msg.Tooltips.DISTINCT = "The DISTINCT keyword can be used to return only distinct (different) values.";
 
-Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_ABS = "Uses one number-value. Returns the absolute value of the number_value.";
-Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_CEIL = "Uses one number-value. Returns the smallest integer value not less than the used value";
-Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_FLOOR = "Uses one number-value. Returns the largest integer value not greater than the used value. ";
-Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_MOD = "Uses two number-values.Modulo operation. Returns the remainder of value 1 divided by value 2.";
-Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_POWER = "Uses two number-values.Returns the value of value 1 raised to the power of value 2. ";
-Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_ROUND = "Uses one number-value, which holds the number, and optionaly a second number value, which can be negative, to hold the decimal places.Is the second value not specified it's null by default. Returns the rounded value of the choosen number.";
-Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_SIGN = "Uses one number-value. Returns the sign of the number value.";
-Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_SQRT = "Uses one number-value. Returns the square root of a nonnegative number.";
-Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_TRUNCATE = "Uses one number-value, which holds the number, and a second number-value, which can be negative, to hold the decimal places. Returns the value 1, truncated to value 2 decimal places. ";
+/* TABLES */
 
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_LOWER = 'Uses one string-value. \n' + 'Returns string in lower \n' + 'case letters.';
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_LPAD = 'Uses two string and one number value \n' + "(syntax: string, number, string). \n" + "Return the string argument,\n" + "left-padded with the specified string and \n " + "the length of the number-value";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_LTRIM = "Uses one string-value. \n" + " Returns the string with \n" + " leading space characters removed.";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_REPLACE = "Uses three string-values. \n" + " Returns first string with \n" + " all occurrences of the second \n string replaced by the third/nstring.";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_RPAD = "Uses two string and one number value \n" + " as length(syntax: string, number, string). \n" + " Return the string argument, \n" + " right-padded with the specified string and \n" + " the length of the number-value";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_RTRIM = "Uses one string-value. \n" + "Returns the string with \n" + "trailing space characters removed.";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_SOUNDEX = "Uses one string-value \n" + "Returns a soundex string from string.";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_SUBSTRING = "Uses one string and one number-value \n" + "as position. Syntax (string,number) \n" + "Return a substring from \n" + "string starting at position. \n";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_UPPER = "Uses one string-value. \n" + "Returns string in upper case letters.";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_ASCII = "Uses one string value \n" + "Returns the numeric value of the most strings.";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_INSTR = "Uses two string values.\n" + "The first as string,\n" + "the second as substring. \n" + "Returns the position of \n" + "the first occurrence of \n" + "substring in string.";
-Blockly.Msg.CHAR_FUNCTION_TOOLTIP_LENGTH = "Uses one string-value.\n" + "Returns length of string.";
+/* VALUES */
+SQLBlocks.Msg.Tooltips.NUMBER = 'Number variable';
+SQLBlocks.Msg.Tooltips.STRING = 'String variable';
+SQLBlocks.Msg.Tooltips.DATE = 'Date variable';
+SQLBlocks.Msg.Tooltips.GET = "Returns the value of this variable.";
+SQLBlocks.Msg.Tooltips.BOOL = "Boolean variable";
 
-Blockly.Msg.OTHER_FUNCTION_TOOLTIP_DECODE = "Uses three expressions. the first compare a variable, a number, a column or astring, with an other variable. The second value, is the value which is returned when the first expression is true. The thrid value is returned when the first is false.";
-Blockly.Msg.OTHER_FUNCTION_TOOLTIP_GREATEST = "Compares as many values, but minimum two, as you like. They must be of the same type. For example it will only compare a string with a string and a number with a number.  Returns the largest (maximum-valued) argument.";
-Blockly.Msg.OTHER_FUNCTION_TOOLTIP_LEAST = "Compares as many values, but minimum two, as you like. They must be of the same type. For example it will only compare a string with a string and a number with a number.  Returns the least (minmum-valued) argument.";
-Blockly.Msg.OTHER_FUNCTION_TOOLTIP_NVL = "Uses two expressions, either string, a number, a column or an operation. If expression 1 is not NULL, IFNULL() returns expr1; otherwise it returns expression 2. IFNULL() returns a numeric or string value, depending on the context in which it is used. ";
+/* FUNCTIONS */
+SQLBlocks.Msg.Tooltips.CONVERSION_FUNCTION = {};
+SQLBlocks.Msg.Tooltips.CONVERSION_FUNCTION.DATE_FORMAT = "Uses one date-value and a character set connection. Returns a string with the date containing non-ASCII charcters, specified by the character set.";
+SQLBlocks.Msg.Tooltips.CONVERSION_FUNCTION.STR_TO_DATE = "Uses one string-value, containing date and/or time, and a character set connection. Returns a date with the String containing non-ASCII charcters, specified by the character set.";
 
-Blockly.Msg.VARIABLES_SET_TITLE = "AS";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION = {};
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.ADD_MONTHS = "Performs date arithmethic.Uses a date-value, and a number choosen with the time-unit. Returns a date specified by the number and the unit";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.CURDATE="Returns the current date as a value.";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.EXTRACT = "Extracts a date from a date-value or function.";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.LAST_DAY = "Uses one date-value. Returns the corresponding value for the last day of the month. ";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.MONTHS_BETWEEN = "Uses a time unit and two time-values.Returns date-value 2 – date-value1.";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.NOW = "Returns the current date and time as a value in 'YYYY-MM-DD HH:MM:SS'.";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.MONTH = "Uses a date-value.Returns the month for date, in the range 1 to 12 for January to December.";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.YEAR = "Uses a date-value. Returns the year for a date, in the range from 0000 to 9999.";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.SYSDATE = "Returns the time at which it executes";
 
-Blockly.Msg.SIMPLE_TERM_TOOLTIP_PLUS="Sums two expressions";
-Blockly.Msg.SIMPLE_TERM_TOOLTIP_MINUS="Subtracts two espressions";
-Blockly.Msg.SIMPLE_TERM_TOOLTIP_DIVIDE="Divides two espressions";
-Blockly.Msg.SIMPLE_TERM_TOOLTIP_MULTIPLICATE="Mulitplicates two espressions";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION = {};
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ABS = "Uses one number-value. Returns the absolute value of the number_value.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.CEIL = "Uses one number-value. Returns the smallest integer value not less than the used value";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.FLOOR = "Uses one number-value. Returns the largest integer value not greater than the used value. ";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.MOD = "Uses two number-values.Modulo operation. Returns the remainder of value 1 divided by value 2.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.POWER = "Uses two number-values.Returns the value of value 1 raised to the power of value 2. ";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ROUND = "Uses one number-value, which holds the number, and optionaly a second number value, which can be negative, to hold the decimal places.Is the second value not specified it's null by default. Returns the rounded value of the choosen number.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SIGN = "Uses one number-value. Returns the sign of the number value.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SQRT = "Uses one number-value. Returns the square root of a nonnegative number.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.TRUNCATE = "Uses one number-value, which holds the number, and a second number-value, which can be negative, to hold the decimal places. Returns the value 1, truncated to value 2 decimal places. ";
 
-Blockly.Msg.NUMBER_TOOLTIP = 'Number variable';
-Blockly.Msg.STRING_TOOLTIP = 'String variable';
-Blockly.Msg.STRING_WARNING = "Please change the default value to a text of your choice";
-Blockly.Msg.DATE_VAR = 'Date variable';
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION = {};
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LOWER = 'Uses one string-value. \n' + 'Returns string in lower \n' + 'case letters.';
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LPAD = 'Uses two string and one number value \n' + "(syntax: string, number, string). \n" + "Return the string argument,\n" + "left-padded with the specified string and \n " + "the length of the number-value";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LTRIM = "Uses one string-value. \n" + " Returns the string with \n" + " leading space characters removed.";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.REPLACE = "Uses three string-values. \n" + " Returns first string with \n" + " all occurrences of the second \n string replaced by the third/nstring.";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.RPAD = "Uses two string and one number value \n" + " as length(syntax: string, number, string). \n" + " Return the string argument, \n" + " right-padded with the specified string and \n" + " the length of the number-value";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.RTRIM = "Uses one string-value. \n" + "Returns the string with \n" + "trailing space characters removed.";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.SOUNDEX = "Uses one string-value \n" + "Returns a soundex string from string.";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.SUBSTRING = "Uses one string and one number-value \n" + "as position. Syntax (string,number) \n" + "Return a substring from \n" + "string starting at position. \n";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.UPPER = "Uses one string-value. \n" + "Returns string in upper case letters.";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.ASCII = "Uses one string value \n" + "Returns the numeric value of the most strings.";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.INSTR = "Uses two string values.\n" + "The first as string,\n" + "the second as substring. \n" + "Returns the position of \n" + "the first occurrence of \n" + "substring in string.";
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LENGTH = "Uses one string-value.\n" + "Returns length of string.";
 
-Blockly.Msg.VARIABLES_GET_TOOLTIP = "Returns the value of this variable.";
+SQLBlocks.Msg.Tooltips.OTHER_FUNCTION = {};
+SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.DECODE = "Uses three expressions. the first compare a variable, a number, a column or astring, with an other variable. The second value, is the value which is returned when the first expression is true. The thrid value is returned when the first is false.";
+SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.GREATEST = "Compares as many values, but minimum two, as you like. They must be of the same type. For example it will only compare a string with a string and a number with a number.  Returns the largest (maximum-valued) argument.";
+SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.LEAST = "Compares as many values, but minimum two, as you like. They must be of the same type. For example it will only compare a string with a string and a number with a number.  Returns the least (minmum-valued) argument.";
+SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.NVL = "Uses two expressions, either string, a number, a column or an operation. If expression 1 is not NULL, IFNULL() returns expr1; otherwise it returns expression 2. IFNULL() returns a numeric or string value, depending on the context in which it is used. ";
+
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM = {};
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS="Sums two expressions";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS="Subtracts two espressions";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE="Divides two espressions";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE="Mulitplicates two espressions";
 
 /**
  * MUTATORS
  */
-Blockly.Msg.ADD_TOOLTIP = "Adding a new Input.";
-Blockly.Msg.AND_TOOLTIP = "Adding a logical AND.";
-Blockly.Msg.OR_TOOLTIP = "Adding a logical OR.";
-Blockly.Msg.AS_TOOLTIP = "Adding AS.";
-Blockly.Msg.GROUP_BY_TOOLTIP = "Adding GROUP BY.";
-Blockly.Msg.GROUP_BY_HAVING_TOOLTIP = "Adding GROUP BY with HAVING.";
-Blockly.Msg.ORDER_BY_TOOLTIP = "Adding ORDER BY.";
-Blockly.Msg.LIMIT_TOOLTIP = "Adding a limit.";
-Blockly.Msg.SET_TOOLTIP = "Adding a SET.";
-Blockly.Msg.INTO_TOOLTIP = "Adding INTO.";
+SQLBlocks.Msg.Tooltips.Mutators = {};
+
+SQLBlocks.Msg.Tooltips.Mutators.ADD = "Adding a new Input.";
+SQLBlocks.Msg.Tooltips.Mutators.AND = "Adding a logical AND.";
+SQLBlocks.Msg.Tooltips.Mutators.OR = "Adding a logical OR.";
+SQLBlocks.Msg.Tooltips.Mutators.AS = "Adding AS.";
+SQLBlocks.Msg.Tooltips.Mutators.GROUP_BY = "Adding GROUP BY.";
+SQLBlocks.Msg.Tooltips.Mutators.GROUP_BY_HAVING = "Adding GROUP BY with HAVING.";
+SQLBlocks.Msg.Tooltips.Mutators.ORDER_BY = "Adding ORDER BY.";
+SQLBlocks.Msg.Tooltips.Mutators.LIMIT = "Adding a limit.";
+SQLBlocks.Msg.Tooltips.Mutators.SET = "Adding a SET.";
+SQLBlocks.Msg.Tooltips.Mutators.INTO = "Adding INTO.";
 
 /**
  * CheckInput Messages
  */
-Blockly.Msg.CHECK_INSERT_TWO_VALUES_SAME_COLUMN = "Attention you are inserting two values in the same column. Please choose another column.";
-Blockly.Msg.CHECK_INSERT_DIFFERENT_TABLES = "Attention you are using different tables. Please use the same table in the whole insert.";
-Blockly.Msg.CHECK_UPDATE_DIFFERENT_TABLES = "All tables must be the same. Please use the same table used in the first block.";
-Blockly.Msg.GROUP_BY_NOT_ENOUGH_TABLES = "Not enough Tables. Please use all tables used in select";
-Blockly.Msg.GROUP_BY_WRONG_COLUMN = "Wrong column. Please use only tables and columns which are in the select.";
-Blockly.Msg.GROUP_BY_WRONG_ALIAS = "Wrong alias. Please use only alias which are used in subselects.";
+SQLBlocks.Msg.Warnings = {};
+
+SQLBlocks.Msg.Warnings.EMPTY_STRING = "Please change the default value to a text of your choice";
+SQLBlocks.Msg.Warnings.TWO_VALUES_SAME_COLUMN = "Attention you are inserting two values in the same column. Please choose another column.";
+SQLBlocks.Msg.Warnings.DIFFERENT_TABLES = "Attention you are using different tables. Please use the same table in the whole insert.";
+SQLBlocks.Msg.Warnings.NOT_ENOUGH_TABLES = "Not enough Tables. Please use all tables used in select";
+SQLBlocks.Msg.Warnings.WRONG_COLUMN = "Wrong column. Please use only tables and columns which are in the select.";
+SQLBlocks.Msg.Warnings.WRONG_ALIAS = "Wrong alias. Please use only alias which are used in subselects.";

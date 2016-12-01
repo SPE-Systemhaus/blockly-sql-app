@@ -77,13 +77,13 @@ Blockly.Blocks['insert'] = {
     init: function () {
         this.setHelpUrl(this.type);
         this.gradient = new ColourGradient();
-        this.setColour("#74A55B");
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput("bl");
         this.appendDummyInput("ins")
-            .appendField(Blockly.Msg.INSERT_VALUES);
+            .appendField(SQLBlocks.Msg.Blocks.INSERT_VALUES);
         this.appendValueInput("set0")
             .setCheck("TO")
-            .appendField(Blockly.Msg.SET);
+            .appendField(SQLBlocks.Msg.Blocks.SET);
         this.setTooltip("");
         this.duplicate_ = false;
         this.setMutator(new Blockly.Mutator(["into"]));
@@ -110,7 +110,7 @@ Blockly.Blocks['insert'] = {
         for (var x = 1; x <= this.setCount_; x++) {
             this.appendValueInput('set' + x)
                 .setCheck("TO")
-                .appendField(Blockly.Msg.SET);
+                .appendField(SQLBlocks.Msg.Blocks.SET);
         }
     },
     /**
@@ -121,7 +121,7 @@ Blockly.Blocks['insert'] = {
      */
     decompose: function (workspace) {
         var containerBlock = createBlock(workspace, 'ADD');
-        containerBlock.setColour(115);
+        containerBlock.setColour(SQLBlockly.Colours.list);
         var connection = containerBlock.getInput('STACK').connection;
 
         for (var s = 1; s <= this.setCount_; s++) {
@@ -151,7 +151,7 @@ Blockly.Blocks['insert'] = {
                     this.setCount_++;
                     var setInput = this.appendValueInput('set' + this.setCount_)
                             .setCheck("TO")
-                            .appendField(Blockly.Msg.SET);
+                            .appendField(SQLBlocks.Msg.Blocks.SET);
 
                     // Reconnect any child blocks.
                     if (clauseBlock.valueConnection_) {
@@ -239,15 +239,15 @@ Blockly.Blocks['update'] = {
     init: function () {
         this.gradient = new ColourGradient();
         this.setHelpUrl(this.type);
-        this.setColour("#74A55B");
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput('bl');
         this.appendDummyInput("up")
-                .appendField(Blockly.Msg.UPDATE);
+                .appendField(SQLBlocks.Msg.Blocks.UPDATE);
         this.appendValueInput('set0')
                 .setCheck("TO")
-                .appendField(Blockly.Msg.SET);
+                .appendField(SQLBlocks.Msg.Blocks.SET);
         this.appendValueInput("Clause")
-                .appendField(Blockly.Msg.WHERE)
+                .appendField(SQLBlocks.Msg.Blocks.WHERE)
                 .setCheck(["BolleanOPs", "LogicOPs", "bool"]);
         this.setTooltip('');
         this.duplicate_ = false;
@@ -290,7 +290,7 @@ Blockly.Blocks['update'] = {
             for (var x = 1; x <= this.setCount_; x++) {
                 var setInput = this.appendValueInput('set' + x)
                                    .setCheck("TO")
-                                   .appendField(Blockly.Msg.SET);
+                                   .appendField(SQLBlocks.Msg.Blocks.SET);
                 // sort the inputs after type
                 var temp = this.inputList;
                 var tin = new Array();
@@ -321,7 +321,7 @@ Blockly.Blocks['update'] = {
      */
     decompose: function (workspace) {
         var containerBlock = createBlock(workspace, 'ADD');
-        containerBlock.setColour(115);
+        containerBlock.setColour(SQLBlockly.Colours.list);
         var connection = containerBlock.getInput('STACK').connection;
 
         for (var s = 1; s <= this.setCount_; s++) {
@@ -352,7 +352,7 @@ Blockly.Blocks['update'] = {
                     this.setCount_++;
                     var setInput = this.appendValueInput('set' + this.setCount_)
                             .setCheck("TO")
-                            .appendField(Blockly.Msg.SET);
+                            .appendField(SQLBlocks.Msg.Blocks.SET);
 
                     // Reconnect any child blocks.
                     if (clauseBlock.valueConnection_) {
@@ -410,7 +410,8 @@ Blockly.Blocks['update'] = {
         }
     },
     /**
-     * onchange evaluates the input of the group by/group by having
+     * Updating color and check inputs by onchange.
+     * 
      * @method onchange
      * @this Blockly.Block
      */
@@ -430,19 +431,16 @@ Blockly.Blocks['update'] = {
             }
         );
 
-        //if (Blockly.Block.dragMode_ == 0) {
-            //No type checking and colouring , while the block is dragged
-            checkUpdate(this);
-            if (this.getInputTargetBlock('set0')) {
-                checkSetUpdate(this);
-            }
-        //}
+        checkUpdate(this);
+        if (this.getInputTargetBlock('set0')) {
+            checkSetUpdate(this);
+        }
     }
 };
 /*------------------------------------------------------------------------------
  * select-is the top level of the select comand. It is the default
- *object for this command and  contains all available blocks to represent
- *a select-clause.
+ * object for this command and  contains all available blocks to represent
+ * a select-clause.
  *
  * @module sql_blocks
  * @class select
@@ -457,16 +455,16 @@ Blockly.Blocks['select'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour("#74A55B");
+        this.setColour(SQLBlockly.Colours.list);
         this.gradient = new ColourGradient();
         this.appendDummyInput("Dummy");
         this.appendStatementInput("select")
-            .appendField(Blockly.Msg.SELECT)
+            .appendField(SQLBlocks.Msg.Blocks.SELECT)
             .setAlign(Blockly.ALIGN_CENTER)
             .setCheck(["table_column", "distinct", "group_function", "otherfunction", "sub_select"]);
         this.appendValueInput("Clause")
             .setAlign(Blockly.ALIGN_CENTER)
-            .appendField(Blockly.Msg.WHERE)
+            .appendField(SQLBlocks.Msg.Blocks.WHERE)
             .setCheck(["BolleanOPs", "LogicOPs", "bool", "condition"]);
         this.setTooltip('');
         this.duplicate_ = false;
@@ -518,12 +516,12 @@ Blockly.Blocks['select'] = {
                     .appendField(Blockly.Msg.GOUP_BY);
             this.appendValueInput('having')
                     .setCheck("LogicOPs")
-                    .appendField(Blockly.Msg.HAVING);
+                    .appendField(SQLBlocks.Msg.Blocks.HAVING);
         }
         if (this.orderByCount_) {
             this.appendStatementInput('order_by')
                     .setCheck(["table_column", "name"])
-                    .appendField(Blockly.Msg.ORDER_BY);
+                    .appendField(SQLBlocks.Msg.Blocks.ORDER_BY);
             this.appendDummyInput("sort")
                     .appendField(new Blockly.FieldDropdown([
                         ["ASCENDANT", "asc"],
@@ -534,7 +532,7 @@ Blockly.Blocks['select'] = {
         if (this.limitCount_) {
             this.appendValueInput('limit')
                     .setCheck('number')
-                    .appendField(Blockly.Msg.LIMIT);
+                    .appendField(SQLBlocks.Msg.Blocks.LIMIT);
         }
     },
     /**
@@ -546,7 +544,7 @@ Blockly.Blocks['select'] = {
     decompose: function (workspace) {
         var containerBlock = createBlock(workspace, 'ADD');
         var connection = containerBlock.getInput('STACK').connection;
-        //containerBlock.setColour(115);
+        containerBlock.setColour(SQLBlockly.Colours.list);
 
         if (this.groupByCount_) {
             var groupByBlock = createBlock(workspace, 'group_by');
@@ -609,7 +607,7 @@ Blockly.Blocks['select'] = {
                     this.limitCount_++;
                     var limitInput = this.appendValueInput('limit');
                     limitInput.setCheck('number');
-                    limitInput.appendField(Blockly.Msg.LIMIT);
+                    limitInput.appendField(SQLBlocks.Msg.Blocks.LIMIT);
 
                     // Reconnect any child blocks.
                     if (clauseBlock.valueConnection_) {
@@ -633,7 +631,7 @@ Blockly.Blocks['select'] = {
                     groupHInput.appendField(Blockly.Msg.GOUP_BY);
                     var havingInput = this.appendValueInput("having");
                     havingInput.setCheck("LogicOPs");
-                    havingInput.appendField(Blockly.Msg.HAVING);
+                    havingInput.appendField(SQLBlocks.Msg.Blocks.HAVING);
                     // Reconnect any child blocks.
                     if (clauseBlock.statementConnection_) {
                         groupHInput.connection.connect(clauseBlock.statementConnection_);
@@ -646,7 +644,7 @@ Blockly.Blocks['select'] = {
                     this.orderByCount_++;
                     var orderInput = this.appendStatementInput('order_by');
                     orderInput.setCheck(["table_column", "name"]);
-                    orderInput.appendField(Blockly.Msg.ORDER_BY);
+                    orderInput.appendField(SQLBlocks.Msg.Blocks.ORDER_BY);
                     var sortDummy = this.appendDummyInput("sort");
                     sortDummy.appendField(new Blockly.FieldDropdown(sort), "sort");
 
@@ -708,10 +706,11 @@ Blockly.Blocks['select'] = {
             return;
 
         var msg = null;
-
         var stopColor = this.getColour();
         var children = this.getChildren();
 
+        /* Get the colour of the first table_column block and set 
+           this on the select block */
         for (var childKey in children) {
             var child = children[childKey];
             if (child.type === "tables_and_columns") {
@@ -731,50 +730,6 @@ Blockly.Blocks['select'] = {
                 "stop" : this.getInput("Clause").renderHeight
             }
         );
-
-
-        // No type checking and colouring , while the block is dragged
-/*        if (Blockly.dragMode_ === Blockly.DRAG_NONE) {
-
-            if (this.groupByCount_) {
-                if (!this.getInputTargetBlock('group_by'))
-                    msg = null;
-                groupbyval(this);
-            } else {
-                if (this.groupByHavingCount_) {
-                    if (!this.getInputTargetBlock('group_by_have')) {
-                        msg = null;
-                    }
-                    groupbyval(this);
-                } else {
-                    if (this.orderByCount_) {
-                        if (!this.getInputTargetBlock('gorder_by')) {
-                            msg = null;
-                        }
-                        groupbyval(this);
-                    }
-                }
-            }
- */
-            /*
-
-            if (this.getInputTargetBlock('select') == null) {
-                this.setColour(7115);
-            } else {
-                if (this.getInputTargetBlock('select') != null)
-                {
-                    var tc = this.getInputTargetBlock('select');
-                    if (tc.type == "sub_select")
-                    {
-                        if (tc.getInputTargetBlock('select') == null) {
-                            this.setColour(7115);
-                        }
-                    }
-                }
-            }
-
-            */
-    //    }
 
         this.setWarningText(msg);
     }
@@ -796,73 +751,12 @@ Blockly.Blocks['distinct'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour("#74A55B");
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput("distinct2")
-            .appendField(Blockly.Msg.DISTINCT);
+            .appendField(SQLBlocks.Msg.Blocks.DISTINCT);
         this.setPreviousStatement(true, "distinct");
         this.setNextStatement(true, ["table_column", "group_function", "sub_select"]);
-        this.setTooltip('');
-    },
-    /**
-     * Create XML to represent the number of the additional inputs
-     * @return {Element} XML storage element.
-     * @this Blockly.Block
-     */
-    mutationToDom: function () {
-        var container = document.createElement('mutation');
-        var colour = this.getColour();
-        container.setAttribute('colorHue_', colour);
-        return container;
-    },
-    /**
-     * Parse XML to restore the addtional.
-     * @param {!Element} xmlElement XML storage element.
-     * @this Blockly.Block
-     */
-    domToMutation: function (xmlElement) {
-        var colour = xmlElement.attributes [0].value;
-        this.setColour(colour);
-    },
-    /**
-     * onchnage checks the input-statements.
-     *
-     * @method:onchange
-     * @this Blockly.Block
-     */
-    onchange: function () {
-        if (!this.workspace)
-            return;
-
-        /*
-        if (Blockly.Block.dragMode_ == 0) {
-
-            if (this.getInputTargetBlock('distinct2')) {
-                var variableBlocks = this.getInputTargetBlock('distinct2');
-                if (this.getInputTargetBlock('distinct2').type == 'tables_and_columns') {
-                    if (variableBlocks.childBlocks_.length > 0) {
-                        variableBlocks.childBlocks_[0].unplug(true, true);
-                    }
-                }
-            }
-
-            //Recolour the Block if there are no inputs
-            if (this.getInputTargetBlock('distinct2') == null) {
-                this.setColour(115);
-                if (this.parentBlock_)
-                {
-                    this.parentBlock_.setColour(7115);
-                    if (this.parentBlock_.parentBlock_)
-                    {
-                        var pop = this.parentBlock_.parentBlock_;
-                        if (pop.type == 'compare_operator')
-                            pop.setColour(160);
-                    }
-                }
-            }
-
-        }
-        */
-
+        this.setTooltip(SQLBlocks.Msg.Tooltips.DISTINCT);
     }
 };
 /*------------------------------------------------------------------------------
@@ -883,14 +777,14 @@ Blockly.Blocks['sub_select'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour("#74A55B");
+        this.setColour(SQLBlockly.Colours.list);
         this.gradient = new ColourGradient();
         this.appendDummyInput("bla");
         this.appendStatementInput("select")
-                .appendField(Blockly.Msg.SUBSELECT)
+                .appendField(SQLBlocks.Msg.Blocks.SUBSELECT)
                 .setCheck(["table_column", "group_function", "distinct", "otherfunction"]);
         this.appendValueInput("Clause")
-                .appendField(Blockly.Msg.WHERE)
+                .appendField(SQLBlocks.Msg.Blocks.WHERE)
                 .setCheck(["BolleanOPs", "LogicOPs", "bool"]);
 
         this.setPreviousStatement(true, "sub_select");
@@ -959,7 +853,7 @@ Blockly.Blocks['sub_select'] = {
 
         if (this.aliasCount_) {
           this.appendDummyInput('VALUE')
-              .appendField(Blockly.Msg.VARIABLES_SET_TITLE)
+              .appendField(SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE)
               .appendField(new Blockly.FieldTextInput(
                            Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
           this.contextMenuMsg_ = Blockly.Msg.VARIABLES_SET_CREATE_GET;
@@ -969,21 +863,21 @@ Blockly.Blocks['sub_select'] = {
         if (this.groupByCount_)
           this.appendStatementInput('group_by')
               .setCheck(["table_column", "name"])
-              .appendField(Blockly.Msg.GROUP_BY);
+              .appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
 
         if (this.groupByHavingCount_) {
           this.appendStatementInput('group_by_have')
               .setCheck(["table_column", "name"])
-              .appendField(Blockly.Msg.GROUP_BY);
+              .appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
           this.appendValueInput('having')
               .setCheck("LogicOPs")
-              .appendField(Blockly.Msg.HAVING);
+              .appendField(SQLBlocks.Msg.Blocks.HAVING);
         }
 
         if (this.orderByCount_) {
           this.appendStatementInput('order_by')
               .setCheck(["table_column", "name"])
-              .appendField(Blockly.Msg.ORDER_BY);
+              .appendField(SQLBlocks.Msg.Blocks.ORDER_BY);
           this.appendDummyInput("sort")
               .appendField(new Blockly.FieldDropdown(sort), "sort");
         }
@@ -991,7 +885,7 @@ Blockly.Blocks['sub_select'] = {
         if (this.limitCount_)
           this.appendValueInput('limit')
               .setCheck('number')
-              .appendField(Blockly.Msg.LIMIT);
+              .appendField(SQLBlocks.Msg.Blocks.LIMIT);
     },
     /**
      * Populate the mutator's dialog with this block's components.
@@ -1001,7 +895,7 @@ Blockly.Blocks['sub_select'] = {
      */
     decompose: function (workspace) {
         var containerBlock = createBlock(workspace, 'ADD');
-        containerBlock.setColour(115);
+        containerBlock.setColour(SQLBlockly.Colours.list);
         var connection = containerBlock.getInput('STACK').connection;
 
         if (this.aliasCount_) {
@@ -1079,7 +973,7 @@ Blockly.Blocks['sub_select'] = {
                     this.limitCount_++;
                     var limitInput = this.appendValueInput('limit');
                     limitInput.setCheck('number');
-                    limitInput.appendField(Blockly.Msg.LIMIT);
+                    limitInput.appendField(SQLBlocks.Msg.Blocks.LIMIT);
 
                     // Reconnect any child blocks.
                     if (clauseBlock.valueConnection_) {
@@ -1090,7 +984,7 @@ Blockly.Blocks['sub_select'] = {
                     this.groupByCount_++;
                     var groupInput = this.appendStatementInput('group_by');
                     groupInput.setCheck(["table_column", "name"]);
-                    groupInput.appendField(Blockly.Msg.GROUP_BY);
+                    groupInput.appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
                     // Reconnect any child blocks.
                     if (clauseBlock.statementConnection_)
                         groupInput.connection.connect(clauseBlock.statementConnection_);
@@ -1099,10 +993,10 @@ Blockly.Blocks['sub_select'] = {
                     this.groupByHavingCount_++;
                     var groupHInput = this.appendStatementInput('group_by_have');
                     groupHInput.setCheck(["table_column", "name"]);
-                    groupHInput.appendField(Blockly.Msg.GROUP_BY);
+                    groupHInput.appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
                     var havingInput = this.appendValueInput('having');
                     havingInput.setCheck("LogicOPs");
-                    havingInput.appendField(Blockly.Msg.HAVING);
+                    havingInput.appendField(SQLBlocks.Msg.Blocks.HAVING);
                     // Reconnect any child blocks.
                     if (clauseBlock.statementConnection_)
                         groupHInput.connection.connect(clauseBlock.statementConnection_);
@@ -1114,7 +1008,7 @@ Blockly.Blocks['sub_select'] = {
                     this.orderByCount_++;
                     var orderInput = this.appendStatementInput('order_by');
                     orderInput.setCheck(["table_column", "name"]);
-                    orderInput.appendField(Blockly.Msg.ORDER_BY);
+                    orderInput.appendField(SQLBlocks.Msg.Blocks.ORDER_BY);
                     var sortDummy = this.appendDummyInput("sort");
                     sortDummy.appendField(new Blockly.FieldDropdown(sort), "sort");
 
@@ -1129,7 +1023,7 @@ Blockly.Blocks['sub_select'] = {
                     //Alias
                     //Old version:
                     var aliasDummy = this.appendDummyInput('VALUE');
-                    aliasDummy.appendField(Blockly.Msg.VARIABLES_SET_TITLE);
+                    aliasDummy.appendField(SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE);
                     aliasDummy.appendField(new Blockly.FieldTextInput(
                             Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
                     this.contextMenuMsg_ = Blockly.Msg.VARIABLES_SET_CREATE_GET;
@@ -1277,14 +1171,14 @@ Blockly.Blocks['sub_select_where'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour("#74A55B");
+        this.setColour(SQLBlockly.Colours.list);
         this.gradient = new ColourGradient();
         this.appendDummyInput("bla");
         this.appendStatementInput("select")
-                .appendField(Blockly.Msg.SUBSELECT)
+                .appendField(SQLBlocks.Msg.Blocks.SUBSELECT)
                 .setCheck(["table_column", "group_function", "distinct", "otherfunction"]);
         this.appendValueInput("Clause")
-                .appendField(Blockly.Msg.WHERE)
+                .appendField(SQLBlocks.Msg.Blocks.WHERE)
                 .setCheck(["BolleanOPs", "LogicOPs", "bool", "condition"]);
         this.setOutput(true, "sub_select");
         this.setMutator(new Blockly.Mutator(["alias", "group_by", "group_by_having", "order_by", "limit"]));
@@ -1353,34 +1247,34 @@ Blockly.Blocks['sub_select_where'] = {
             //Alias
             //Old version:
             this.appendDummyInput('VALUE')
-                .appendField(Blockly.Msg.VARIABLES_SET_TITLE)
+                .appendField(SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE)
                 .appendField(new Blockly.FieldTextInput(
                         Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
         }
         if (this.groupByCount_) {
             this.appendStatementInput('group_by')
                 .setCheck(["table_column", "name"])
-                .appendField(Blockly.Msg.GROUP_BY);
+                .appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
         }
         if (this.groupByHavingCount_) {
             this.appendStatementInput('group_by_have')
                 .setCheck(["table_column", "name"])
-                .appendField(Blockly.Msg.GROUP_BY);
+                .appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
             this.appendValueInput('having')
                 .setCheck("LogicOPs")
-                .appendField(Blockly.Msg.HAVING);
+                .appendField(SQLBlocks.Msg.Blocks.HAVING);
         }
         if (this.orderByCount_) {
             this.appendStatementInput('order_by')
                 .setCheck(["table_column", "name"])
-                .appendField(Blockly.Msg.ORDER_BY);
+                .appendField(SQLBlocks.Msg.Blocks.ORDER_BY);
             this.appendDummyInput("sort")
                 .appendField(new Blockly.FieldDropdown(sort), "sort");
         }
         if (this.limitCount_) {
             this.appendValueInput('limit')
                 .setCheck('number')
-                .appendField(Blockly.Msg.LIMIT);
+                .appendField(SQLBlocks.Msg.Blocks.LIMIT);
         }
     },
     /**
@@ -1391,7 +1285,7 @@ Blockly.Blocks['sub_select_where'] = {
      */
     decompose: function (workspace) {
         var containerBlock = createBlock(workspace, 'ADD');
-        containerBlock.setColour(115);
+        containerBlock.setColour(SQLBlockly.Colours.list);
         var connection = containerBlock.getInput('STACK').connection;
 
         if (this.aliasCount_) {
@@ -1463,7 +1357,7 @@ Blockly.Blocks['sub_select_where'] = {
                     this.limitCount_++;
                     var limitInput = this.appendValueInput('limit');
                     limitInput.setCheck('number');
-                    limitInput.appendField(Blockly.Msg.LIMIT);
+                    limitInput.appendField(SQLBlocks.Msg.Blocks.LIMIT);
 
                     // Reconnect any child blocks.
                     if (clauseBlock.valueConnection_) {
@@ -1474,7 +1368,7 @@ Blockly.Blocks['sub_select_where'] = {
                     this.groupByCount_++;
                     var groupInput = this.appendStatementInput('group_by');
                     groupInput.setCheck(["table_column", "name"]);
-                    groupInput.appendField(Blockly.Msg.GROUP_BY);
+                    groupInput.appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
                     // Reconnect any child blocks.
                     if (clauseBlock.statementConnection_) {
                         groupInput.connection.connect(clauseBlock.statementConnection_);
@@ -1484,10 +1378,10 @@ Blockly.Blocks['sub_select_where'] = {
                     this.groupByHavingCount_++;
                     var groupHInput = this.appendStatementInput('group_by_have');
                     groupHInput.setCheck(["table_column", "name"]);
-                    groupHInput.appendField(Blockly.Msg.GROUP_BY);
+                    groupHInput.appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
                     var havingInput = this.appendValueInput('having');
                     havingInput.setCheck("LogicOPs");
-                    havingInput.appendField(Blockly.Msg.HAVING);
+                    havingInput.appendField(SQLBlocks.Msg.Blocks.HAVING);
                     // Reconnect any child blocks.
                     if (clauseBlock.statementConnection_) {
                         groupHInput.connection.connect(clauseBlock.statementConnection_);
@@ -1500,7 +1394,7 @@ Blockly.Blocks['sub_select_where'] = {
                     this.orderByCount_++;
                     var orderInput = this.appendStatementInput('order_by');
                     orderInput.setCheck(["table_column", "name"]);
-                    orderInput.appendField(Blockly.Msg.ORDER_BY);
+                    orderInput.appendField(SQLBlocks.Msg.Blocks.ORDER_BY);
                     var sortDummy = this.appendDummyInput("sort");
                     sortDummy.appendField(new Blockly.FieldDropdown(sort), "sort");
 
@@ -1515,7 +1409,7 @@ Blockly.Blocks['sub_select_where'] = {
                     //Alias
                     //Old version:
                     var aliasDummy = this.appendDummyInput('VALUE');
-                    aliasDummy.appendField(Blockly.Msg.VARIABLES_SET_TITLE);
+                    aliasDummy.appendField(SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE);
                     aliasDummy.appendField(new Blockly.FieldTextInput(
                             Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
                     break;
@@ -1626,11 +1520,6 @@ Blockly.Blocks['sub_select_where'] = {
                     groupbyval(this);
                 }
             }
-
-            /* if (this.getInputTargetBlock('select') == null) {
-                //Colouring th block
-                this.setColour("#74A55B");
-            } */
         }
     }
 };
@@ -1653,8 +1542,10 @@ Blockly.Blocks['tables_and_columns'] = {
     init: function () {
         var table = Column[0][0];
         var column = "*";
+        //this.gradient = new ColourGradient();
+
         this.setHelpUrl(this.type);
-        this.setColour("#74A55B");       
+        this.setColour(SQLBlockly.Colours.list);       
         this.setup(table, column);
         this.setPreviousStatement(true, ["table_column", "group_function", "sub_select", "otherfunction", "name"]);
         this.setNextStatement(true, ["table_column", "group_function", "sub_select", "otherfunction", "name"]);
@@ -1674,16 +1565,28 @@ Blockly.Blocks['tables_and_columns'] = {
         var tableDropdown = new Blockly.FieldDropdown(
             getTableDropdowndataFromXML(), 
             function (table) {
+                /* Updating this block */
                 block.updateShape(table, "*");
+
+                /* Updating parent block */
+                var parent = block.getParent();
+                if (parent)
+                    parent.onchange();
             }
         );
 
         var columnDropdown = new Blockly.FieldDropdown(
              getColumnDropdowndataFromXML(table, true), 
              function (column) {
+                /* Updating this block */
                 var table = block.getFieldValue("tabele");
                 block.updateShape(table, column);
-             }
+
+                /* Updating parent block */
+                var parent = block.getParent();
+                if (parent)
+                    parent.onchange();
+            }
         );
 
         /* Setting dropdown values for table and column */
@@ -1761,6 +1664,8 @@ Blockly.Blocks['tables_and_columns'] = {
         
         var parent = this.getParent();
 
+        console.log("onchange");
+
         if (parent) {
             colourTheParent(this);
 
@@ -1773,6 +1678,7 @@ Blockly.Blocks['tables_and_columns'] = {
                         groupbyval(parent);
                 }
             }
+
         }
     }
 };
@@ -1796,11 +1702,10 @@ Blockly.Blocks['tables_and_columns_var'] = {
         var table = Column[0][0];
         var column = Column[0][1][1];
 
-        this.lastConnectedParent = null;
         this.columnType = null;
 
         this.setHelpUrl(this.type);
-        this.setColour("#74A55B");       
+        this.setColour(SQLBlockly.Colours.list);       
         this.setup(table, column);
         this.setTooltip('');
     },
@@ -1818,7 +1723,12 @@ Blockly.Blocks['tables_and_columns_var'] = {
         var tableDropdown = new Blockly.FieldDropdown(
             getTableDropdowndataFromXML(), 
             function (table) {
-                block.updateShape(table, "*");
+                block.updateShape(table, "Choose");
+
+                /* Updating parent block */
+                var parent = block.getParent();
+                if (parent)
+                    parent.onchange();
             }
         );
         var columnDropdown = new Blockly.FieldDropdown(
@@ -1826,6 +1736,13 @@ Blockly.Blocks['tables_and_columns_var'] = {
              function (column) {
                 var table = block.getFieldValue("tabele");
                 block.updateShape(table, column);
+                block.onchange();
+
+                /* Updating parent block */
+                var parent = block.getParent();
+                console.log(parent);
+                if (parent)
+                    parent.onchange();
              }
         );
 
@@ -1902,17 +1819,7 @@ Blockly.Blocks['tables_and_columns_var'] = {
         if (!this.workspace)
             return;
 
-        var parent = this.getParent();
-
-        if (parent) {
-            colourTheParent(this);
-            this.lastConnectedParent = parent;
-        } else {    /* Resetting color if disonnected */
-            if (this.lastConnectedParent)
-                this.lastConnectedParent.setColour(
-                    this.lastConnectedParent.getColour()
-                );
-        }
+        colourTheParent(this);
     }
 };
 
@@ -1936,11 +1843,11 @@ Blockly.Blocks['to'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour("#5BA58C");
+        this.setColour(SQLBlockly.Colours.boolean);
         this.appendValueInput("A")
             .setCheck("table_column_var");
         this.appendValueInput("B")
-            .appendField(Blockly.Msg.TO)
+            .appendField(SQLBlocks.Msg.Blocks.TO)
             .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "sub_select", "number", "string"]);
         this.setOutput(true, 'TO');
         this.setTooltip('');
@@ -1978,7 +1885,7 @@ Blockly.Blocks['compare_operator'] = {
      */
     init: function (dir) {
       this.setHelpUrl(this.type);
-      this.setColour("#5BA58C");
+      this.setColour(SQLBlockly.Colours.boolean);
       this.setOutput(true, "condition");
       this.setup(this, "EQ");
       this.setInputsInline(false);
@@ -2024,7 +1931,6 @@ Blockly.Blocks['compare_operator'] = {
               };
               return TOOLTIPS[op];
           });
-          input.setColour(160);
         } else {
             if (dir == 'like') {
                 var ifInput = input.appendValueInput('A')
@@ -2035,11 +1941,12 @@ Blockly.Blocks['compare_operator'] = {
                 var doInput = input.appendValueInput('B')
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(["string", "table_column_var", "charfunction", "groupfunction"]);
-                input.setColour(3160);
+                
                 //Restoring the inputs
                 if (this.valueConnection1_) {
                     ifInput.connection.connect(this.valueConnection1_);
                 }
+
                 if (this.valueConnection2_) {
                     doInput.connection.connect(this.valueConnection2_);
                 }
@@ -2047,14 +1954,14 @@ Blockly.Blocks['compare_operator'] = {
               input.appendValueInput('A')
                       .setAlign(Blockly.ALIGN_LEFT)
                       .appendField("", 'Abstand')
-                      .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction", "LogicOPs"]);
+                      .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction", "BolleanOPs"]);
 
               input.appendDummyInput()
                       .setAlign(Blockly.ALIGN_LEFT)
                       .appendField(dropdown, "OP");
 
               input.appendValueInput('B')
-                      .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction", "LogicOPs"]);
+                      .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction", "BolleanOPs"]);
               // Assign 'this' to a variable for use in the tooltip closure below.
               //Restoring the inputs
 
@@ -2078,7 +1985,6 @@ Blockly.Blocks['compare_operator'] = {
                   };
                   return TOOLTIPS[op];
               });
-              input.setColour(160);
           }
         }
       }
@@ -2169,34 +2075,10 @@ Blockly.Blocks['compare_operator'] = {
         if (!this.workspace)
             return;
 
-        var inputBlockA = this.getInputTargetBlock("A");
-        var inputBlockB = this.getInputTargetBlock("B");
-
-        /* Checking if blocks are comparable: */
-        if (inputBlockB) {
-            var swap = null;
-            var colourA = null;
-            var colourB = null;
-
-            if (inputBlockA.type === "tables_and_columns_var") {
-                var table = inputBlockA.getFieldValue("tabele");
-                var column = inputBlockA.getFieldValue("Column");
-                colourA = sqlHelp.getTypeColour(table, column);
-            } else
-                colourA = inputBlockA.getColour();
-
-            if (inputBlockB.type === "tables_and_columns_var") {
-                var table = inputBlockB.getFieldValue("tabele");
-                var column = inputBlockB.getFieldValue("Column");
-                colourB = sqlHelp.getTypeColour(table, column);
-            } else
-                colourB = inputBlockA.getColour();
-
-            if (colourA !== colourB)
-                inputBlockB.unplug(true, true);
-        }
+        checkTypeByColour(this);
     }
 };
+
 /*------------------------------------------------------------------------------
  * Logical Conjunction - The logical AND/OR in sql
  *
@@ -2213,7 +2095,7 @@ Blockly.Blocks['compare_operator'] = {
      */
     init: function () {
       this.setHelpUrl(this.type);
-      this.setColour(160);
+      this.setColour(SQLBlockly.Colours.boolean);
       this.appendValueInput('A')
               .setAlign(Blockly.ALIGN_CENTRE)
               .setCheck(["condition", "BolleanOPs", "bool", "LogicOPs"]);
@@ -2247,13 +2129,12 @@ Blockly.Blocks['conditions'] = {
      */
     init: function () {
       this.setHelpUrl(this.type);
-      this.setColour(160);
+      this.setColour(SQLBlockly.Colours.boolean);
       this.setOutput(true, "condition");
       this.appendValueInput('A')
-          .appendField(Blockly.Msg.NOT)
-          .setCheck(["LogicOPs", "number", "bool", "table_column_var",
-                     "date", "datefunction", "string", "BolleanOPs",
-                     "condition"]);
+          .appendField(SQLBlocks.Msg.Blocks.NOT)
+          .setCheck(["LogicOPs", "bool", "table_column_var", 
+                     "BolleanOPs", "condition"]);
       this.setTooltip(Blockly.Msg.BOOLEAN_TOOLTIP_NOT);
     }
 };
@@ -2281,7 +2162,7 @@ Blockly.Blocks['terms_simple_expressions'] = {
       ];
 
       this.setHelpUrl(this.type);
-      this.setColour(255);
+      this.setColour(SQLBlockly.Colours.number);
       this.setOutput(true, "ArithmethikOPs");
       this.appendValueInput('A')
           .setCheck(["table_column_var", "number", "ArithmethikOPs", "numberfunction"]);
@@ -2298,10 +2179,10 @@ Blockly.Blocks['terms_simple_expressions'] = {
       this.setTooltip(function () {
         var op = thisBlock.getFieldValue('OP');
         var TOOLTIPS = {
-          'PLUS': Blockly.Msg.SIMPLE_TERM_TOOLTIP_PLUS,
-          'MINUS': Blockly.Msg.SIMPLE_TERM_TOOLTIP_MINUS,
-          'DIVIDE': Blockly.Msg.SIMPLE_TERM_TOOLTIP_DIVIDE,
-          'MULTIPLICATE': Blockly.Msg.SIMPLE_TERM_TOOLTIP_MULTIPLICATE
+          'PLUS': SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS,
+          'MINUS': SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS,
+          'DIVIDE': SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE,
+          'MULTIPLICATE': SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE
         };
         return TOOLTIPS[op];
       });
@@ -2349,12 +2230,12 @@ Blockly.Blocks['bool'] = {
      */
     init: function () {
       this.setHelpUrl(this.type);
-      this.setColour("#A55B80");
+      this.setColour(SQLBlockly.Colours.boolean);
       this.appendDummyInput('boolean')
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField(new Blockly.FieldDropdown(bool), "BOOL");
       this.setOutput(true, "bool");
-      this.setTooltip('Boolean variable');
+      this.setTooltip(SQLBlocks.Msg.Tooltips.BOOL);
     },
     /*
      * onchange sets the Colour of a specified Parent
@@ -2394,12 +2275,12 @@ Blockly.Blocks['num'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour("#6C5DA4");
+        this.setColour(SQLBlockly.Colours.number);
         this.appendDummyInput('number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField(new Blockly.FieldTextInput("0", checkNumeric), "NUM");
         this.setOutput(true, "number");
-        this.setTooltip(Blockly.Msg.NUMBER_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.NUMBER);
     },
     /*
      * onchange sets the colour of a specified parent
@@ -2410,16 +2291,8 @@ Blockly.Blocks['num'] = {
     onchange: function () {
       if (!this.workspace)
         return;
-      if (Blockly.Block.dragMode_ == 0) {
-        //No checking of type ans colour changes, while the block is dragged
-        if (this.parentBlock_) {
-          var check = checkColour(this, this.parentBlock_);
-          if (!check) {
-              //Set the colour of the parent only if its not the same
-              colourTheParent(this);
-          }
-        }
-      }
+      
+      colourTheParent(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -2438,12 +2311,12 @@ Blockly.Blocks['string'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour("#A56D5B");
+        this.setColour(SQLBlockly.Colours.string);
         this.appendDummyInput("string")
             .setAlign(Blockly.ALIGN_LEFT)
             .appendField(new Blockly.FieldTextInput(""), "String");
         this.setOutput(true, "string");
-        this.setTooltip(Blockly.Msg.STRING_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.STRING);
     },
     /*
      * onchange sets the colour of a specified parent
@@ -2452,26 +2325,18 @@ Blockly.Blocks['string'] = {
      * @this Blockly.Block
      */
     onchange: function () {
-      var msg = null;
-      if (!this.workspace)
-          return;
-      if (Blockly.Block.dragMode_ == 0) {
-          //No checking of type ans colour changes, while the block is dragged
-          if (this.parentBlock_) {
-              var check = checkColour(this, this.parentBlock_);
-              if (!check) {
-                  //Set the colour of the parent only if its not the same
-                  colourTheParent(this);
-              }
-          }
-      }
-      var string = this.getFieldValue("String");
+        //var msg = null;
+        //var stringValue = this.getFieldValue("String");
+      
+        if (!this.workspace)
+            return;
+        
+        colourTheParent();
+        
+        /* if (stringValue == "")
+            msg = SQLBlocks.Msg.Warnings.EMPTY_STRING;
 
-      if (string == "")
-        msg = Blockly.Msg.STRING_WARNING;
-
-
-      this.setWarningText(msg);
+        this.setWarningText(msg); */
     }
 };
 /*------------------------------------------------------------------------------
@@ -2491,13 +2356,13 @@ Blockly.Blocks['date'] = {
     init: function () {
 
         this.setHelpUrl(this.type);
-        this.setColour("#A55B80");
+        this.setColour(SQLBlockly.Colours.date);
         this.appendDummyInput()
                 .setAlign(Blockly.ALIGN_LEFT)
                 .appendField(new Blockly.FieldDate("2016-01-01"), "Date_")
                 .appendField(" ");
         this.setOutput(true, "date");
-        this.setTooltip(Blockly.Msg.DATE_VAR);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.DATE);
     },
     /*
      * onchange sets the colour of a specified parent and loads the datepciker onclick
@@ -2506,18 +2371,10 @@ Blockly.Blocks['date'] = {
      * @this Blockly.Block
      */
     onchange: function () {
-      if (!this.workspace)
-        return;
+        if (!this.workspace)
+            return;
 
-      if (Blockly.Block.dragMode_ == 0) {
-        //No checking of type ans colour changes, while the block is dragged
-        if (this.parentBlock_) {
-          var check = checkColour(this, this.parentBlock_);
-          if (!check)
-            //Set the colour of the parent only if its not the same
-            colourTheParent(this);
-        }
-      }
+        colourTheParent();
     }
 };
 /*------------------------------------------------------------------------------
@@ -2536,15 +2393,15 @@ Blockly.Blocks['fieldname_get'] = {
      */
     init: function () {
       this.setHelpUrl(this.type);
-      this.setColour(115);
+      this.setColour(SQLBlockly.Colours.list);
       this.setup(this);
 //        this.appendDummyInput()
-//                .appendField(new Blockly.FieldVariable(Blockly.Msg.VARIABLES_GET_ITEM), 'VAR');
+//                .appendField(new Blockly.FieldVariable(SQLBlocks.Msg.Blocks.VARIABLES_GET_ITEM), 'VAR');
       this.setPreviousStatement(true, "name");
-      this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
+      this.setTooltip(SQLBlocks.Msg.Tooltips.GET);
     },
     setup: function (object) {
-      var variable = new Blockly.FieldVariable(Blockly.Msg.VARIABLES_GET_ITEM);
+      var variable = new Blockly.FieldVariable(SQLBlocks.Msg.Blocks.VARIABLES_GET_ITEM);
       if (variable.getValue() == " ") {
           var list = Blockly.Variables.allUsedVariables(object);
           console.log(list);
@@ -2610,7 +2467,7 @@ Blockly.Blocks['groupfunction_factor'] = {
      * @this Blockly.Block
      */
     init: function () {
-      this.setColour(115);
+      this.setColour(SQLBlockly.Colours.list);
       this.setup(this, 'avg');
       this.setOutput(true, "groupfunction");
       //this.setPreviousStatement(true, ["group_function", "tables_and_columns"]);
@@ -2797,32 +2654,12 @@ Blockly.Blocks['groupfunction_factor'] = {
      * @this Blockly.Block
      */
     onchange: function () {
-      if (!this.workspace)
-          return;
+        if (!this.workspace)
+            return;
 
-      if (Blockly.Block.dragMode_ == 0) {
-        //No type checking and colouring while block is dragged
         //Check inputs
-        groupFunctioneval(this);
-        if (this.getInputTargetBlock('group') == null) {
-          //Set the colour of the block
-          this.setColour(115);
+        //groupFunctioneval(this);
 
-          if (this.parentBlock_) {
-            if (this.parentBlock_.type == "select"
-                || this.parentBlock_.type == "sub_select"
-                || this.parentBlock_.type == "sub_select_where"
-              ) { //Set parent colour
-              this.parentBlock_.setColour(7115);
-              if (this.parentBlock_.parentBlock_) {//set the grandparent colour
-                var pop = this.parentBlock_.parentBlock_;
-                if (pop.type == 'compare_operator' && pop.getInputTargetBlock('A') == this.parentBlock_)
-                    pop.setColour(160);
-              }
-            }
-          }
-        }
-      }
     },
     customContextMenu: Blockly.Blocks['fieldname_get'].customContextMenu
 };
@@ -2842,7 +2679,7 @@ Blockly.Blocks['groupfunction'] = {
      * @this Blockly.Block
      */
     init: function () {
-      this.setColour(115);
+      this.setColour(SQLBlockly.Colours.list);
       this.setup(this, 'avg');
       this.setPreviousStatement(true, ["group_function", "table_column", "distinct", "sub_select"]);
       this.setNextStatement(true, ["group_function", "table_column", "distinct", "sub_select"]);
@@ -2891,7 +2728,7 @@ Blockly.Blocks['groupfunction'] = {
                 .appendField(dropdown, "group_function")
                 .setCheck(["table_column", "distinct"]);
         input.appendDummyInput('VALUE')
-            .appendField(Blockly.Msg.AS)
+            .appendField(SQLBlocks.Msg.Blocks.AS)
             .appendField(new Blockly.FieldTextInput(
                     Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
         var thisBlock = input;
@@ -2937,16 +2774,14 @@ Blockly.Blocks['groupfunction'] = {
      * @return container selected container
      * @this Blockly.Block
      */
-    mutationToDom:
-            function ()
-            {
-                var container = document.createElement('mutation');
-                var table = this.getFieldValue('group_function');
-                var colour = this.getColour();
-                container.setAttribute('groupfunction', table);
-                container.setAttribute('colourHue_', colour);
-                return container;
-            },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var table = this.getFieldValue('group_function');
+        //var colour = this.getColour();
+        container.setAttribute('groupfunction', table);
+        //container.setAttribute('color', colour);
+        return container;
+    },
     /**
      * The domToMutation function gets the mutator attribute from the
      * XML and restore it in the JavaScript DOM.
@@ -2958,11 +2793,10 @@ Blockly.Blocks['groupfunction'] = {
      * @this Blockly.Block
      */
     domToMutation: function (xmlElement) {
-      console.log(xmlElement);
       if (xmlElement) {
-        this.updateShape(xmlElement.attributes [0].value);
-        var colour = xmlElement.attributes [1].value;
-        this.setColour(colour);
+        this.updateShape(xmlElement.getAttribute("groupfunction"));
+        //var colour = xmlElement.getAttribute("color");
+        //this.setColour(colour);
       }
     },
     /**
@@ -3007,29 +2841,9 @@ Blockly.Blocks['groupfunction'] = {
     onchange: function () {
       if (!this.workspace)
           return;
-      if (Blockly.Block.dragMode_ == 0) {
-        //No type checking and colouring while block is dragged
+        
         //Check inputs
-        groupFunctioneval(this);
-        if (this.getInputTargetBlock('group') == null) {
-          //Set the colour of the block
-          this.setColour(115);
-
-          if (this.parentBlock_) {
-            if (this.parentBlock_.type == "select"
-                || this.parentBlock_.type == "sub_select"
-                || this.parentBlock_.type == "sub_select_where"
-              ) {//Set parent colour
-              this.parentBlock_.setColour(7115);
-              if (this.parentBlock_.parentBlock_) {//set the grandparent colour
-                  var pop = this.parentBlock_.parentBlock_;
-                  if (pop.type == 'compare_operator' && pop.getInputTargetBlock('A') == this.parentBlock_)
-                      pop.setColour(160);
-              }
-            }
-          }
-        }
-      }
+        //groupFunctioneval(this);
     },
     customContextMenu: Blockly.Blocks['fieldname_get'].customContextMenu
 };
@@ -3051,7 +2865,7 @@ Blockly.Blocks['numberfunction'] = {
       if (!dirnum)
           dirnum = "abs";
 
-      this.setColour(255);
+      this.setColour(SQLBlockly.Colours.number);
       this.setup(this, dirnum);
       this.setOutput(true, "numberfunction");
     },
@@ -3105,11 +2919,11 @@ Blockly.Blocks['numberfunction'] = {
             input.setTooltip(function () {
                 var op = thisBlock.getFieldValue('number_function');
                 var TOOLTIPS = {
-                    'mod': Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_MOD,
-                    'power': Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_POWER,
-                    'round': Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_ROUND,
-                    'sign': Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_SIGN,
-                    'truncate': Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_TRUNCATE
+                    'mod': SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.MOD,
+                    'power': SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.POWER,
+                    'round': SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ROUND,
+                    'sign': SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SIGN,
+                    'truncate': SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.TRUNCATE
                 };
                 return TOOLTIPS[op];
             });
@@ -3133,10 +2947,10 @@ Blockly.Blocks['numberfunction'] = {
             input.setTooltip(function () {
                 var op = thisBlock.getFieldValue('number_function');
                 var TOOLTIPS = {
-                    'abs': Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_ABS,
-                    'ceil': Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_CEIL,
-                    'floor': Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_FLOOR,
-                    'sqrt': Blockly.Msg.NUMBER_FUNCTION_TOOLTIP_SQRT
+                    'abs': SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ABS,
+                    'ceil': SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.CEIL,
+                    'floor': SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.FLOOR,
+                    'sqrt': SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SQRT
                 };
                 return TOOLTIPS[op];
             });
@@ -3210,12 +3024,6 @@ Blockly.Blocks['numberfunction'] = {
                 this.removeInput('number');
             }
 
-/*
-            for (var i = 0; i < numbers.length; i++)
-                if (numbers[i] == dirnum)
-                    break;
-*/
-
             this.setup(this, dirnum);
         }
     },
@@ -3229,19 +3037,9 @@ Blockly.Blocks['numberfunction'] = {
     onchange: function () {
       if (!this.workspace)
           return;
-
-      if (Blockly.Block.dragMode_ == 0) {
-        //No type checking and colouring while block is dragged
-        if (this.parentBlock_) {
-          var check = checkColour(this, this.parentBlock_);
-          if (!check) {
-              //Set the colour of the parent only if its not the same
-              colourTheParent(this);
-          }
-        }
-        //Check the Inputs
-        numberfunctioneval(this);
-      }
+    
+      colourTheParent(this);
+      numberfunctioneval(this);   
     }
 };
 /*------------------------------------------------------------------------------
@@ -3295,8 +3093,7 @@ Blockly.Blocks['otherfunction'] = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(["datefunction", "table_column_var", "bool", "string", "date", "number"]);
                 input.setHelpUrl('otherfunction_decode');
-                input.setTooltip(Blockly.Msg.OTHER_FUNCTION_TOOLTIP_DECODE);
-                input.setColour(160);
+                input.setTooltip(SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.DECODE);
             }
 
             if (dirother == 'greatest' || dirother == 'least') {
@@ -3320,12 +3117,11 @@ Blockly.Blocks['otherfunction'] = {
                 input.setTooltip(function () {
                     var op = thisBlock.getFieldValue('other_function');
                     var TOOLTIPS = {
-                        'greatest': Blockly.Msg.OTHER_FUNCTION_TOOLTIP_GREATEST,
-                        'least': Blockly.Msg.OTHER_FUNCTION_TOOLTIP_LEAST
+                        'greatest': SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.GREATEST,
+                        'least': SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.LEAST
                     };
                     return TOOLTIPS[op];
                 });
-                input.setColour(115);
             }
 
             if (dirother == 'nvl') {
@@ -3338,12 +3134,11 @@ Blockly.Blocks['otherfunction'] = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(["datefunction", "bool", "string", "date", "number"]);
                 this.interpolateMsg(
-                        Blockly.Msg.VARIABLES_SET_TITLE + ' %1 ',
+                        SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE + ' %1 ',
                         ['VAR', new Blockly.FieldTextInput(Blockly.Msg.VARIABLES_SET_ITEM)],
                         Blockly.ALIGN_LEFT);
                 input.setHelpUrl('otherfunction_ifnull');
-                input.setTooltip(Blockly.Msg.OTHER_FUNCTION_TOOLTIP_NVL);
-                input.setColour(115);
+                input.setTooltip(SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.NVL);
             }
         }
     },
@@ -3429,7 +3224,7 @@ Blockly.Blocks['otherfunction'] = {
      */
     decompose: function (workspace) {
         var containerBlock = createBlock(workspace, 'ADD');
-        containerBlock.setColour(115);
+        containerBlock.setColour(SQLBlockly.Colours.list);
         var connection = containerBlock.getInput('STACK').connection;
 
         for (var x = 2; x <= this.valueCount_; x++) {
@@ -3558,44 +3353,7 @@ Blockly.Blocks['otherfunction'] = {
         if (!this.workspace)
             return;
 
-        var dir = this.getFieldValue("other_function");
-        if (Blockly.Block.dragMode_ == 0) {
-            //No type checking and colouring while block is dragged
-            othereval(this);
-            if (dir != "decode") {
-                //Set the colour of the Block if there are no inputs
-                if (this.getInputTargetBlock('object') == null)
-                    this.setColour(115);
-
-                if (this.parentBlock_) {    //Colour the parent
-                    if (this.parentBlock_.type != "tables_and_columns") {
-                        if (this.parentBlock_.type != "otherfunction") {
-                            this.parentBlock_.setColour(7115);
-                            if (this.parentBlock_.parentBlock_) {   //Set the grandparent colour
-                                var pop = this.parentBlock_.parentBlock_;
-                                if (pop.type == 'compare_operator')
-                                    pop.setColour(160);
-                            }
-                        }
-                    }
-                }
-                if (dir == "decode") {
-                    if (this.parentBlock_) {    //Colour the parent
-                        var p = this.parentBlock_;
-                        if (p.type == 'select' ||
-                            p.type == 'sub_select' ||
-                            p.type == 'sub_select_where'
-                          ) {
-                            if (this.parentBlock_) {
-                                var check = checkColour(this, this.parentBlock_);
-                                if (!check) //Set the colour of the parent only if its not the same
-                                    p.setColour(160);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        othereval(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -3614,7 +3372,7 @@ Blockly.Blocks['charfunction'] = {
      */
     init: function () {
 
-        this.setColour(15);
+        this.setColour(SQLBlockly.Colours.string);
         this.setOutput(true, "charfunction");
         this.setup(this, 'lower');
 
@@ -3652,8 +3410,8 @@ Blockly.Blocks['charfunction'] = {
                 input.setTooltip(function () {
                     var op = thisBlock.getFieldValue('char_function');
                     var TOOLTIPS = {
-                        'rpad': Blockly.Msg.CHAR_FUNCTION_TOOLTIP_RPAD,
-                        'lpad': Blockly.Msg.CHAR_FUNCTION_TOOLTIP_LPAD
+                        'rpad': SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.RPAD,
+                        'lpad': SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LPAD
                     };
                     return TOOLTIPS[op];
                 });
@@ -3690,7 +3448,7 @@ Blockly.Blocks['charfunction'] = {
                     if (this.valueConnection4_)
                         nInput.connection.connect(this.valueConnection4_);
 
-                    input.setTooltip(Blockly.Msg.CHAR_FUNCTION_TOOLTIP_REPLACE);
+                    input.setTooltip(SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.REPLACE);
                 }
                 else {
                     if (dirchar == 'substring') {
@@ -3708,7 +3466,7 @@ Blockly.Blocks['charfunction'] = {
                         if (this.valueConnection3_)
                             elseInput.connection.connect(this.valueConnection3_);
 
-                        input.setTooltip(Blockly.Msg.CHAR_FUNCTION_TOOLTIP_SUBSTRING);
+                        input.setTooltip(SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.SUBSTRING);
                     } else {
                         if (dirchar == "instr") {
                             var ifInput = input.appendValueInput("option")
@@ -3725,7 +3483,7 @@ Blockly.Blocks['charfunction'] = {
                             if (this.valueConnection2_) {
                                 doInput.connection.connect(this.valueConnection2_);
                             }
-                            input.setTooltip(Blockly.Msg.CHAR_FUNCTION_TOOLTIP_INSTR);
+                            input.setTooltip(SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.INSTR);
 
                         }
                         else {
@@ -3736,8 +3494,7 @@ Blockly.Blocks['charfunction'] = {
                                         .setCheck(["string", "table_column_var"]);
                                 input.appendDummyInput("option4")
                                         .appendField(new Blockly.FieldTextInput("%d,%m,%Y"), "charsets");
-                                input.setColour(15);
-                                input.setTooltip(Blockly.Msg.CONVERSION_FUNCTION_TOOLTIP_STR_TO_DATE);
+                                input.setTooltip(SQLBlocks.Msg.Tooltips.CONVERSION_FUNCTION.STR_TO_DATE);
                                 //Restore the childblocks
                                 if (this.valueConnection1_) {
                                     ifInput.connection.connect(this.valueConnection1_);
@@ -3756,13 +3513,13 @@ Blockly.Blocks['charfunction'] = {
                                 this.setTooltip(function () {
                                     var op = thisBlock.getFieldValue('char_function');
                                     var TOOLTIPS = {
-                                        'lower': Blockly.Msg.CHAR_FUNCTION_TOOLTIP_LOWER,
-                                        'ltrim': Blockly.Msg.CHAR_FUNCTION_TOOLTIP_LTRIM,
-                                        'rtrim': Blockly.Msg.CHAR_FUNCTION_TOOLTIP_RTRIM,
-                                        'soundex': Blockly.Msg.CHAR_FUNCTION_TOOLTIP_SOUNDEX,
-                                        'upper': Blockly.Msg.CHAR_FUNCTION_TOOLTIP_UPPER,
-                                        'ascii': Blockly.Msg.CHAR_FUNCTION_TOOLTIP_ASCII,
-                                        'length': Blockly.Msg.CHAR_FUNCTION_TOOLTIP_LENGTH
+                                        'lower': SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LOWER,
+                                        'ltrim': SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LTRIM,
+                                        'rtrim': SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.RTRIM,
+                                        'soundex': SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.SOUNDEX,
+                                        'upper': SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.UPPER,
+                                        'ascii': SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.ASCII,
+                                        'length': SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LENGTH
                                     };
                                     return TOOLTIPS[op];
                                 });
@@ -3901,7 +3658,7 @@ Blockly.Blocks['datefunction'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour(330);
+        this.setColour(SQLBlockly.Colours.date);
         this.setup(this, 'sysdate');
         this.setOutput(true, "datefunction");
     },
@@ -3937,9 +3694,9 @@ Blockly.Blocks['datefunction'] = {
                 input.setTooltip(function () {
                     var op = thisBlock.getFieldValue('date_function');
                     var TOOLTIPS = {
-                        'now': Blockly.Msg.DATE_FUNCTION_TOOLTIP_NOW,
-                        'sysdate': Blockly.Msg.DATE_FUNCTION_TOOLTIP_SYSDATE,
-                        'curdate': Blockly.Msg.DATE_FUNCTION_TOOLTIP_CURDATE
+                        'now': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.NOW,
+                        'sysdate': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.SYSDATE,
+                        'curdate': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.CURDATE
                     };
                     return TOOLTIPS[op];
                 });
@@ -3952,9 +3709,8 @@ Blockly.Blocks['datefunction'] = {
                         .setCheck(["date", "datefunction", "table_column_var"]);
                 input.appendDummyInput("vals3")
                         .appendField(new Blockly.FieldTextInput("%d,%m,%Y"), "vals");
-                input.setColour(330);
                 input.setHelpUrl('conversion_date_format');
-                input.setTooltip(Blockly.Msg.CONVERSION_FUNCTION_TOOLTIP_DATE_FORMAT);
+                input.setTooltip(SQLBlocks.Msg.Tooltips.CONVERSION_FUNCTION.DATE_FORMAT);
                 //Restore the childblocks
                 if (this.valueConnection1_) {
                     ifInput.connection.connect(this.valueConnection1_);
@@ -3967,7 +3723,7 @@ Blockly.Blocks['datefunction'] = {
                                    .setAlign(Blockly.ALIGN_LEFT)
                                    .setCheck(["date", "datefunction", "table_column_var"]);
                 input.appendDummyInput('vals')
-                     .appendField(Blockly.Msg.INTERVAL)
+                     .appendField(SQLBlocks.Msg.Blocks.INTERVAL)
                      .appendField(" ")
                      .appendField(new Blockly.FieldTextInput("", checkNumeric), "intervallvalue")
                      .appendField(" ")
@@ -3982,7 +3738,7 @@ Blockly.Blocks['datefunction'] = {
                     return HelpURL[op];
                 });
 
-                input.setTooltip(Blockly.Msg.Date_FUNCTION_TOOLTIP_ADD_MONTHS);
+                input.setTooltip(SQLBlocks.Msg.Tooltips.DATE_FUNCTION.ADD_MONTHS);
 
                 if (this.valueConnection1_) //Restore the childblocks
                     ifInput.connection.connect(this.valueConnection1_);
@@ -4002,7 +3758,7 @@ Blockly.Blocks['datefunction'] = {
                                    .setCheck(["date", "datefunction", "table_column_var"]);
 
                 input.setHelpUrl('datefunction_extract');
-                input.setTooltip(Blockly.Msg.DATE_FUNCTION_TOOLTIP_EXTRACT);
+                input.setTooltip(SQLBlocks.Msg.Tooltips.DATE_FUNCTION.EXTRACT);
 
                 if (this.valueConnection1_) //Restore the childblocks
                     ifInput.connection.connect(this.valueConnection1_);
@@ -4031,10 +3787,10 @@ Blockly.Blocks['datefunction'] = {
                 input.setTooltip(function () {
                     var op = thisBlock.getFieldValue('date_function');
                     var TOOLTIPS = {
-                        'last_day': Blockly.Msg.DATE_FUNCTION_TOOLTIP_LAST_DAY,
+                        'last_day': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.LAST_DAY,
                         'date': Blockly.Msg.DATE_FUNCTION_TOOLTIP_DATE,
-                        'month': Blockly.Msg.DATE_FUNCTION_TOOLTIP_MONTH,
-                        'year': Blockly.Msg.DATE_FUNCTION_TOOLTIP_YEAR
+                        'month': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.MONTH,
+                        'year': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.YEAR
 
                     };
                     return TOOLTIPS[op];
@@ -4155,11 +3911,11 @@ Blockly.Blocks['ADD'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(160);
+        this.setColour(SQLBlockly.Colours.mutators);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.ADD);
+            .appendField(SQLBlocks.Msg.Blocks.ADD);
         this.appendStatementInput('STACK');
-        this.setTooltip(Blockly.Msg.ADD_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.ADD);
         this.contextMenu = false;
     }
 };
@@ -4173,12 +3929,12 @@ Blockly.Blocks['AND'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(160);
+        this.setColour(SQLBlockly.Colours.mutators);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.AND);
+            .appendField(SQLBlocks.Msg.Blocks.AND);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setTooltip(Blockly.Msg.AND_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.AND);
         this.contextMenu = false;
     }
 };
@@ -4192,12 +3948,12 @@ Blockly.Blocks['OR'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(160);
+        this.setColour(SQLBlockly.Colours.mutators);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.OR);
+            .appendField(SQLBlocks.Msg.Blocks.OR);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setTooltip(Blockly.Msg.OR_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.OR);
         this.contextMenu = false;
     }
 };
@@ -4211,12 +3967,12 @@ Blockly.Blocks['more'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(115);
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.MORE);
+            .appendField(SQLBlocks.Msg.Blocks.MORE);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setTooltip(Blockly.Msg.OR_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.OR);
         this.contextMenu = false;
     }
 };
@@ -4230,12 +3986,12 @@ Blockly.Blocks['alias'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(115);
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.AS);
+            .appendField(SQLBlocks.Msg.Blocks.AS);
         this.setPreviousStatement(true, "alias");
         this.setNextStatement(true, ["limit", "group_by", "order_by"]);
-        this.setTooltip(Blockly.Msg.AS_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.AS);
         this.contextMenu = false;
     }
 };
@@ -4248,12 +4004,12 @@ Blockly.Blocks['group_by'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(115);
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.GROUP_BY);
+            .appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
         this.setPreviousStatement(true, "group_by");
         this.setNextStatement(true, "limit");
-        this.setTooltip(Blockly.Msg.GROUP_BY_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.GROUP_BY);
         this.contextMenu = false;
     },
     onchange: function () {
@@ -4275,13 +4031,13 @@ Blockly.Blocks['group_by_having'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(115);
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.GROUP_BY)
-            .appendField(Blockly.Msg.HAVING);
+            .appendField(SQLBlocks.Msg.Blocks.GROUP_BY)
+            .appendField(SQLBlocks.Msg.Blocks.HAVING);
         this.setPreviousStatement(true, "group_by");
         this.setNextStatement(true, "limit");
-        this.setTooltip(Blockly.Msg.GROUP_BY_HAVING_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.GROUP_BY_HAVING);
         this.contextMenu = false;
     },
     onchange: function () {
@@ -4303,12 +4059,12 @@ Blockly.Blocks['order_by'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(115);
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.ORDER_BY);
+            .appendField(SQLBlocks.Msg.Blocks.ORDER_BY);
         this.setPreviousStatement(true, "order_by");
         this.setNextStatement(true, "limit");
-        this.setTooltip(Blockly.Msg.ORDER_BY_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.ORDER_BY);
         this.contextMenu = false;
     },
     onchange: function () {
@@ -4330,11 +4086,11 @@ Blockly.Blocks['limit'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(115);
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput()
-                .appendField(Blockly.Msg.LIMIT);
+                .appendField(SQLBlocks.Msg.Blocks.LIMIT);
         this.setPreviousStatement(true, "limit");
-        this.setTooltip(Blockly.Msg.LIMIT_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.LIMIT);
         this.contextMenu = false;
     }
 };
@@ -4347,9 +4103,9 @@ Blockly.Blocks['set'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(115);
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.SET);
+            .appendField(SQLBlocks.Msg.Blocks.SET);
         this.setPreviousStatement(true, "set");
         this.setNextStatement(true, "set");
         this.setTooltip(Blockly.Msg.SET_TOOLTIP);
@@ -4365,12 +4121,12 @@ Blockly.Blocks['into'] = {
      * @this Blockly.Block
      */
     init: function () {
-        this.setColour(115);
+        this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput()
-            .appendField(Blockly.Msg.INTO);
+            .appendField(SQLBlocks.Msg.Blocks.INTO);
         this.setPreviousStatement(true, "into");
         this.setNextStatement(true, "into");
-        this.setTooltip(Blockly.Msg.INTO_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.INTO);
         this.contextMenu = false;
     }
 };
