@@ -1,36 +1,30 @@
 html, body {
-                height: 100%;
-                margin: 0;
-            }
+    height: 100%;
+    margin: 0;
+}
+
 body {
     background-color: #fff;
     font-family: sans-serif;
     overflow: hidden;
 }
+
 h1 {
     font-weight: normal;
     font-size: 140%;
 }
+
 table {
     height: 100%;
     width: 100%;
 }
-
-/* #blocklyArea {
-    height: 99%;
-} */
-
-/*.blocklyFieldDropdown {
-   padding: 0 !important;
-    overflow-y: auto !important;
-     max-height: 30px !important;
-  }*/
   
 .blocklySvg {
     height: 100%;
     width: 100%;
     border: 1px solid #d6d6d6;
 }
+
 .favicon{
     float: left;
     margin-bottom: 10px;
@@ -161,36 +155,38 @@ h3 {
     position: fixed;
     margin-left: 10px;
 }
-iframe {
-    width: 100%;
-    height: 100%;
-    border-style: solid;
-    border-color: #ddd;
-    border-width: 0 1px 1px 0;
-}
-.workspace {
-    width: 100%;
-    height: 99%;
-}
-#workspace{
-    height:100%;
-}
 
-#datespicker { 
-    visibility: visible; 
+#help,
+#wizard {
+    visibility: hidden; 
     background-color: #f8f8f8;
-    z-index: 10; 
+    border-width: 3px;
     border-style: solid;
     border-radius: 8px;
-    padding-left: 15px;
-    padding-right: 15px;
-    overflow: hidden;
+    /* padding-top: 7px;
+    padding-bottom: 7px; */
+    position: relative;
 }
 
 #help { 
-    display:none;
-    top:98px;
-    right:18px;
+    z-index: 10;
+    overflow-y: auto;
+    resize: vertical;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: auto;
+    top: 20px;
+}
+
+#helpcontent {
+    cursor: move;
+    position: relative;
+}
+
+/* #help { 
+     display: none;
+    top: 98px;
+    right: 18px;
     min-width: 80%;
     max-width: 600px;
     min-height: 600px;
@@ -200,8 +196,8 @@ iframe {
     border-style: solid;
     border-width: 3px;
     border-color: #63a65a;
-    overflow: scroll;
-}
+    overflow: scroll; 
+} */
 
 .helpicon{
     margin-bottom: 5px;
@@ -323,11 +319,11 @@ iframe {
     margin-right: 20px;
     display:none;
 }
-#choose{
+#choose {
     /*    	z-index:90; 
     opacity:0.5; 
     filter:alpha(opacity=50);  For IE8 and earlier  */
-    //-moz-opacity:.5; 
+    /* -moz-opacity:.5; */ 
     background-color:#000000; 
     background-color: hsla(0, 0%, 0%, 0.5);
     position:fixed;  

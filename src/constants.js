@@ -1,5 +1,7 @@
 var SQLBlockly = {};
 
+SQLBlockly.LANG = "en";
+
 /* COLOURS */
 SQLBlockly.Colours = {};
 

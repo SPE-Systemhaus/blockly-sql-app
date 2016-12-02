@@ -121,7 +121,6 @@ function setDropdownValues(values) {
     var options = values;
     optionValues = options.split(',');
     for (var j = 0; j < optionValues.length; j++) {
-
         optionsForTabeles[j] = new Array(); //3 Dimension
         optionsForTabeles [j][0] = optionValues[j];
         optionsForTabeles[j][1] = optionValues[j];
@@ -366,34 +365,6 @@ function colourTheParent(block) {
             block.lastConnectedParent.setColour(
                 block.lastConnectedParent.getColour()
             );
-    }
-}
-
-/*------------------------------------------------------------------------------
- * Closes the help div
- *----------------------------------------------------------------------------*/
-function closehelp() {
-    if (document.getElementById('help').style.display == 'block') {
-        var help = document.getElementById('help');
-        var close = document.getElementById('close');
-        help.style.display = "none";
-        close.style.visibility = 'hidden';
-    } else {
-        if (document.getElementById('showTestSQL').style.display == 'block') {
-            var help = document.getElementById('showTestSQL');
-            var close = document.getElementById('closed');
-            help.style.display = "none";
-            close.style.visibility = 'hidden';
-        } else {
-            if (document.getElementById('writeSQL').style.display == 'block') {
-                var help = document.getElementById('writeSQL');
-                var close = document.getElementById('closea');
-                var area = help.childNodes[3];
-                area.value = '';
-                help.style.display = "none";
-                close.style.visibility = 'hidden';
-            }
-        }
     }
 }
 
