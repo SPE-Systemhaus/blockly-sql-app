@@ -35,7 +35,11 @@
 	</head>
     
     <body onload="main()" style="width: 100vw; height: 100vh; margin: 0; padding: 0;">      
-        <div id="wrapper" style="width: 100vw; height: 100vh;">
+        <div id="wrapper" style="width: 100vw; height: 100vh;">       
+            <div id="help">
+                <a title="Anzeige schliessen" onclick="closehelp();">×</a>
+                <div id="helpcontent"></div>
+            </div>
             <div id="head" style="height: 87px; padding: 5px; margin: 0;">
                 <img src="img/favicon.png" alt="SQL GUI" class="favicon" > 
                 <select id="name" class="select" >
@@ -63,12 +67,16 @@
             
             <div id="showTestSQL">
                 <div id="closed">
-                    <a title="Close " onclick="closehelp();">×</a>
+                <a title="close " onclick="closehelp();">×</a>
                 </div>
                 <div id="contents"></div>
             </div>
             
             <div id="writeSQL">
+                <div id="sqlmove" class="move">
+                    <a title="Editor verschieben"></a>
+                </div>
+               
                 <div id="closea">
                     <a title="Close help box." onclick="closehelp();">×</a>
                 </div>
@@ -78,13 +86,6 @@
                 <img src="img/icons/help.png" class="helpicon" onmouseover="settooltip();" onmouseout="closetooltip();">
                 <p id="tooltip" class ="tooltips"></p>
                 <button id="toblock" onclick="parsingSQL();" class="okayy">OK</button>
-            </div>
-            
-            <div id="help">
-                <div id="close">
-                    <a title="Anzeige schliessen" onclick="closehelp();">×</a>
-                </div>
-                <div id="helpcontent" style="margin-top: 2em;"></div>
             </div>
             
             <div id="errorSQL">

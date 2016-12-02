@@ -198,23 +198,11 @@ Blockly.Blocks['insert'] = {
         if (!this.workspace)
             return;
 
-        /* Colouring */
-        var stopHeight = this.getInput("bl").renderHeight + this.getInput("ins").renderHeight;
-        this.gradient.setVerticalGradient(
-            this, {
-                "start" : "#5BA58C",
-                "stop" : this.getColour()
-            }, {
-                "start" : 0,
-                "stop" : stopHeight
-            }
-        );
-
         /* Counting Inputs */
         this.setCount_ = 0;
         while (this.getInput('set' + (this.setCount_ + 1)) !== null)
             this.setCount_++;
-        
+
         /* Checking SET TO inputs */
         checkInsertStatement(this);
     }
@@ -419,21 +407,18 @@ Blockly.Blocks['update'] = {
         if (!this.workspace)
             return;
 
-        var stopHeight = this.getInput("bl").renderHeight + this.getInput("up").renderHeight;
-
         this.gradient.setVerticalGradient(
             this, {
                 "start" : "#5BA58C",
-                "stop" : this.getColour()
-            }, {
-                "start" : 0,
-                "stop" : stopHeight
-            }
+                "stop" : getChildColour(this)
+            },
+            ["Clause"]
         );
 
         checkUpdate(this);
     }
 };
+
 /*------------------------------------------------------------------------------
  * select-is the top level of the select comand. It is the default
  * object for this command and  contains all available blocks to represent
@@ -706,13 +691,12 @@ Blockly.Blocks['select'] = {
             this, {
                 "start" : "#5BA58C",
                 "stop" : getChildColour(this)
-            }, {
-                "start" : this.getInput("select").renderHeight,
-                "stop" : this.getInput("Clause").renderHeight
-            }
+            },
+            ["Clause", "limit", "group_by", "group_by_have", "order_by"]
         );
     }
 };
+
 /*------------------------------------------------------------------------------
  * distinct-irepresents the distinct-operator of sql. can be used with
  *group-function and table_columns.
@@ -738,6 +722,7 @@ Blockly.Blocks['distinct'] = {
         this.setTooltip(SQLBlocks.Msg.Tooltips.DISTINCT);
     }
 };
+
 /*------------------------------------------------------------------------------
  * sub select-is like the select block, the first block of an select clause.
  *It is the default object for this command and  contains all available blocks
@@ -1081,16 +1066,12 @@ Blockly.Blocks['sub_select'] = {
         if (!this.workspace)
             return;
         
-        var selectHeight = this.getInput("select").renderHeight;
-
         this.gradient.setVerticalGradient(
             this, {
                 "start" : "#5BA58C",
                 "stop" : getChildColour(this)
-            }, {
-                "start" : selectHeight,
-                "stop" : this.getHeightWidth().height - selectHeight
-            }
+            }, 
+            ["Clause", "limit", "group_by", "group_by_having", "order_by", "alias"]
         );
     }
 };
@@ -1429,16 +1410,12 @@ Blockly.Blocks['sub_select_where'] = {
         if (!this.workspace)
             return;
 
-        var selectHeight = this.getInput("select").renderHeight;
-
         this.gradient.setVerticalGradient(
             this, {
                 "start" : "#5BA58C",
                 "stop" : getChildColour(this)
-            }, {
-                "start" : selectHeight,
-                "stop" : this.getHeightWidth().height - selectHeight
-            }
+            }, 
+            ["Clause", "limit", "group_by", "group_by_having", "order_by", "alias"]
         );
     }
 };
@@ -1461,8 +1438,7 @@ Blockly.Blocks['tables_and_columns'] = {
     init: function () {
         var table = Column[0][0];
         var column = "*";
-        //this.gradient = new ColourGradient();
-
+      
         this.setHelpUrl(this.type);
         this.setColour(SQLBlockly.Colours.list);       
         this.setup(table, column);
@@ -2209,7 +2185,7 @@ Blockly.Blocks['string'] = {
         if (!this.workspace)
             return;
         
-        colourTheParent();
+        colourTheParent(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -2227,7 +2203,6 @@ Blockly.Blocks['date'] = {
      * @this Blockly.Block
      */
     init: function () {
-
         this.setHelpUrl(this.type);
         this.setColour(SQLBlockly.Colours.date);
         this.appendDummyInput()
@@ -2247,7 +2222,7 @@ Blockly.Blocks['date'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent();
+        colourTheParent(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -3612,6 +3587,7 @@ Blockly.Blocks['datefunction'] = {
                 if (this.valueConnection1_) //Restore the childblocks
                     ifInput.connection.connect(this.valueConnection1_);
             }
+
             if (dirdate == "extract") {
                 var select = new Blockly.FieldDropdown(time);
 
@@ -3664,6 +3640,7 @@ Blockly.Blocks['datefunction'] = {
                     };
                     return TOOLTIPS[op];
                 });
+                
                 if (this.valueConnection1_) //Restore th childblcoks
                     ifInput.connection.connect(this.valueConnection1_);
             }

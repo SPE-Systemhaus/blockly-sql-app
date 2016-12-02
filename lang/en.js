@@ -122,6 +122,15 @@ var bool = [
 ];
 
 /**
+ * USER messages
+ */
+SQLBlocks.Msg.User = {};
+
+SQLBlocks.Msg.User.CONFIRM_SAVE_WORKSPACE = "Do you really want to save the actual workspace?";
+SQLBlocks.Msg.User.CONFIRM_LOAD_WORKSPACE = "Are you sure to load a new SQL statement into the workspace?";
+SQLBlocks.Msg.User.TOOLTIP_SQL_BOX = "To convert your SQL statement into blocks, just type it in. Be sure to check you spelling and set all the blanks. Then klick OK.";
+
+/**
  * BLOCKS
  */
 SQLBlocks.Msg.Blocks = {};

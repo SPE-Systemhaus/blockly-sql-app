@@ -1,3 +1,8 @@
+  var selected = null, // Object of the element to be moved
+		x_pos = 0, y_pos = 0, // Stores x & y coordinates of the mouse pointer
+		x_elem = 0, y_elem = 0; // Stores top, left values (edge) of the element
+      
+
 /*******************************************************************************
  * Start point of the Blockly SQL Generator. The main() function will be
  * executed on loading the body tag. Some Visual functions are inside here.
@@ -25,13 +30,46 @@
 
 	getdb('first');
 	initCodeEditor();
+	initHelp();
 
-	//workspace.addChangeListener(onBlockChange);
+	/* Move/Drag behaviour */
+	document.onmousemove = _move_elem;
+	document.onmouseup = _destroy;
 }
 
-function onBlockChange(event) {
-	closeErrorBox();
-	closeTextArea();
+function initHelp() {
+	/* Init movable help container */
+	var helpDiv = window.document.getElementById ('help');
+	helpDiv.style.height = 0;
+
+	document.getElementById ('helpcontent').onmousedown = function () {
+		return _drag_init (helpDiv);
+	};
+}
+
+function _drag_init (elem) {
+	// Store the object of the element which needs to be moved
+	selected = elem;
+	x_elem = x_pos - selected.offsetLeft;
+	y_elem = y_pos - selected.offsetTop;
+
+	return false;
+}
+
+ // Will be called when user dragging an element
+function _move_elem (e) {
+	x_pos = document.all ? window.event.clientX : e.pageX;
+	y_pos = document.all ? window.event.clientY : e.pageY;
+
+	if (selected !== null) {
+		selected.style.left = (x_pos - x_elem) + 'px';
+		selected.style.top = (y_pos - y_elem) + 'px';
+	}
+}
+
+// Destroy the object when we are done
+function _destroy () {
+	selected = null;
 }
 
 function initCodeEditor() {
@@ -41,6 +79,11 @@ function initCodeEditor() {
 	editor.setHighlightActiveLine(false);
 	editor.getSession().setUseWrapMode(true);
 	editor.$blockScrolling = Infinity;
+
+	var sqlArea = document.getElementById("writeSQL");
+	sqlArea.onmousedown = function () {
+		return _drag_init (sqlArea);
+	};
 }
 
 function parsingSQL() {
@@ -136,7 +179,7 @@ function getdb(task) {
  * @returns {undefined}
  *-----------------------------------------------------------------*/
 function save() {
-	if (confirm("Do you really want to save the actual workspace?")) {
+	if (confirm(SQLBlocks.Msg.User.CONFIRM_SAVE_WORKSPACE)) {
 		if (document.getElementById("name").value != "") {
 			// saving objects into a xml-format
 			var xmlDom = window.Blockly.Xml.workspaceToDom(window.Blockly.mainWorkspace);
@@ -189,7 +232,7 @@ function load() {
 		}
 	}
 
-	if (confirm("Are you sure to load a new SQL statement into the workspace?")) {
+	if (confirm(SQLBlocks.Msg.User.CONFIRM_LOAD_WORKSPACE)) {
 		if (document.getElementById('name').value != "") {
 			// loading selected p2fXML
 			var xml = loadXMLDoc("samples/" +
@@ -254,12 +297,40 @@ function closeTextArea() {
 	document.getElementById("writeSQL").style.display = "none";	
 }
 
+/*------------------------------------------------------------------------------
+ * Closes the help div
+ *----------------------------------------------------------------------------*/
+function closehelp() {
+    if (document.getElementById('help').style.display == 'block') {
+        var help = document.getElementById('help');
+        var close = document.getElementById('close');
+        help.style.display = "none";
+        close.style.visibility = 'hidden';
+    } else {
+        if (document.getElementById('showTestSQL').style.display == 'block') {
+            var help = document.getElementById('showTestSQL');
+            var close = document.getElementById('closed');
+            help.style.display = "none";
+            close.style.visibility = 'hidden';
+        } else {
+            if (document.getElementById('writeSQL').style.display == 'block') {
+                var help = document.getElementById('writeSQL');
+                var close = document.getElementById('closea');
+                var area = help.childNodes[3];
+                area.value = '';
+                help.style.display = "none";
+                close.style.visibility = 'hidden';
+            }
+        }
+    }
+}
+
 /*------------------------------------------------------------------
  * Setting the textarea tooltip
  *----------------------------------------------------------------*/
 function settooltip() {
 	var a = document.getElementById('tooltip');
-	a.innerHTML = "To convert your statemt into blocks, just type it in.<br> Be sure to check you spelling and set all the blanks.<br> Then klick ok.";
+	a.innerHTML = SQLBlocks.Msg.User.TOOLTIP_SQL_BOX;
 	a.style.display = 'block';
 }
 

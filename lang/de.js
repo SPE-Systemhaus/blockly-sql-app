@@ -122,6 +122,15 @@ var bool = [
 ];
 
 /**
+ * USER messages
+ */
+SQLBlocks.Msg.User = {};
+
+SQLBlocks.Msg.User.CONFIRM_SAVE_WORKSPACE = "Möchten Sie wirklich die aktuelle Arbeitsfläche speichern?";
+SQLBlocks.Msg.User.CONFIRM_LOAD_WORKSPACE = "Möchten Sie wirklich eine neue SQL Anweisung in die Arbeitsfläche laden?";
+SQLBlocks.Msg.User.TOOLTIP_SQL_BOX = "Um eine SQL Anweisung in Blöcke umzuwandeln, geben Sie diese in dieses Textfeld ein und klicken anschließend auf OK.";
+
+/**
  * BLOCKS
  */
 SQLBlocks.Msg.Blocks = {};
