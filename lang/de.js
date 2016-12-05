@@ -191,6 +191,7 @@ SQLBlocks.Msg.Tooltips.DATE_FUNCTION.NOW = "Gibt das heutige Datum und die entsp
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.MONTH = "Nutzt eine Datumsvariable oder Datumsspalte.Gibt den Monat des datums als Zahl zwischen 1 und 12 für Januar bis Dezember zurück.";
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.YEAR = "Nutzt eine Datumsvariable oder Datumsspalte. Gibt das Jahr des Datums zwischen 0000 und 9999 zurück.";
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.SYSDATE = "Gibt die Systemzeit als Wert zurück";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.DATE = "Returns the date of today.";
 
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION = {};
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ABS = "Uses one number-value. Returns the absolute value of the number_value.";
@@ -228,6 +229,27 @@ SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS ="Addiert zwei Ausdrücke";
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS ="Subtrahiert zwei Ausdrücke";
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE ="Dividiert zwei Ausdrücke";
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE ="Multipliziert zwei Ausdrücke";
+
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION = {};
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.COUNT = "Counts the matching rows of the selected column.";
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MIN = "Returns the minimum value of an column \n " + "Could be used with distinct"; 
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MAX = "Returns the maximum value of an column \n " + "Could be used with distinct";
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.AVG = "Returns the average value of an column. \n " + "Could be used with distinct."; 
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.STDDEV = "Returns the population standard deviation of an column.";
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.SUM = "Returns the sum of an expression.";
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.VARIANCE = "Returns the population standard variance of column.";
+
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE = {};
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Return true if both inputs equal each other.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Return true if both inputs are not equal to each other.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LT = "Return true if the first input is smaller than the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LTE = "Return true if the first input is smaller than or equal to the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT = "Return true if the first input is greater than the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Return true if the first input is greater than or equal to the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Return true if expression is null";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Return true if expression is not null";
+
+SQLBlocks.Tooltips.CONDITIONS = "Returns true if the expression is not.";
 
 /**
  *  MUTATORS 

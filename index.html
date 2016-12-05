@@ -30,74 +30,63 @@
         <!-- Adding SQLBlockly Addon -->
 		<script type="text/javascript" src="dist/SQLBlockly.min.js"></script>
         
+        <!-- Adding ACE library (Code Editor) -->
+        <script type="text/javascript" src="../common/libs/ace/ace.js"></script>
+
         <!-- Including StyleSheets -->
         <link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
     
-    <body onload="main()" style="width: 100vw; height: 100vh; margin: 0; padding: 0;">      
-        <div id="wrapper" style="width: 100vw; height: 100vh;">       
-            <div id="help">
-                <a title="Anzeige schliessen" onclick="closehelp();">×</a>
-                <div id="helpcontent"></div>
-            </div>
-            <div id="head" style="height: 87px; padding: 5px; margin: 0;">
-                <img src="img/favicon.png" alt="SQL GUI" class="favicon" > 
-                <select id="name" class="select" >
-                    <option value="Letzte_Bestellungen_von_Kunden">Last customer order</option>
-                    <option value="mitarbeiter_gehalt">Number of products</option>
-                    <option value="verlorenen_Kunden">Lost costumers</option>
-                    <option value="standort_von_mitarbeitern">Employee location</option>
-                    <option value="kunde_nach_standort_und_mitarbeiter"> Customers refer to employees</option>
-                    <option value="insert_products">New products</option>
-                    <option value="update_offices">Changing office address</option>
-                </select>
-                <!-- <button onclick="save();" class="selectsave">Save</button>-->
-                <button onclick="load();" class="selectload">Load</button>
-                <div id="datenbank" class="harddb">Database: classicmodels</div>
-                <!-- <select id="datenbank" class="selectdb" onchange="selectdb();
-                            getdb('second');">
-                        <option value="lizendata">Lizenzdatenbank</option>
-                        <option value="conn">classicmodels</option>
-                    </select>-->
-                <button class="showText" onclick="showtext();">Show Text</button>
-                <button class="writeText" onclick="opentextarea();">Write SQL-Statement</button>
-            </div>
+    <body onload="main()" style="width: 100vw; height: 100vh; margin: 0; padding: 0;">
 
-            <div id="blocklyDiv" style="width:100%; height:calc(100% - 100px)"></div>
-            
-            <div id="showTestSQL">
-                <div id="closed">
-                <a title="close " onclick="closehelp();">×</a>
-                </div>
-                <div id="contents"></div>
+        <!-- Help Container -->
+        <div id="help">
+            <div id="sqlHelpBar">
+                <a title="Anzeige schliessen" class="closeBtn" onclick="closeHelp();">×</a>
+                <h4 class="headBar">Help</h4>
             </div>
-            
-            <div id="writeSQL">
-                <div id="sqlmove" class="move">
-                    <a title="Editor verschieben"></a>
-                </div>
-               
-                <div id="closea">
-                    <a title="Close help box." onclick="closehelp();">×</a>
-                </div>
-                
-                <div id="sqlstatement" class="textual"></div>
-                    
-                <img src="img/icons/help.png" class="helpicon" onmouseover="settooltip();" onmouseout="closetooltip();">
-                <p id="tooltip" class ="tooltips"></p>
-                <button id="toblock" onclick="parsingSQL();" class="okayy">OK</button>
-            </div>
-            
-            <div id="errorSQL">
-                <div id="closeErrorBox">
-                    <a title="Close error box." onclick="closeErrorBox();">×</a>
-                </div>
-                <textarea id="sqlerror" name="text" class="textual" readonly="readonly"></textarea>
-                <button id="toblock" onclick="closeErrorBox();" class="okayy">OK</button>
-            </div>
-            
+            <div id="helpcontent"></div>
         </div>
 
-        <script type="text/javascript" src="../common/libs/ace/ace.js"></script>  
+        <div id="wrapper" style="width: 100vw; height: 100vh;">       
+            
+            <!-- Header -->
+            <div id="head">
+                <img src="../common/img/p2fs.png" alt="SQL GUI" style="margin-right: 1.5em;"> 
+                <button class="sqlBtn" onclick="showStatement();">Show</button>
+                <button class="sqlBtn" onclick="writeStatement();">Write</button>
+            </div>
+
+            <!-- Blockly Workspace -->
+            <div id="blocklyDiv" style="width:100%; height:calc(100% - 82px)"></div>
+
+            <!-- SQL Code Editor -->
+            <div id="writeSQL">
+                <div id="sqlEditorBar">
+                    <a title="Close Statement box." class="closeBtn" onclick="closeStatement();">×</a>
+                    <h4 class="headBar">SQL Statement</h4>
+                </div>
+                
+                <div id="sqlStatement" class="textual"></div>
+                
+                <img src="img/icons/help.png" class="helpicon" onmouseover="setTooltip();" onmouseout="closeTooltip();">
+                <p id="tooltip" class ="tooltips"></p>
+                
+                <button onclick="parsingSQL();" class="sqlBtn" style="float: right;">OK</button>
+            </div>
+            
+            <!-- Error Box -->
+            <div id="errorSQL">
+                <div id="sqlErrorBar">
+                    <a title="Close error box." class="closeBtn" onclick="closeErrorBox();">×</a>
+                    <h4 class="headBar">Error Message</h4>
+                </div>
+
+                <textarea id="sqlErrorMessage" name="text" class="textual" readonly="readonly"></textarea>
+                <button id="toblock" onclick="closeErrorBox();" class="okayy">OK</button>
+            </div>
+
+        </div>
+ 
     </body>
 </html>
