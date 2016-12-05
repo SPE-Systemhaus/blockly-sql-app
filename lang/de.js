@@ -13,15 +13,15 @@ SQLBlocks.Msg = {};
  * @type Array: numbers-array for the number-function-block
  */
 var time = [
-    ["MICROSENCONDS", "MICROSECONDS"],
-    ["SECOND", "SECOND"],
-    ["MINUTE", "MINUTE"],
-    ["HOUR", "HOUR"],
-    ["DAY", "DAY"],
-    ["WEEK", "WEEK"],
-    ["MONTH", "MONTH"],
-    ["QUARTER", "QUARTER"],
-    ["YEAR", "YEAR"],
+    ["MICROSENCONDS", "Millisekunden"],
+    ["SECOND", "Sekunde"],
+    ["MINUTE", "Minute"],
+    ["HOUR", "Stunde"],
+    ["DAY", "Tag"],
+    ["WEEK", "Woche"],
+    ["MONTH", "Monat"],
+    ["QUARTER", "Quartal"],
+    ["YEAR", "Jahr"],
     ["SECOND_MICROSECOND", "SECOND_MICROSECOND"],
     ["MINUTE_MICROSECOND", "MINUTE_MICROSECOND"],
     ["MINUTE_SECOND", "MINUTE_SECOND"],
@@ -249,7 +249,7 @@ SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Return true if the first input is gr
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Return true if expression is null";
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Return true if expression is not null";
 
-SQLBlocks.Tooltips.CONDITIONS = "Returns true if the expression is not.";
+SQLBlocks.Msg.Tooltips.CONDITIONS = "Returns true if the expression is not.";
 
 /**
  *  MUTATORS 

@@ -249,7 +249,7 @@ SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Return true if the first input is gr
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Return true if expression is null";
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Return true if expression is not null";
 
-SQLBlocks.Tooltips.CONDITIONS = "Returns true if the expression is not.";
+SQLBlocks.Msg.Tooltips.CONDITIONS = "Returns true if the expression is not.";
 
 /**
  * MUTATORS
