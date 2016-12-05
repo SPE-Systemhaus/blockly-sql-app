@@ -183,7 +183,7 @@ SQLBlocks.Msg.Tooltips.CONVERSION_FUNCTION.STR_TO_DATE = "Uses one string-value,
 
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION = {};
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.ADD_MONTHS = "Performs date arithmethic.Uses a date-value, and a number choosen with the time-unit. Returns a date specified by the number and the unit";
-SQLBlocks.Msg.Tooltips.DATE_FUNCTION.CURDATE="Returns the current date as a value.";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.CURDATE= "Returns the current date as a value.";
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.EXTRACT = "Extracts a date from a date-value or function.";
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.LAST_DAY = "Uses one date-value. Returns the corresponding value for the last day of the month. ";
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.MONTHS_BETWEEN = "Uses a time unit and two time-values.Returns date-value 2 – date-value1.";
@@ -191,6 +191,7 @@ SQLBlocks.Msg.Tooltips.DATE_FUNCTION.NOW = "Returns the current date and time as
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.MONTH = "Uses a date-value.Returns the month for date, in the range 1 to 12 for January to December.";
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.YEAR = "Uses a date-value. Returns the year for a date, in the range from 0000 to 9999.";
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.SYSDATE = "Returns the time at which it executes";
+SQLBlocks.Msg.Tooltips.DATE_FUNCTION.DATE = "Returns the date of today.";
 
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION = {};
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ABS = "Uses one number-value. Returns the absolute value of the number_value.";
@@ -228,6 +229,27 @@ SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS="Sums two expressions";
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS="Subtracts two espressions";
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE="Divides two espressions";
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE="Mulitplicates two espressions";
+
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION = {};
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.COUNT = "Counts the matching rows of the selected column.";
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MIN = "Returns the minimum value of an column \n " + "Could be used with distinct"; 
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MAX = "Returns the maximum value of an column \n " + "Could be used with distinct";
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.AVG = "Returns the average value of an column. \n " + "Could be used with distinct."; 
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.STDDEV = "Returns the population standard deviation of an column.";
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.SUM = "Returns the sum of an expression.";
+SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.VARIANCE = "Returns the population standard variance of column.";
+
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE = {};
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Return true if both inputs equal each other.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Return true if both inputs are not equal to each other.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LT = "Return true if the first input is smaller than the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LTE = "Return true if the first input is smaller than or equal to the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT = "Return true if the first input is greater than the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Return true if the first input is greater than or equal to the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Return true if expression is null";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Return true if expression is not null";
+
+SQLBlocks.Tooltips.CONDITIONS = "Returns true if the expression is not.";
 
 /**
  * MUTATORS

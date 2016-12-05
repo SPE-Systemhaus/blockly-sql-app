@@ -490,12 +490,12 @@ Blockly.Blocks['select'] = {
         if (this.groupByCount_) {
             this.appendStatementInput('group_by')
                     .setCheck(["table_column", "name"])
-                    .appendField(Blockly.Msg.GOUP_BY);
+                    .appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
         }
         if (this.groupByHavingCount_) {
             this.appendStatementInput('group_by_have')
                     .setCheck(["table_column", "name"])
-                    .appendField(Blockly.Msg.GOUP_BY);
+                    .appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
             this.appendValueInput('having')
                     .setCheck("LogicOPs")
                     .appendField(SQLBlocks.Msg.Blocks.HAVING);
@@ -600,7 +600,7 @@ Blockly.Blocks['select'] = {
                     this.groupByCount_++;
                     var groupInput = this.appendStatementInput('group_by');
                     groupInput.setCheck(["table_column", "name"]);
-                    groupInput.appendField(Blockly.Msg.GOUP_BY);
+                    groupInput.appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
                     // Reconnect any child blocks.
                     if (clauseBlock.statementConnection_) {
                         groupInput.connection.connect(clauseBlock.statementConnection_);
@@ -610,7 +610,7 @@ Blockly.Blocks['select'] = {
                     this.groupByHavingCount_++;
                     var groupHInput = this.appendStatementInput('group_by_have');
                     groupHInput.setCheck(["table_column", "name"]);
-                    groupHInput.appendField(Blockly.Msg.GOUP_BY);
+                    groupHInput.appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
                     var havingInput = this.appendValueInput("having");
                     havingInput.setCheck("LogicOPs");
                     havingInput.appendField(SQLBlocks.Msg.Blocks.HAVING);
@@ -1735,7 +1735,7 @@ Blockly.Blocks['to'] = {
      */
     init: function () {
         this.setHelpUrl(this.type);
-        this.setColour(SQLBlockly.Colours.boolean);
+        this.setColour(SQLBlockly.Colours.list);
         this.appendValueInput("A")
             .setCheck("table_column_var");
         this.appendValueInput("B")
@@ -1815,8 +1815,8 @@ Blockly.Blocks['compare_operator'] = {
           input.setTooltip(function () {
               var op = thisBlock.getFieldValue('OP');
               var TOOLTIPS = {
-                  'isnull': Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NULL,
-                  'isnotnull': Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NOT_NULL
+                  'isnull': SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL,
+                  'isnotnull': SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL
               };
               return TOOLTIPS[op];
           });
@@ -1865,12 +1865,12 @@ Blockly.Blocks['compare_operator'] = {
               input.setTooltip(function () {
                   var op = thisBlock.getFieldValue('OP');
                   var TOOLTIPS = {
-                      'EQ': Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ,
-                      'NEQ': Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ,
-                      'LT': Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT,
-                      'LTE': Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE,
-                      'GT': Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT,
-                      'GTE': Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE
+                      'EQ': SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ,
+                      'NEQ': SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ,
+                      'LT': SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LT,
+                      'LTE': SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LTE,
+                      'GT': SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT,
+                      'GTE': SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE
                   };
                   return TOOLTIPS[op];
               });
@@ -2024,7 +2024,7 @@ Blockly.Blocks['conditions'] = {
           .appendField(SQLBlocks.Msg.Blocks.NOT)
           .setCheck(["LogicOPs", "bool", "table_column_var", 
                      "BolleanOPs", "condition"]);
-      this.setTooltip(Blockly.Msg.BOOLEAN_TOOLTIP_NOT);
+      this.setTooltip(SQLBlocks.Tooltips.CONDITIONS);
     }
 };
 /*------------------------------------------------------------------------------
@@ -2377,9 +2377,9 @@ Blockly.Blocks['groupfunction_factor'] = {
               input.setTooltip(function () {
                   var op = thisBlock.getFieldValue('group_function');
                   var TOOLTIPS = {
-                      'count': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_COUNT,
-                      'min': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_MIN,
-                      'max': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_MAX
+                      'count': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.COUNT,
+                      'min': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MIN,
+                      'max': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MAX
                   };
                   return TOOLTIPS[op];
               });
@@ -2410,10 +2410,10 @@ Blockly.Blocks['groupfunction_factor'] = {
             input.setTooltip(function () {
               var op = thisBlock.getFieldValue('group_function');
               var TOOLTIPS = {
-                  'avg': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_AVG,
-                  'stddev': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_STDDEV,
-                  'sum': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_SUM,
-                  'variance': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_VARIANCE
+                  'avg': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.AVG,
+                  'stddev': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.STDDEV,
+                  'sum': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.SUM,
+                  'variance': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.VARIANCE
 
               };
               return TOOLTIPS[op];
@@ -2595,13 +2595,13 @@ Blockly.Blocks['groupfunction'] = {
         input.setTooltip(function () {
           var op = thisBlock.getFieldValue('group_function');
           var TOOLTIPS = {
-              'count': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_COUNT,
-              'min': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_MIN,
-              'max': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_MAX,
-              'avg': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_AVG,
-              'stddev': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_STDDEV,
-              'sum': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_SUM,
-              'variance': Blockly.Msg.GROUP_FUNCTION_TOOLTIP_VARIANCE
+              'count': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.COUNT,
+              'min': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MIN,
+              'max': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MAX,
+              'avg': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.AVG,
+              'stddev': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.STDDEV,
+              'sum': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.SUM,
+              'variance': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.VARIANCE
           };
           return TOOLTIPS[op];
         });
@@ -3633,7 +3633,7 @@ Blockly.Blocks['datefunction'] = {
                     var op = thisBlock.getFieldValue('date_function');
                     var TOOLTIPS = {
                         'last_day': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.LAST_DAY,
-                        'date': Blockly.Msg.DATE_FUNCTION_TOOLTIP_DATE,
+                        'date': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.DATE,
                         'month': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.MONTH,
                         'year': SQLBlocks.Msg.Tooltips.DATE_FUNCTION.YEAR
 
@@ -3946,7 +3946,7 @@ Blockly.Blocks['set'] = {
             .appendField(SQLBlocks.Msg.Blocks.SET);
         this.setPreviousStatement(true, "set");
         this.setNextStatement(true, "set");
-        this.setTooltip(Blockly.Msg.SET_TOOLTIP);
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.SET);
         this.contextMenu = false;
     }
 };
