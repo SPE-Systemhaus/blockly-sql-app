@@ -165,21 +165,20 @@ h4 {
 }
 
 #help {
-    top: 25%;
+    top: 98px;
     right: 150px;
-    /* visibility: hidden; */ 
+    visibility: hidden; 
     background-color: #f8f8f8;
     border-width: 3px;
     border-style: solid;
     border-radius: 8px;
-    position: relative; 
-    z-index: 100;
+    position: absolute; 
+    z-index: 20;
     overflow-y: auto;
     resize: vertical;
     padding-left: 10px;
     padding-right: 10px;
-    /* height: auto; */
-    top: 20px;
+    height: auto;
 }
 
 .headBar {
@@ -263,7 +262,7 @@ h4 {
 }
 
 #errorSQL{
-    top: 25%;
+    top: 98px;
     background-color: #F8F8F8;
     border-radius: 8px;
     border-style: solid;
@@ -275,6 +274,7 @@ h4 {
     overflow-y: auto;
     max-height: 500px;
     display: none;
+    z-index: 50;
 }
 
 .ok{
