@@ -236,7 +236,7 @@ Blockly.Blocks['update'] = {
                 .appendField(SQLBlocks.Msg.Blocks.SET);
         this.appendValueInput("Clause")
                 .appendField(SQLBlocks.Msg.Blocks.WHERE)
-                .setCheck(["BolleanOPs", "LogicOPs", "bool"]);
+                .setCheck(["BolleanOPs", "LogicOPs", "bool", "condition"]);
         this.setTooltip('');
         this.duplicate_ = false;
         this.setMutator(new Blockly.Mutator(["set"]));
@@ -439,7 +439,7 @@ Blockly.Blocks['select'] = {
         this.setHelpUrl(this.type);
         this.setColour(SQLBlockly.Colours.list);
         this.gradient = new ColourGradient();
-        this.appendDummyInput("Dummy");
+        this.appendDummyInput("dummy_variable");
         this.appendStatementInput("select")
             .appendField(SQLBlocks.Msg.Blocks.SELECT)
             .setAlign(Blockly.ALIGN_CENTER)
@@ -692,7 +692,7 @@ Blockly.Blocks['select'] = {
                 "start" : "#5BA58C",
                 "stop" : getChildColour(this)
             },
-            ["Clause", "limit", "group_by", "group_by_have", "order_by"]
+            ["Clause", "limit", "group_by", "group_by_have", "order_by", "having", "sort"]
         );
     }
 };
@@ -989,7 +989,7 @@ Blockly.Blocks['sub_select'] = {
                     var aliasDummy = this.appendDummyInput('VALUE');
                     aliasDummy.appendField(SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE);
                     aliasDummy.appendField(new Blockly.FieldTextInput(
-                            Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
+                            "dummy_variable"), 'VAR');
                     this.contextMenuMsg_ = Blockly.Msg.VARIABLES_SET_CREATE_GET;
                     this.contextMenuType_ = 'fieldname_get';
                     break;
@@ -1172,7 +1172,7 @@ Blockly.Blocks['sub_select_where'] = {
             this.appendDummyInput('VALUE')
                 .appendField(SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE)
                 .appendField(new Blockly.FieldTextInput(
-                        Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
+                        "dummy_variable"), 'VAR');
         }
         if (this.groupByCount_) {
             this.appendStatementInput('group_by')
@@ -1334,7 +1334,7 @@ Blockly.Blocks['sub_select_where'] = {
                     var aliasDummy = this.appendDummyInput('VALUE');
                     aliasDummy.appendField(SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE);
                     aliasDummy.appendField(new Blockly.FieldTextInput(
-                            Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
+                            "dummy_variable"), 'VAR');
                     break;
                 default:
                     throw 'Unknown block type.';
@@ -2024,7 +2024,7 @@ Blockly.Blocks['conditions'] = {
           .appendField(SQLBlocks.Msg.Blocks.NOT)
           .setCheck(["LogicOPs", "bool", "table_column_var", 
                      "BolleanOPs", "condition"]);
-      this.setTooltip(SQLBlocks.Tooltips.CONDITIONS);
+      this.setTooltip(SQLBlocks.Msg.Tooltips.CONDITIONS);
     }
 };
 /*------------------------------------------------------------------------------
@@ -2256,7 +2256,7 @@ Blockly.Blocks['fieldname_get'] = {
           if (list.length > 0)
             variable.setValue(list[0]);
           else
-            variable.setValue("dummy");
+            variable.setValue("dummy_variable");
       }
       object.appendDummyInput()
             .appendField(variable, 'VAR');
@@ -2300,216 +2300,6 @@ Blockly.Blocks['fieldname_get'] = {
 /*------------------------------------------------------------------------------
  * Functions
  *----------------------------------------------------------------------------*/
-/*------------------------------------------------------------------------------
- * groupfunction-host all the sqlfunctions to group a columns value
- *
- * @module sql_blocks
- * @class groupfunction
- *----------------------------------------------------------------------------*/
-Blockly.Blocks['groupfunction_factor'] = {
-    /**
-     * Initialization of the groupfunction block.
-     * Sets color, helpUrl, inputs, outputs and the tooltip of this block.
-     *
-     * @method init
-     * @this Blockly.Block
-     */
-    init: function () {
-      this.setColour(SQLBlockly.Colours.list);
-      this.setup(this, 'avg');
-      this.setOutput(true, "groupfunction");
-      //this.setPreviousStatement(true, ["group_function", "tables_and_columns"]);
-      //this.setNextStatement(true, ["group_function", "tables_and_columns"]);
-      this.contextMenuMsg_ = Blockly.Msg.VARIABLES_SET_CREATE_GET;
-      this.contextMenuType_ = 'fieldname_get';
-    },
-    /**
-     * Return all variables referenced by this block.
-     * @return {!Array.<string>} List of variable names.
-     * @this Blockly.Block
-     */
-    getVars: function () {
-      return [this.getFieldValue('VAR')];
-    },
-    /**
-     * Notification that a variable is renaming.
-     * If the name matches one of this block's variables, rename it.
-     * @param {string} oldName Previous name of variable.
-     * @param {string} newName Renamed variable.
-     * @this Blockly.Block
-     */
-    renameVar: function (oldName, newName) {
-      if (Blockly.Names.equals(oldName, this.getFieldValue('VAR')))
-          this.setFieldValue(newName, 'VAR');
-    },
-    /**
-     * The setup function fills the dropdownlist and gives the block a new shape for each dropdown
-     * element.
-     *
-     * @method setup
-     * @param input the actual blockly object
-     * @param groupdir the standard choosed container
-     * @this Blockly.Block
-     */
-    setup: function (input, groupdir) {
-      var dropdown = new Blockly.FieldDropdown(group, function (option) {
-          this.sourceBlock_.updateShape(option);
-
-      });
-      var ifInput;
-      if (groupdir != '') {
-          dropdown.setValue(groupdir);
-          //Constructing the Block for minimal, maximal and count
-          if (groupdir == 'min' || groupdir == 'count' || groupdir == 'max') {
-              ifInput = input.appendStatementInput("group")
-                      .appendField(dropdown, "group_function")
-                      .setCheck(["table_column", "distinct"]);
-              var thisBlock = input;
-              input.setHelpUrl(function () {
-                  var op = thisBlock.getFieldValue('group_function');
-                  var HelpURL = {
-                      'count': 'groupfunction_count',
-                      'min': 'groupfunction_min',
-                      'max': 'groupfunction_max'
-                  };
-                  return HelpURL[op];
-              });
-              input.setTooltip(function () {
-                  var op = thisBlock.getFieldValue('group_function');
-                  var TOOLTIPS = {
-                      'count': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.COUNT,
-                      'min': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MIN,
-                      'max': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MAX
-                  };
-                  return TOOLTIPS[op];
-              });
-              //Restoring all childblocks
-              if (this.statementConnection1_) {
-                ifInput.connection.connect(this.statementConnection1_);
-              }
-          } else { //Constructing the Block for average, summarise, stddev and variance
-            ifInput = input.appendStatementInput("group")
-                           .appendField(dropdown, "group_function")
-                           .setCheck(["table_column", "distinct"]);
-            input.appendDummyInput('VALUE')
-                  .appendField("AS")
-                  .appendField(new Blockly.FieldTextInput(
-                              Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
-
-            var thisBlock = input;
-            input.setHelpUrl(function () {
-              var op = thisBlock.getFieldValue('group_function');
-              var HelpURL = {
-                  'avg': 'groupfunction_avg',
-                  'stddev': 'groupfunction_stddev',
-                  'sum': 'groupfunction_sum',
-                  'variance': 'groupfunction_variance'
-              };
-              return HelpURL[op];
-            });
-            input.setTooltip(function () {
-              var op = thisBlock.getFieldValue('group_function');
-              var TOOLTIPS = {
-                  'avg': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.AVG,
-                  'stddev': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.STDDEV,
-                  'sum': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.SUM,
-                  'variance': SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.VARIANCE
-
-              };
-              return TOOLTIPS[op];
-            });
-
-            //Restoring all childblocks
-            if (this.statementConnection1_) {
-              ifInput.connection.connect(this.statementConnection1_);
-            }
-        }
-      }
-    },
-    /**
-     * The mutationToDom function creates the mutator element in the
-     * XML DOM and filling it with the path attribute.
-     * It is beeing called whenever the block is beeing written
-     * to XML.
-     *
-     * @method mutationToDom
-     * @return container selected container
-     * @this Blockly.Block
-     */
-    mutationToDom: function () {
-        var container = document.createElement('mutation');
-        var table = this.getFieldValue('group_function');
-        var colour = this.getColour();
-        container.setAttribute('groupfunction', table);
-        container.setAttribute('colourHue_', colour);
-        return container;
-    },
-    /**
-     * The domToMutation function gets the mutator attribute from the
-     * XML and restore it in the JavaScript DOM.
-     * It is beeing called whenever the block is beeing restored
-     * to the Workspace.
-     *
-     * @method domToMutation
-     * @param xmlElement has the xmlDom inside
-     * @this Blockly.Block
-     */
-    domToMutation: function (xmlElement) {
-        console.log(xmlElement);
-        if (xmlElement) {
-            this.updateShape(xmlElement.attributes [0].value);
-            var colour = xmlElement.attributes [1].value;
-            this.setColour(colour);
-        }
-    },
-    /**
-     * Store pointers to any connected child blocks.
-     * @param {!Blockly.Block} containerBlock Root block in mutator.
-     * @this Blockly.Block
-     */
-    saveConnections: function () {
-      // Store a pointer to any connected child blocks.
-      var clauseBlock = this;
-
-      var inputIf = this.getInput('group');
-      clauseBlock.statementConnection1_ =
-              inputIf && inputIf.connection.targetConnection;
-    },
-    /**
-     * The updateShape function is refreshing the group array
-     * and is creating a new block with the choosen directory.
-     *
-     * @param dirgroup has the selected directory value
-     * @method updateShape
-     * @this Blockly.Block
-     */
-    updateShape: function (dirgroup) {
-      this.saveConnections();
-      if (dirgroup != false) {
-        this.removeInput('group');
-
-        if (this.getInput('VALUE'))
-            this.removeInput('VALUE');
-
-        this.setup(this, dirgroup);
-      }
-    },
-    /**
-     * Checks if the parameters are valid for the groupfunction
-     * Unpluggs the block if they are unvalid
-     *
-     * @method onchange
-     * @this Blockly.Block
-     */
-    onchange: function () {
-        if (!this.workspace)
-            return;
-
-        //Check inputs
-        //groupFunctioneval(this);
-    },
-    customContextMenu: Blockly.Blocks['fieldname_get'].customContextMenu
-};
 
 /*------------------------------------------------------------------------------
  * groupfunction-host all the sqlfunctions to group a columns value
@@ -2569,6 +2359,9 @@ Blockly.Blocks['groupfunction'] = {
       });
       var ifInput;
 
+      console.log(input);
+      console.log(this.workspace.variableList[0]);
+
       if (groupdir != '') {
         dropdown.setValue(groupdir);
         ifInput = input.appendStatementInput("group")
@@ -2577,7 +2370,7 @@ Blockly.Blocks['groupfunction'] = {
         input.appendDummyInput('VALUE')
             .appendField(SQLBlocks.Msg.Blocks.AS)
             .appendField(new Blockly.FieldTextInput(
-                    Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
+                    "dummy_variable"), 'VAR');
         var thisBlock = input;
         input.setHelpUrl(function () {
           var op = thisBlock.getFieldValue('group_function');
@@ -2986,7 +2779,7 @@ Blockly.Blocks['otherfunction'] = {
                         .setCheck(["datefunction", "bool", "string", "date", "number"]);
                 this.interpolateMsg(
                         SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE + ' %1 ',
-                        ['VAR', new Blockly.FieldTextInput(Blockly.Msg.VARIABLES_SET_ITEM)],
+                        ['VAR', new Blockly.FieldTextInput("dummy_variable")],
                         Blockly.ALIGN_LEFT);
                 input.setHelpUrl('otherfunction_ifnull');
                 input.setTooltip(SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.NVL);
