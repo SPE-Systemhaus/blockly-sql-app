@@ -76,8 +76,12 @@ function _destroy () {
  * Init movable help container.
  */
 function initHelp() {
-	var helpDiv = window.document.getElementById ('help');
-	helpDiv.style.height = "100px";
+	var helpDiv = document.getElementById ('help');
+	helpDiv.style.height = "0px";
+	
+	document.getElementById("sqlHelpBar").onmousedown = function () {
+		return _drag_init (helpDiv);
+	};
 
 	document.getElementById ('helpcontent').onmousedown = function () {
 		return _drag_init (helpDiv);
@@ -88,7 +92,7 @@ function initHelp() {
  * Init movable error container.
  */
 function initError() {
-	var errorDiv = window.document.getElementById ('errorSQL');
+	var errorDiv = document.getElementById ('errorSQL');
 	document.getElementById ('sqlErrorBar').onmousedown = function () {
 		return _drag_init (errorDiv);
 	};
