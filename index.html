@@ -55,6 +55,10 @@
                 <img src="../common/img/p2fs.png" alt="SQL GUI" style="margin-right: 1.5em;"> 
                 <button class="sqlBtn" onclick="showStatement();">Show</button>
                 <button class="sqlBtn" onclick="writeStatement();">Write</button>
+                
+                <select>
+                    <option value="BeerCompany">BeerCompany</option>
+                </select>
             </div>
 
             <!-- Blockly Workspace -->
@@ -72,7 +76,7 @@
                 <img src="img/icons/help.png" class="helpicon" onmouseover="setTooltip();" onmouseout="closeTooltip();">
                 <p id="tooltip" class ="tooltips"></p>
                 
-                <button onclick="parsingSQL();" class="okayy">OK</button>
+                <button id="parseSQLBtn" onclick="parsingSQL();" class="okayy">OK</button>
             </div>
             
             <!-- Error Box -->

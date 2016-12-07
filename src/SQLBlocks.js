@@ -18,7 +18,7 @@ Blockly.Blocks['init'] = function () {
     sqlHelp = new SQLHelper();
 
     return '<xml id="toolbox" style="display: none">' +
-               '<category name="commands">' +
+               '<category name="' + SQLBlocks.Msg.Toolbox.COMMANDS + '">' +
                    '<block type="select"></block>' +
                    '<block type="insert"></block>' +
                    '<block type="update"></block>' +
@@ -26,25 +26,25 @@ Blockly.Blocks['init'] = function () {
                    '<block type="sub_select_where"></block>' +
                    '<block type="distinct"></block>' +
                '</category>' +
-               '<category name="tables">' +
+               '<category name="' + SQLBlocks.Msg.Toolbox.FIELDS + '">' +
                    '<block type="tables_and_columns"></block>' +
                    '<block type="tables_and_columns_var"></block>' +
                '</category>' +
-               '<category name="operators">' +
+               '<category name="' + SQLBlocks.Msg.Toolbox.OPERATORS + '">' +
                    '<block type="compare_operator"></block>' +
                    '<block type="to"></block>' +
                    '<block type="logical_conjunction"></block>' +
                    '<block type="conditions"></block>' +
                    '<block type="terms_simple_expressions"></block>' +
                '</category>' +
-               '<category name="values">' +
+               '<category name="' + SQLBlocks.Msg.Toolbox.VALUES + '">' +
                    '<block type="num"></block>' +
                    '<block type="string"></block>' +
                    '<block type="date" ></block>' +
                    '<block type="fieldname_get"></block>' +
                    '<block type="bool"></block>' +
                '</category>' +
-               '<category name="functions">' +
+               '<category name="' + SQLBlocks.Msg.Toolbox.FUNCTIONS + '">' +
                    '<block type="groupfunction"></block>' +
                    '<block type="charfunction"></block> ' +
                    '<block type="numberfunction"></block>' +
@@ -687,13 +687,29 @@ Blockly.Blocks['select'] = {
         if (!this.workspace)
             return;
 
+        var inputs = ["Clause", "limit", "group_by", "group_by_have", "order_by", "having", "sort"];
+
         this.gradient.setVerticalGradient(
             this, {
                 "start" : "#5BA58C",
                 "stop" : getChildColour(this)
             },
-            ["Clause", "limit", "group_by", "group_by_have", "order_by", "having", "sort"]
+            inputs
         );
+
+        var selectBlock = this;
+
+        /** TRYOUT ... TODO: Find a way to do this without Timeout */
+        window.setTimeout(function() {
+          selectBlock.gradient.setVerticalGradient(
+            selectBlock, {
+                "start" : "#5BA58C",
+                "stop" : getChildColour(selectBlock)
+            },
+            inputs
+          );  
+        }, 100);
+
     }
 };
 
@@ -1436,7 +1452,7 @@ Blockly.Blocks['tables_and_columns'] = {
      * @this Blockly.Block
      */
     init: function () {
-        var table = Column[0][0];
+        var table = Object.keys(dbStructure)[0];
         var column = "*";
       
         this.setHelpUrl(this.type);
@@ -1458,7 +1474,7 @@ Blockly.Blocks['tables_and_columns'] = {
     setup: function (table, column) {
         var block = this;      
         var tableDropdown = new Blockly.FieldDropdown(
-            getTableDropdowndataFromXML(), 
+            getTableDropdowndata(), 
             function (table) {
                 /* Updating this block */
                 block.updateShape(table, "*");
@@ -1471,7 +1487,7 @@ Blockly.Blocks['tables_and_columns'] = {
         );
 
         var columnDropdown = new Blockly.FieldDropdown(
-             getColumnDropdowndataFromXML(table, true), 
+             getColumnDropdowndata(table, true), 
              function (column) {
                 /* Updating this block */
                 var table = block.getFieldValue("tabele");
@@ -1591,8 +1607,8 @@ Blockly.Blocks['tables_and_columns_var'] = {
      * @this Blockly.Block
      */
     init: function () {
-        var table = Column[0][0];
-        var column = Column[0][1][1];
+        var table = Object.keys(dbStructure)[0];
+        var column = dbStructure[table][0].name;
 
         this.columnType = null;
 
@@ -1613,9 +1629,9 @@ Blockly.Blocks['tables_and_columns_var'] = {
     setup: function (table, column) {
         var block = this;      
         var tableDropdown = new Blockly.FieldDropdown(
-            getTableDropdowndataFromXML(), 
+            getTableDropdowndata(), 
             function (table) {
-                block.updateShape(table, "*");
+                block.updateShape(table, dbStructure[table][0].name);
 
                 /* Updating parent block */
                 var parent = block.getParent();
@@ -1624,7 +1640,7 @@ Blockly.Blocks['tables_and_columns_var'] = {
             }
         );
         var columnDropdown = new Blockly.FieldDropdown(
-             getColumnDropdowndataFromXML(table, false), 
+             getColumnDropdowndata(table, false), 
              function (column) {
                 var table = block.getFieldValue("tabele");
                 block.updateShape(table, column);
@@ -1632,7 +1648,6 @@ Blockly.Blocks['tables_and_columns_var'] = {
 
                 /* Updating parent block */
                 var parent = block.getParent();
-                console.log(parent);
                 if (parent)
                     parent.onchange();
              }
@@ -2252,7 +2267,6 @@ Blockly.Blocks['fieldname_get'] = {
       var variable = new Blockly.FieldVariable(SQLBlocks.Msg.Blocks.VARIABLES_GET_ITEM);
       if (variable.getValue() == " ") {
           var list = Blockly.Variables.allUsedVariables(object);
-          console.log(list);
           if (list.length > 0)
             variable.setValue(list[0]);
           else
@@ -2358,9 +2372,6 @@ Blockly.Blocks['groupfunction'] = {
 
       });
       var ifInput;
-
-      console.log(input);
-      console.log(this.workspace.variableList[0]);
 
       if (groupdir != '') {
         dropdown.setValue(groupdir);
