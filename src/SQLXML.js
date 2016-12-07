@@ -111,7 +111,7 @@ function SQLXML() {
     pInsert = parsed;
 
     if (pInsert.columns === '*')
-      pInsert.columns = sqlHelp.getAllColumnsByTable(pInsert.table);
+      pInsert.columns = getColumnsArrayFromStructure(pInsert.table);
 
 //      if (pInsert.columns.length !== pInsert.values.length)
 //        console.warn("Columns and Values has not the same length!");
@@ -622,7 +622,7 @@ function SQLXML() {
     /* Getting columns of parsed tables */
     for (var tableKey in tables) {
       var table = tables[tableKey].tablename;
-      tablesColumns[table] = sqlHelp.getAllColumnsByTable(table);
+      tablesColumns[table] = getColumnsArrayFromStructure(table);
     }
 
     var mutationCnt = 0;

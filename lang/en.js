@@ -252,6 +252,17 @@ SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Return true if expression is no
 SQLBlocks.Msg.Tooltips.CONDITIONS = "Returns true if the expression is not.";
 
 /**
+ * TOOLBOX
+ */
+SQLBlocks.Msg.Toolbox = {};
+
+SQLBlocks.Msg.Toolbox.COMMANDS = "commands";
+SQLBlocks.Msg.Toolbox.FIELDS = "fields";
+SQLBlocks.Msg.Toolbox.OPERATORS = "operators";
+SQLBlocks.Msg.Toolbox.VALUES = "values";
+SQLBlocks.Msg.Toolbox.FUNCTIONS = "functions";
+
+/**
  * MUTATORS
  */
 SQLBlocks.Msg.Tooltips.Mutators = {};

@@ -17,27 +17,14 @@ function SQLHelper() {
     return separated;
   };
 
-  this.checkColumn = function(checkColumn) {
-    for (var columnKey in Column) {
-      var column = Column[columnKey];
-      var table = Column[columnKey][0];
-
-      for (var i = 1; i < column.length; i++) {
-        if (checkColumn === column[i])
-          return true;
-      }
-    }
-
-    return false;
-  };
-
   this.getTableOfColumn = function(checkColumn) {
-    for (var columnKey in Column) {
-      var column = Column[columnKey];
-      var table = Column[columnKey][0];
+    console.warn("This table is only the first occurence!");
 
-      for (var i = 1; i < column.length; i++) {
-        if (checkColumn === column[i][1])
+    for (var table in dbStructure) {
+      var columns = dbStructure[table];
+
+      for (columnKey in columns) {
+        if (checkColumn === columns[columnKey].name)
           return table;
       }
     }
@@ -45,70 +32,22 @@ function SQLHelper() {
     return null;
   };
 
-  this.isParsedColumnInDatabase = function(parsedTable, parsedColumn) {
-    for (var tableKey in Column) {
-      var table = Column[tableKey][0];
-      var columns = [];
-
-      if (table === parsedTable) {
-        for (var i=1; i < Column[tableKey].length; i++)
-          columns.push(Column[tableKey][i]);
-
-        for (var columnKey in columns) {
-          var column = columns[columnKey][1];
-          if (parsedColumn === column)
-            return true;
-        }
-      }
-    }
-
-    console.warn("Column (" + parsedColumn
-        + ") in Table (" + parsedTable + ")"
-        + "was not found current DB!");
-
-    return false;
-  };
-
-  this.getAllColumnsByTable = function(tableName) {
-    var columns = [];
-
-    for (var columnKey in Column) {
-      var table = Column[columnKey][0];
-      if (table === tableName)
-        for (var i = 1; i < Column[columnKey].length; i++)
-          columns.push(Column[columnKey][i][1]);
-    }
-
-    return columns;
-  };
-
-  this.getAllColumnsWithTypeByTable = function (tableName) {
-    var columns = {};
-
-    for (var columnKey in Column) {
-      var table = Column[columnKey][0];
-      if (table === tableName)
-        for (var i = 1; i < Column[columnKey].length; i++)
-          columns[Column[columnKey][i][1]] = Column[columnKey][i][2];
-    }
-
-    return columns;
-  }
-
-  this.saveVariables = function() {
-
-  };
-
   this.getTypeColour = function(table, column) {
-    var columns = sqlHelp.getAllColumnsWithTypeByTable(table);
+    var columns = getColumnsArrayFromStructure(table);
+    var columnIndex = -1;
 
     if (column === "*")
       return SQLBlockly.Colours.list;
 
-    if (column in columns) {
-      var type = columns[column];
+    /* Check if column exists */
+    columns.forEach(function(columnObject, index) {
+      if (column === columnObject.name)
+        columnIndex = index
+    });
 
-      switch(type.toLowerCase().trim()) {
+    if (columnIndex !== -1) {
+      var type = columns[columnIndex].type.toLowerCase().trim();
+      switch(type) {
           case "int":
           case "integer":
           case "integer unsigned":
@@ -120,6 +59,7 @@ function SQLHelper() {
           case "float":
           case "decimal":
               return SQLBlockly.Colours.number;
+          case "char":
           case "varchar":
           case "text":
           case "string":
@@ -136,6 +76,9 @@ function SQLHelper() {
               return SQLBlockly.Colours.undefined;
       }
     }
+
+    console.warn("Type of column is not in list, yet!");
+    return SQLBlockly.Colours.undefined;
   };
 
 }

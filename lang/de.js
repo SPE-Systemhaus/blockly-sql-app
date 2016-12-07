@@ -13,15 +13,15 @@ SQLBlocks.Msg = {};
  * @type Array: numbers-array for the number-function-block
  */
 var time = [
-    ["MICROSENCONDS", "Millisekunden"],
-    ["SECOND", "Sekunde"],
-    ["MINUTE", "Minute"],
-    ["HOUR", "Stunde"],
-    ["DAY", "Tag"],
-    ["WEEK", "Woche"],
-    ["MONTH", "Monat"],
-    ["QUARTER", "Quartal"],
-    ["YEAR", "Jahr"],
+    ["Millisekunden", "MICROSECONDS"],
+    ["Sekunde", "SECOND"],
+    ["Minute", "MINUTE"],
+    ["Stunde", "HOUR"],
+    ["Tag", "DAY"],
+    ["Woche", "WEEK"],
+    ["Monat", "MONTH"],
+    ["Quartal", "QUARTER"],
+    ["Jahr", "YEAR"],
     ["SECOND_MICROSECOND", "SECOND_MICROSECOND"],
     ["MINUTE_MICROSECOND", "MINUTE_MICROSECOND"],
     ["MINUTE_SECOND", "MINUTE_SECOND"],
@@ -40,20 +40,20 @@ var datefunct = [
     //["DATE ADD", "add_months"], //using date_add()because add-month is an oracle function. It is equivalent to date_add() in mysql
     //["DATE SUB", "sub_months"],
     //["LAST DAY", "last_day"],
-    ["NOW", "now"],
+    ["Jetzt", "now"],
     //["MONTH", "month"],
     //["YEAR", "year"],
-    ["EXTRACT", "extract"],
-    ["CURDATE", "curdate"],
-    ["DATE", "date"],
+    ["Extrahiere", "extract"],
+    ["Aktuelles Datum", "curdate"],
+    ["Datum", "date"],
     //["TO CHAR", "date_format"] //Using date_format instead of to_char, because to_char is not a mysql function
 ];
 
 var other = [
-    ["IF", "decode"], //using if because decode is an oracle function. It is equivalent to if in mysql
-    ["GREATEST", "greatest"],
-    ["LEAST", "least"],
-    ["IFNULL", "nvl"] //using ifNull because nvl is an oracle function. It is equivalent to ifNULL in mysql
+    ["Wenn", "decode"], //using if because decode is an oracle function. It is equivalent to if in mysql
+    ["Größte(r)", "greatest"],
+    ["Kleinste(r)", "least"],
+    ["Wenn nicht vorhanden", "nvl"] //using ifNull because nvl is an oracle function. It is equivalent to ifNULL in mysql
 ];
 
 var funct = [
@@ -107,18 +107,18 @@ var numbers = [
 ];
 
 var sort = [
-    ["ASCENDANT", "asc"],
-    ["DESCENDANT", "desc"]
+    ["Aufsteigend", "asc"],
+    ["Absteigend", "desc"]
 ];
 
 var logical_conjunction = [
-  ["AND", "AND"],
-  ["OR", "OR"]
+  ["und", "AND"],
+  ["oder", "OR"]
 ];
 
 var bool = [
-  ["true", "1"],
-  ["false", "0"]
+  ["wahr", "1"],
+  ["falsch", "0"]
 ];
 
 /**
@@ -135,26 +135,26 @@ SQLBlocks.Msg.User.TOOLTIP_SQL_BOX = "Um eine SQL Anweisung in Blöcke umzuwande
  */
 SQLBlocks.Msg.Blocks = {};
 
-SQLBlocks.Msg.Blocks.INSERT_VALUES = "INSERT VALUES";
-SQLBlocks.Msg.Blocks.SET = "SET";
-SQLBlocks.Msg.Blocks.WHERE = "WHERE"
-SQLBlocks.Msg.Blocks.UPDATE = "UPDATE";
-SQLBlocks.Msg.Blocks.SELECT = "SELECT";
-SQLBlocks.Msg.Blocks.GROUP_BY = "GROUP BY";
-SQLBlocks.Msg.Blocks.HAVING = "HAVING";
-SQLBlocks.Msg.Blocks.ORDER_BY = "ORDER BY";
-SQLBlocks.Msg.Blocks.LIMIT = "LIMIT";
-SQLBlocks.Msg.Blocks.DISTINCT = "DISTINCT";
-SQLBlocks.Msg.Blocks.SUBSELECT = "SUBSELECT";
-SQLBlocks.Msg.Blocks.TO = "TO";
-SQLBlocks.Msg.Blocks.NOT = "NOT";
-SQLBlocks.Msg.Blocks.AS = "AS";
+SQLBlocks.Msg.Blocks.INSERT_VALUES = "FÜGE WERTE HINZU";
+SQLBlocks.Msg.Blocks.SET = "SETZE";
+SQLBlocks.Msg.Blocks.WHERE = "WO"
+SQLBlocks.Msg.Blocks.UPDATE = "AKTUALISIERE";
+SQLBlocks.Msg.Blocks.SELECT = "WÄHLE";
+SQLBlocks.Msg.Blocks.GROUP_BY = "GRUPPIERE NACH";
+SQLBlocks.Msg.Blocks.HAVING = "HAT";
+SQLBlocks.Msg.Blocks.ORDER_BY = "SORTNIERE NACH";
+SQLBlocks.Msg.Blocks.LIMIT = "MAXIMAL";
+SQLBlocks.Msg.Blocks.DISTINCT = "EINDEUTIG";
+SQLBlocks.Msg.Blocks.SUBSELECT = "UNTERWAHL";
+SQLBlocks.Msg.Blocks.TO = "ZU";
+SQLBlocks.Msg.Blocks.NOT = "NICHT";
+SQLBlocks.Msg.Blocks.AS = "ALS";
 SQLBlocks.Msg.Blocks.INTERVAL = "INTERVAL";
-SQLBlocks.Msg.Blocks.ADD = "Füge hinzu";
+SQLBlocks.Msg.Blocks.ADD = "FÜGE HINZU";
 SQLBlocks.Msg.Blocks.AND = "UND";
 SQLBlocks.Msg.Blocks.OR = "ODER";
-SQLBlocks.Msg.Blocks.INTO = "INTO";
-SQLBlocks.Msg.Blocks.MORE = "Neue Eingabe";
+SQLBlocks.Msg.Blocks.INTO = "IN";
+SQLBlocks.Msg.Blocks.MORE = "NEUE EINGABE";
 SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME = " ";
 SQLBlocks.Msg.Blocks.VARIABLES_GET_ITEM = SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME;
 SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE = "ALS";
@@ -240,16 +240,27 @@ SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.SUM = "Returns the sum of an expression.";
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.VARIANCE = "Returns the population standard variance of column.";
 
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE = {};
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Return true if both inputs equal each other.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Return true if both inputs are not equal to each other.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LT = "Return true if the first input is smaller than the second input.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LTE = "Return true if the first input is smaller than or equal to the second input.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT = "Return true if the first input is greater than the second input.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Return true if the first input is greater than or equal to the second input.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Return true if expression is null";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Return true if expression is not null";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Ist wahr (true) wenn beide Werte identisch sind.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Ist wahr (true) wenn beide Werte unterschiedlich sind.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LT = "Ist wahr (true) wenn der erste Wert kleiner als der zweite Wert ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LTE = "Ist wahr (true) wenn der erste Wert kleiner als oder gleich gross wie zweite Wert ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT = "Ist wahr (true) wenn der erste Wert grösser als der zweite Wert ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Ist wahr (true) wenn der erste Wert grösser als oder gleich gross wie zweite Wert ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Ist wahr (true) wenn der Ausdruck leer (null) ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Ist wahr (true) wenn der Ausdruck nicht leer (not null) ist.";
 
 SQLBlocks.Msg.Tooltips.CONDITIONS = "Returns true if the expression is not.";
+
+/**
+ * TOOLBOX
+ */
+SQLBlocks.Msg.Toolbox = {};
+
+SQLBlocks.Msg.Toolbox.COMMANDS = "Anweisungen";
+SQLBlocks.Msg.Toolbox.FIELDS = "Felder";
+SQLBlocks.Msg.Toolbox.OPERATORS = "Operatoren";
+SQLBlocks.Msg.Toolbox.VALUES = "Werte";
+SQLBlocks.Msg.Toolbox.FUNCTIONS = "Funktionen";
 
 /**
  *  MUTATORS 

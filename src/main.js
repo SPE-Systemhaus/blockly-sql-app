@@ -7,6 +7,18 @@ var x_elem = 0, y_elem = 0; 	// Stores top, left values (edge) of the element
  * executed on loading the body tag. Some Visual functions are inside here.
  ******************************************************************************/
  function main() {
+	initCodeEditor();
+	initHelp();
+	initError();
+
+	/* Move/Drag behaviour */
+	document.onmousemove = _move_elem;
+	document.onmouseup = _destroy;
+	
+	loadDatabaseStructure("BeerCompany");
+}
+
+function initBlockly() {
 	var Toolbox = Blockly.Blocks.init();
 	var blocklyDiv = document.getElementById('blocklyDiv');
 	var workspace = Blockly.inject(
@@ -26,15 +38,6 @@ var x_elem = 0, y_elem = 0; 	// Stores top, left values (edge) of the element
 			scrollbars: true
 		}
 	);
-
-	initDB();
-	initCodeEditor();
-	initHelp();
-	initError();
-
-	/* Move/Drag behaviour */
-	document.onmousemove = _move_elem;
-	document.onmouseup = _destroy;
 }
 
 /**
@@ -83,7 +86,7 @@ function initHelp() {
 		return _drag_init (helpDiv);
 	};
 
-	document.getElementById ('helpcontent').onmousedown = function () {
+	document.getElementById ("helpcontent").onmousedown = function () {
 		return _drag_init (helpDiv);
 	};
 }
@@ -118,22 +121,18 @@ function initCodeEditor() {
 }
 
 /**
- * Function to handle the data from db
- */
-function initDB() {
-	getData();
-}
-
-/**
  * 
  */
 function parsingSQL() {
+  var currentWorkspace = Blockly.mainWorkspace;
   var sqlStatement = editor.getValue();
+  var tmpWorkspace = Blockly.Xml.workspaceToDom(currentWorkspace);
   Blockly.mainWorkspace.clear();
 
   try {
     parser.parse(sqlStatement);
   } catch (e) {
+	Blockly.Xml.domToWorkspace(tmpWorkspace, currentWorkspace);
 	openErrorBox(e.message);
 	console.error(e);
   }
