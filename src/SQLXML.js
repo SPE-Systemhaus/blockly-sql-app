@@ -1,6 +1,8 @@
-/*******************************************************************************
- * The SQLXML class has functions that helps to generate a blockly compatible
- * XML format to use in the Blockly SQL Generator.
+/******************************************************************************
+ * The SQLXML class has functions that helps to generate a blockly compatible *
+ * XML format to use in the Blockly SQL Generator.                            *
+ *                                                                            *
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)            * 
  ******************************************************************************/
 function SQLXML() {
 
@@ -109,6 +111,8 @@ function SQLXML() {
     var valuesCnt = 0;
 
     pInsert = parsed;
+
+    console.log(pInsert);
 
     if (pInsert.columns === '*')
       pInsert.columns = getColumnsArrayFromStructure(pInsert.table);

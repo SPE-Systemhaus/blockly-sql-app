@@ -444,12 +444,14 @@ DISPLAYED_COLUMN
         { $$ = sqlXML.createTable("*"); }
     | COLUMN_NAME AS_ALIAS
         { 
-            var tabs = sqlHelp.getAllColumnsByTable($1);
+            /*
+            var tabs = getColumnsArrayFromStructure($1);
             
             for (var tabKey in tabs) {
                 var column = tabs[tabKey];
                 //if (column === $1)  
             }
+            */
             
             $$ = sqlXML.createTable($1); 
         }
@@ -537,6 +539,8 @@ VALUE
         }
     | PLUS NUMBER_LEX
         { $$ = sqlXML.createNumber($2); }
+    | FUNCTION
+    | SUBQUERY
     ;
 
 EXPR
@@ -605,6 +609,10 @@ QUOTED_STRING
         { $$ = sqlXML.createString($2); }
     | QUOTE IDENTIFIER_LEX QUOTE
         { $$ = sqlXML.createString($2); }
+    | DOUBLEQUOTE NUMBER_LEX DOUBLEQUOTE
+        { $$ = sqlXML.createString($2); }
+    | DOUBLEQUOTE IDENTIFIER_LEX DOUBLEQUOTE
+        { $$ = sqlXML.createString($2); } 
     ;
 
 SCHEMA_NAME
