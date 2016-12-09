@@ -21,18 +21,44 @@ function main() {
 	initCodeEditor();
 	initHelp();
 	initError();
+	initAddDSN();
+
+	getDataSourceNames();
 
 	/* Move/Drag behaviour */
 	document.onmousemove = _move_elem;
 	document.onmouseup = _destroy;
-	
-	loadDatabaseStructure("BeerCompany");
+}
+
+function initAddDSN() {
+	var addDSNDiv = document.getElementById ('addDSN');
+	document.getElementById ('addDSNBar').onmousedown = function () {
+		return _drag_init (addDSNDiv);
+	};
+}
+
+function addDataSourceName() {
+	var form = document.getElementById("addDSNForm");
+	var xhr = new XMLHttpRequest();
+
+	xhr.open("POST", "backend/addDataSourceName.php", true);
+	xhr.responseType = "json";
+
+	xhr.onload = function() {
+        if (xhr.status == 200)
+			getDataSourceNames();			
+    };
+
+    xhr.send(new FormData(form));
 }
 
 /**
  * Initializing Blockly.
  */
 function initBlockly() {
+	if (Blockly.mainWorkspace)		/* Cleaning Workspace, if already one existed */
+		Blockly.mainWorkspace.clear();	
+
 	var Toolbox = Blockly.Blocks.init();
 	var blocklyDiv = document.getElementById('blocklyDiv');
 	var workspace = Blockly.inject(
@@ -240,21 +266,74 @@ function closeTooltip() {
 	a.style.display = 'none';
 }
 
+function getDataSourceNames() {
+	var xhr = new XMLHttpRequest();
+	
+	xhr.open("GET", "backend/getDataSourceNames.php", true);
+	xhr.responseType = "json"; 
+	xhr.onload = function() {
+        if (xhr.status == 200)
+			updateDataSourceNames(xhr.response);			
+    };
+
+    xhr.send();
+}
+
+function updateDataSourceNames(dataSourceNames) {
+	var select = document.getElementById("dataSourceNames");
+	var first = true;
+
+	/* Clearing old entries */
+	while(select.firstChild) {
+		select.removeChild(select.firstChild);
+	}
+	
+	for (var dsnKey in dataSourceNames) {
+		var dsn = dataSourceNames[dsnKey];
+		var option = document.createElement("option");
+		option.value = dsn;
+		option.innerHTML = dsn;
+		
+		select.appendChild(option);
+
+		if (first) {
+			SQLBlockly.DSN = dsn;
+			first = false;
+		}
+	}
+
+	getDBStructure();
+}
+
 /**
  * Loading database Structure into the Global Database Structure variable.
  * A JSON file will be read from the folder "databases", which was generated.
  * 
  * @param {String} dsn Data Source Name of the ODBC connection.
  */
-function loadDatabaseStructure(dsn) {
+function loadDatabaseStructure(select) {
+	var load = true;
+	if (Blockly.mainWorkspace)
+		load = confirm(SQLBlocks.Msg.User.CONFIRM_LOAD_WORKSPACE);
+
+	if (!load) {
+		select.value = SQLBlockly.DSN;
+		return false;
+	}
+
+	SQLBlockly.DSN = select.value;
+	getDBStructure();
+}
+
+function getDBStructure() {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "databases/" + dsn + ".json", true);
+    xhr.open("GET", "databases/" + SQLBlockly.DSN + ".json", true);
     xhr.responseType = "json";
     xhr.onload = function() {
         var status = xhr.status;
         if (status == 200) {
-            dbStructure = xhr.response;
-            initBlockly();
+			dbStructure = xhr.response;
+			initBlockly();
         }
     };
 

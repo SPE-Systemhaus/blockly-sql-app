@@ -1,11 +1,4 @@
 <?php
-
-/**
- * PHP Page to establish the database 
- * connection an write the database 
- * in an XML File. 
- */
-
 $dsn = null;            /* Data Source Name */
 $username = "";         /* Username to login in database */
 $password = "";         /* Password to login in database */
