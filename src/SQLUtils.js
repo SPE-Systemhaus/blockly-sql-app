@@ -290,6 +290,19 @@ function composeAlias(block, mutator) {
 }
 
 function sortInputs(block) {
+    /* Priority array */
+    var inputPriority = {
+        "bla" : 1,
+        "select" : 2,
+        "Clause" : 3,
+        "group_by" : 4,
+        "having" : 5,
+        "order_by" : 6,
+        "sort" : 7,
+        "limit" : 8,
+        "VALUE" : 9     /* ALIAS */
+    };
+    
     block.inputList.sort(function(a, b) {
         console.log(a.name);
         console.log(b.name);

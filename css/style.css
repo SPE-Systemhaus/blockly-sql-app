@@ -246,7 +246,7 @@ h4 {
     margin-top:0px;
 }
 
-#writeSQL{
+#writeSQL {
     top: 98px;
     background-color: #F8F8F8;
     border-radius: 8px;
@@ -261,7 +261,22 @@ h4 {
     display:none;
 }
 
-#errorSQL{
+#addDSN {
+    top: 98px;
+    background-color: #F8F8F8;
+    border-radius: 8px;
+    border-style: solid;
+    border-width: 3px;
+    width: 300px;
+    right: 18px;
+    position: absolute; 
+    border-color: #333;
+    overflow-y: auto;
+    max-height: 500px;
+    display: block;
+}
+
+#errorSQL {
     top: 98px;
     background-color: #F8F8F8;
     border-radius: 8px;

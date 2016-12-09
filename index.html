@@ -55,10 +55,7 @@
                 <img src="../common/img/p2fs.png" alt="SQL GUI" style="margin-right: 1.5em;"> 
                 <button class="sqlBtn" onclick="showStatement();">Show</button>
                 <button class="sqlBtn" onclick="openCodeEditor();">Write</button>
-                
-                <select>
-                    <option value="BeerCompany">BeerCompany</option>
-                </select>
+                <select id="dataSourceNames" onchange="loadDatabaseStructure(this);"></select>
             </div>
 
             <!-- Blockly Workspace -->
@@ -90,6 +87,23 @@
                 <button id="toblock" onclick="closeErrorBox();" class="okayy">OK</button>
             </div>
 
+            <div id="addDSN">
+                <div id="addDSNBar">
+                    <a title="Close DSN box." class="closeBtn">×</a>
+                    <h4 class="headBar">Add Data Source Name (ODBC)</h4>
+                </div>
+
+                 <form id="addDSNForm" onsubmit="addDataSourceName();">
+                    Data Source Name (DSN):<br>
+                    <input type="text" name="dsn"><br>
+                    Username:<br>
+                    <input type="text" name="username"><br>
+                    Password:<br>
+                    <input type="password" name="password"><br><br>
+                    <input type="submit" value="Submit">
+                </form> 
+            </div>
+            
         </div>
  
     </body>

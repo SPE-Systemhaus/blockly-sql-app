@@ -981,8 +981,10 @@ Blockly.Blocks['tables_and_columns'] = {
                 /* Updating this block */
                 block.updateShape(table, "*");
 
+                console.log(table);
+
                 block.table = table;
-                block.column = column;
+                block.column = "*";
 
                 /* Updating parent block */
                 var parent = block.getParent();
@@ -3075,6 +3077,24 @@ Blockly.Blocks['ADD'] = {
      */
     init: function () {
         this.setColour(SQLBlockly.Colours.mutators);
+        this.appendDummyInput()
+            .appendField(SQLBlocks.Msg.Blocks.ADD);
+        this.appendStatementInput('STACK');
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.ADD);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks['opts_select'] = {
+    /**
+     * Initialization of the opts_select block.
+     * Sets color, helpUrl, inputs, outputs and the tooltip of this block.
+     *
+     * @method init
+     * @this Blockly.Block
+     */
+    init: function () {
+        this.setColour(SQLBlockly.Colours.mutators);
         this.appendValueInput('group_by')
             .appendField(SQLBlocks.Msg.Blocks.GROUP_BY)
             .setCheck(["group_by"]);
@@ -3263,7 +3283,7 @@ Blockly.Blocks['into'] = {
     init: function () {
         this.setColour(SQLBlockly.Colours.list);
         this.appendDummyInput()
-            .appendField(SQLBlocks.Msg.Blocks.INTO);
+            .appendField(SQLBlocks.Msg.Blocks.SET);
         this.setPreviousStatement(true, "into");
         this.setNextStatement(true, "into");
         this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.INTO);
