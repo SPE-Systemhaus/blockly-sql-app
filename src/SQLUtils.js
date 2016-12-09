@@ -1,53 +1,7 @@
-/*******************************************************************************
- * @author Kirsten Schwarz, SPE Systemhaus GmbH (2013-2014)
- * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)
- * 
+/******************************************************************************
+ * @author Kirsten Schwarz, SPE Systemhaus GmbH (2013-2014)                   *
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)            *
  ******************************************************************************/
-
-var dbStructure = {};   /* Global Database Structure, which is read from the JSON file */
-var editor = null;      /* Global SQL Code Editor variable */
-
-/**
- * Loading database Structure into the Global Database Structure variable.
- * A JSON file will be read from the folder "databases", which was generated.
- * 
- * @param {String} dsn Data Source Name of the ODBC connection.
- */
-function loadDatabaseStructure(dsn) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "databases/" + dsn + ".json", true);
-    xhr.responseType = "json";
-    xhr.onload = function() {
-        var status = xhr.status;
-        if (status == 200) {
-            dbStructure = xhr.response;
-            initBlockly();
-        }
-    };
-
-    xhr.send();
-}
-
-/**
- * Get all existing tables of the global Database Structure variable
- * as Array.
- * 
- * @return {Array} tables All tables that 
- */
-function getTablesArrayFromStructure() {
-    return Object.keys(dbStructure);
-}
-
-/**
- * Get all columns of the global Database Structure variable by
- * a given table name as Array.
- * 
- * @param {String} tableName Name of the table, that should return his columns.
- * @return {Array} columns All columns that are in the table.
- */
-function getColumnsArrayFromStructure(tableName) {
-    return dbStructure[tableName];
-}
 
 /**
  * This functions returns an array with columns, which can 
@@ -102,25 +56,6 @@ function getColumnDropdowndata(tableName, withAll) {
 }
 
 /**
- * Checking the text inputs of the of an textinputfiled. Sets an alert if there
- * are to much variables.
- *
- * @param {type} text- the inputtext
- * @return {text}
- */
-function checkNumeric(text) {
-    var exp = /^-?(\d+(\.\d{0,4})?)$/g;
-    try {
-        if (text.match(exp))
-            return text;
-
-        return null;
-    } catch (e) {
-        return text;
-    }
-}
-
-/**
  * Set the colour of a block, if it is the parent Block of a particular block.
  *
  * @param {type} object-symbolizes the block, which uses the function
@@ -134,8 +69,8 @@ function colourTheParent(block) {
 
     if (parent) {
         block.lastConnectedParent = parent;
-        
-        if (parent.getColour !== block.getColour()) {
+
+        if (parent.getColour() !== block.getColour()) {
             switch(parent.type) {
                 case "compare_operator" :
                 case "conditions" :
@@ -146,10 +81,10 @@ function colourTheParent(block) {
             }
         }
     } else {    /* Resetting color if disonnected */
-        if (block.lastConnectedParent)
+        /*if (block.lastConnectedParent)
             block.lastConnectedParent.setColour(
                 block.lastConnectedParent.getColour()
-            );
+            ); */
     }
 }
 
@@ -180,19 +115,6 @@ function getChildColour(block) {
 }
 
 /**
- * Checking if value is undefined.
- * 
- * @param {any} value Value that should be checked.
- * @return {any} value/bool Returns if undefined false, else the sent value.
- */
-function checkUndefined(value) {
-    if (typeof value === "undefined")
-        return false;
-
-    return value;
-}
-
-/**
  * Create on the specific workspace a new Blockly.Block.
  * 
  * @param {Blockly.Workspace} workspace Blockly Workspace, where the block should be added.
@@ -215,4 +137,165 @@ function createBlock(workspace, name) {
 function clearInputList(block) {
     for (var inputKey in block.inputList)
         block.removeInput(block.inputList[inputKey].name);
+}
+
+function addGroupByInput(block) {
+    block.groupByCount_ = 1;
+    block.appendStatementInput('group_by')
+         .setCheck(["table_column", "name"])
+         .appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
+}
+
+function addHavingInput(block) {
+    block.groupByHavingCount_ = 1;
+    block.appendValueInput('having')
+         .setCheck(["LogicOPs", "condition", "table_column"])
+         .appendField(SQLBlocks.Msg.Blocks.HAVING);
+}
+
+function addOrderByInput(block) {
+    block.orderByCount_ = 1;
+    block.appendStatementInput('order_by')
+         .setCheck(["table_column", "name"])
+         .appendField(SQLBlocks.Msg.Blocks.ORDER_BY);
+    block.appendDummyInput("sort")
+         .appendField(new Blockly.FieldDropdown(sort), "sort");
+}
+
+function addLimitInput(block) {
+    block.limitCount_ = 1;
+    block.appendValueInput('limit')
+         .setCheck('number')
+         .appendField(SQLBlocks.Msg.Blocks.LIMIT);
+}
+
+function addAliasInput(block) {
+    block.aliasCount_ = 1;
+    block.appendDummyInput('VALUE')
+         .appendField(SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE)
+         .appendField(new Blockly.FieldTextInput(
+            Blockly.Msg.VARIABLES_SET_ITEM), 'VAR');
+    block.contextMenuMsg_ = Blockly.Msg.VARIABLES_SET_CREATE_GET;
+    block.contextMenuType_ = 'fieldname_get';
+}
+
+function removeGroupByInput(block) {
+    if (block.getInput("group_by")) {
+        block.groupByCount_ = 0;
+        block.removeInput("group_by");
+
+        removeHavingInput(block);
+    }
+}
+
+function removeHavingInput(block) {
+    if (block.getInput("having")) {
+        block.groupByHavingCount_ = 0;
+        block.removeInput("having");
+    }
+}
+
+function removeOrderByInput(block) {
+    if (block.getInput("order_by")) {
+        block.orderByCount_ = 0;
+        block.removeInput('order_by');
+        block.removeInput('sort');
+    }
+}
+
+function removeLimitInput(block) {
+    if (block.getInput("limit")) {
+        block.limitCount_ = 0;
+        block.removeInput('limit');
+    }
+}
+
+function removeAliasInput(block) {
+    if (block.getInput("VALUE")) {
+        block.aliasCount_ = 0;
+        block.removeInput("VALUE");
+    }
+}
+
+function decomposeGroupBy(workspace, block, mutator) {
+    if (block.groupByCount_ === 1) {
+        var groupByBlock = createBlock(workspace, "group_by");
+        mutator.getInput("group_by").connection.connect(groupByBlock.outputConnection);
+        
+        if (block.groupByHavingCount_) {
+            var havingBlock = createBlock(workspace, "having");
+            groupByBlock.getInput("having").connection.connect(havingBlock.outputConnection);
+        }
+    }
+}
+
+function composeGroupBy(block, mutator) {
+    var groupByBlock = mutator.getInputTargetBlock("group_by");
+    if (groupByBlock) {
+        if (block.groupByCount_ === 0)
+            addGroupByInput(block);                  
+
+        if (groupByBlock.getInputTargetBlock("having")) {
+            if (block.groupByHavingCount_ < 1)
+                addHavingInput(block);           
+        } else
+            removeHavingInput(block);
+    } else
+        removeGroupByInput(block);     
+}
+
+function decomposeOrderBy(workspace, block, mutator) {
+    if (block.orderByCount_ === 1) {
+        var orderByBlock = createBlock(workspace, "order_by");
+        mutator.getInput("order_by").connection.connect(orderByBlock.outputConnection);
+    }
+}
+
+function composeOrderBy(block, mutator) {
+    if (mutator.getInputTargetBlock("order_by")) {
+        if (block.orderByCount_ === 0)
+            addOrderByInput(block);
+    } else 
+        removeOrderByInput(block);
+}
+
+function decomposeLimit(workspace, block, mutator) {
+    if (block.limitCount_ === 1) {
+        var limitBlock = createBlock(workspace, "limit");
+        mutator.getInput("limit").connection.connect(limitBlock.outputConnection);
+    }
+}
+
+function composeLimit(block, mutator) {
+    if (mutator.getInputTargetBlock("limit")) {
+        if (block.limitCount_ === 0)
+            addLimitInput(block);
+    } else
+        removeLimitInput(block);          
+}
+
+function decomposeAlias(workspace, block, mutator) {
+    if (block.aliasCount_ === 1) {
+        var aliasBlock = createBlock(workspace, "alias");
+        mutator.getInput("alias").connection.connect(aliasBlock.outputConnection);
+    }
+}
+
+function composeAlias(block, mutator) {
+    if (mutator.getInputTargetBlock("alias")) {
+        if (block.aliasCount_ === 0)
+            addAliasInput(block);
+    } else
+        removeAliasInput(block);
+}
+
+function sortInputs(block) {
+    block.inputList.sort(function(a, b) {
+        console.log(a.name);
+        console.log(b.name);
+        console.log(inputPriority[a.name] - inputPriority[b.name]);
+        return inputPriority[a.name] - inputPriority[b.name];
+    });
+
+    block.render();
 }

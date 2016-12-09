@@ -1,12 +1,23 @@
-var selected = null; 			// Object of the element to be moved
-var x_pos = 0, y_pos = 0; 		// Stores x & y coordinates of the mouse pointer
-var x_elem = 0, y_elem = 0; 	// Stores top, left values (edge) of the element
-
 /*******************************************************************************
- * Start point of the Blockly SQL Generator. The main() function will be
- * executed on loading the body tag. Some Visual functions are inside here.
- ******************************************************************************/
- function main() {
+ * Start point of the Blockly SQL Generator. The main() function will be	   *
+ * executed on loading the body tag. Some Visual functions are inside here.    *
+ * 																			   *
+ * @author Kirsten Schwarz, SPE Systemhaus GmbH (2013-2014)					   *
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)			   *
+ *******************************************************************************/
+ 
+var dbStructure = {};   	// Global Database Structure
+var editor = null;      	// Global SQL Code Editor variable
+var selected = null; 		// Object of the element to be moved
+var x_pos = 0, y_pos = 0; 	// Stores x & y coordinates of the mouse pointer
+var x_elem = 0, y_elem = 0; // Stores top, left values (edge) of the element
+
+/**
+ * Starting point of the Application. Initializing the Windows and
+ * loading the Database Structure. When the Database Structure is loaded
+ * the Blockly workspace will be initialized.
+ */
+function main() {
 	initCodeEditor();
 	initHelp();
 	initError();
@@ -18,6 +29,9 @@ var x_elem = 0, y_elem = 0; 	// Stores top, left values (edge) of the element
 	loadDatabaseStructure("BeerCompany");
 }
 
+/**
+ * Initializing Blockly.
+ */
 function initBlockly() {
 	var Toolbox = Blockly.Blocks.init();
 	var blocklyDiv = document.getElementById('blocklyDiv');
@@ -26,7 +40,7 @@ function initBlockly() {
 		{
 			toolbox: Toolbox,
 			trashcan: true,
-			media: '../common/libs/blockly/media/',
+			media: SQLBlockly.MEDIA_PATH,
 			zoom: {
 				controls: true,
 				wheel: true,
@@ -92,7 +106,7 @@ function initHelp() {
 }
 
 /**
- * Init movable error container.
+ * Initializing movable error container.
  */
 function initError() {
 	var errorDiv = document.getElementById ('errorSQL');
@@ -102,7 +116,7 @@ function initError() {
 }
 
 /**
- * Initializing the ACE code editor and registering it to
+ * Initializing the ACE Code Editor and registering it to
  * the sqlStatement TextArea. Making this area movable.
  */
 function initCodeEditor() {
@@ -121,13 +135,15 @@ function initCodeEditor() {
 }
 
 /**
- * 
+ * Start parsing SQL from text, with Jison Parser. If an error is thrown
+ * the old workspace will be reloaded.
  */
 function parsingSQL() {
   var currentWorkspace = Blockly.mainWorkspace;
   var sqlStatement = editor.getValue();
   var tmpWorkspace = Blockly.Xml.workspaceToDom(currentWorkspace);
   Blockly.mainWorkspace.clear();
+  closeErrorBox();
 
   try {
     parser.parse(sqlStatement);
@@ -139,7 +155,7 @@ function parsingSQL() {
 }
 
 /**
- * 
+ * Show Error Box window.
  */
 function openErrorBox(errorMessage) {
 	document.getElementById("errorSQL").style.display = "block";
@@ -147,7 +163,7 @@ function openErrorBox(errorMessage) {
 }
 
 /**
- * 
+ * Closing Error Box window.
  */
 function closeErrorBox() {
 	document.getElementById("errorSQL").style.display = "none";
@@ -155,23 +171,16 @@ function closeErrorBox() {
 }
 
 /**
- * Function which enables the select-boxes
- */
-function enable() {
-	document.getElementById("datenbank").disabled = false;
-	document.getElementById("cdb").disabled = false;
-}
-
-/**
  * Showing the SQL-statement text
  */
 function showStatement() {
 	generateSQLCode();
-	writeStatement();
+	openCodeEditor();
 }
 
 /**
- * 
+ * Generating SQL Statement from Blockly Workspace and write into
+ * the Code Editor window.
  */
 function generateSQLCode() {
 	var code = BlocklyPlugins.SQLGen.workspaceToCode(Blockly.mainWorkspace);
@@ -182,24 +191,24 @@ function generateSQLCode() {
 }
 
 /**
- * Open the textarea tooltip
+ * Open the Code Editor window.
  */
-function writeStatement() {
+function openCodeEditor() {
 	document.getElementById('writeSQL').style.display = 'block';
 }
 
 /**
- * 
+ * Closing Code Editor window.
  */
-function closeStatement() {
+function closeCodeEditor() {
 	document.getElementById("writeSQL").style.display = "none";	
 }
 
 /**
- * 
+ * Closing all Popup windows on the workspace.
  */
 function closeAllPopups() {
-	closeStatement();
+	closeCodeEditor();
 	closeHelp();
 	closeTooltip();
 	closeErrorBox();
@@ -229,4 +238,46 @@ function closeTooltip() {
 	var a = document.getElementById('tooltip');
 	a.innerHTML = "";
 	a.style.display = 'none';
+}
+
+/**
+ * Loading database Structure into the Global Database Structure variable.
+ * A JSON file will be read from the folder "databases", which was generated.
+ * 
+ * @param {String} dsn Data Source Name of the ODBC connection.
+ */
+function loadDatabaseStructure(dsn) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "databases/" + dsn + ".json", true);
+    xhr.responseType = "json";
+    xhr.onload = function() {
+        var status = xhr.status;
+        if (status == 200) {
+            dbStructure = xhr.response;
+            initBlockly();
+        }
+    };
+
+    xhr.send();
+}
+
+/**
+ * Get all existing tables of the global Database Structure variable
+ * as Array.
+ * 
+ * @return {Array} tables All tables that 
+ */
+function getTablesArrayFromStructure() {
+    return Object.keys(dbStructure);
+}
+
+/**
+ * Get all columns of the global Database Structure variable by
+ * a given table name as Array.
+ * 
+ * @param {String} tableName Name of the table, that should return his columns.
+ * @return {Array} columns All columns that are in the table.
+ */
+function getColumnsArrayFromStructure(tableName) {
+    return dbStructure[tableName];
 }

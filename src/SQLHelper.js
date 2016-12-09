@@ -81,4 +81,39 @@ function SQLHelper() {
     return SQLBlockly.Colours.undefined;
   };
 
+  this.getTypeByColour = function(color) {
+    switch(color) {
+      case SQLBlockly.Colours.string:
+        return "string";
+      case SQLBlockly.Colours.number:
+        return "number";
+      case SQLBlockly.Colours.date:
+        return "date";
+      case SQLBlockly.Colours.boolean:
+        return "bool";
+    }
+
+    return "undefined";
+  };
+
+  this.getType = function(table, column) {
+    var columns = getColumnsArrayFromStructure(table);
+    var color = this.getTypeColour(table, column);
+
+    switch(color) {
+      case SQLBlockly.Colours.string:
+        return "string";
+      case SQLBlockly.Colours.number:
+        return "number";
+      case SQLBlockly.Colours.date:
+        return "date";
+      case SQLBlockly.Colours.boolean:
+        return "bool";
+      case SQLBlockly.Colour.list:
+        return "tables_column_var";
+    }
+
+    return null;
+  };
+
 }

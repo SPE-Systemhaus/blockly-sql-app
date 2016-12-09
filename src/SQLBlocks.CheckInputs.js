@@ -89,7 +89,9 @@ function checkUpdate(object) {
     }
 }
 
-/* Checking if blocks are comparable from the input */
+/**
+ *  Checking if blocks are comparable from the input 
+ */
 function checkTypeByColour(block) {
     var inputBlockA = block.getInputTargetBlock("A");
     var inputBlockB = block.getInputTargetBlock("B");
@@ -113,6 +115,17 @@ function checkTypeByColour(block) {
         } else
             colourB = inputBlockB.getColour();
     }
+
+    /*
+    switch (colourA) {
+        case SQLBlockly.Colours.string:
+            block.getInput("B").setCheck(["string"]);
+            break;
+    }
+
+    console.log(colourA);
+    console.log(colourB);
+    */
 
     if (colourA !== colourB && colourB !== null && colourA !== null) {
         //inputBlockB.disconnectUiEffect();
@@ -858,74 +871,34 @@ function dateeval(object) {
     object.setWarningText(msg);
 }
 
-/*------------------------------------------------------------------------------
- * Checking the compare inputsfor the subselect. 
- * 
- * @ param{type} object- symbolizes the Block, which uses the function
- *----------------------------------------------------------------------------*/
-function checksub(object) {
-    if (object.parentBlock_)
-    {
-        var parent = object.parentBlock_;
-        if (parent.type == "compare_operator")
-        {
-            var inputA = parent.getInputTargetBlock('A');
-            var inputB = parent.getInputTargetBlock('B');
-            if (inputA.type == object.type && object.getColour() != 7115) {
-                var col = object.getColour();
-                var col2 = inputB.getColour();
-                if (col == 160 && col2 != 160)
-                {
-                    inputB.unplug(true, true);
-                }
-                else {
-                    if (col == 4330 && col2 != 330)
-                    {
-                        inputB.unplug(true, true);
-                    }
-                    else {
-                        if (col == 6255 && col2 != 255)
-                        {
-                            inputB.unplug(true, true);
-                        }
-                        else {
-                            if (col == 5015 && col2 != 15)
-                            {
-                                inputB.unplug(true, true);
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                if (inputB.type == object.type && object.getColour() != 7115) {
-                    var col = inputA.getColour();
-                    var col2 = object.getColour();
-                    if (col == 160 && col2 != 160)
-                    {
-                        object.unplug(true, true);
-                    }
-                    else {
-                        if (col2 != 4330 && col == 330)
-                        {
-                            object.unplug(true, true);
-                        }
-                        else {
-                            if (col2 != 6255 && col == 255)
-                            {
-                                object.unplug(true, true);
-                            }
-                            else {
-                                if (col2 != 5015 && col == 15)
-                                {
-                                    object.unplug(true, true);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+/**
+ * Checking the text inputs of the of an textinputfiled. Sets an alert if there
+ * are to much variables.
+ *
+ * @param {type} text- the inputtext
+ * @return {text}
+ */
+function checkNumeric(text) {
+    var exp = /^-?(\d+(\.\d{0,4})?)$/g;
+    try {
+        if (text.match(exp))
+            return text;
 
+        return null;
+    } catch (e) {
+        return text;
     }
+}
+
+/**
+ * Checking if value is undefined.
+ * 
+ * @param {any} value Value that should be checked.
+ * @return {any} value/bool Returns if undefined false, else the sent value.
+ */
+function checkUndefined(value) {
+    if (typeof value === "undefined")
+        return false;
+
+    return value;
 }
