@@ -51,15 +51,24 @@
         <div id="wrapper" style="width: 100vw; height: 100vh;">       
             
             <!-- Header -->
-            <div id="head">
-                <img src="../common/img/p2fs.png" alt="SQL GUI" style="margin-right: 1.5em;"> 
-                <button class="sqlBtn" onclick="showStatement();">Show</button>
-                <button class="sqlBtn" onclick="openCodeEditor();">Write</button>
-                <select id="dataSourceNames" onchange="loadDatabaseStructure(this);"></select>
+            <div id="head" style="padding-bottom: 3.5em;">
+                <img src="../common/img/p2fs.png" alt="SQL GUI" style="float: left;"> 
+                
+                <div style="float: left; margin: 1.25em; padding-left: 1em;">
+                    <button class="sqlBtn" onclick="editStatement();">Edit SQL Statement</button>
+                </div>
+                
+                <div style="float:right; border: 3px solid black; padding: 0.25em;">
+                    <h5>ODBC - Data Sources</h5>
+                    <select id="dataSourceNames" onchange="loadDatabaseStructure(this);"></select>
+                    <button class="sqlBtn" onclick="openAddDataSource();">Add</button>
+                    <button class="sqlBtn" onclick="removeDataSource();">Delete</button>
+                    <button class="sqlBtn" onclick="openUpdateDataSource();">Update</button>
+                </div>
             </div>
 
             <!-- Blockly Workspace -->
-            <div id="blocklyDiv" style="width:100%; height:calc(100% - 82px)"></div>
+            <div id="blocklyDiv" style="width:100%; height:calc(100% - 88px)"></div>
 
             <!-- SQL Code Editor -->
             <div id="writeSQL">
@@ -89,20 +98,36 @@
 
             <div id="addDSN">
                 <div id="addDSNBar">
-                    <a title="Close DSN box." class="closeBtn">×</a>
+                    <a title="Close DSN box." class="closeBtn" onclick="closeAddDataSource();">×</a>
                     <h4 class="headBar">Add Data Source Name (ODBC)</h4>
                 </div>
 
-                 <form id="addDSNForm" onsubmit="addDataSourceName();">
+                 <form id="addDSNForm">
                     Data Source Name (DSN):<br>
                     <input type="text" name="dsn"><br>
                     Username:<br>
                     <input type="text" name="username"><br>
                     Password:<br>
                     <input type="password" name="password"><br><br>
-                    <input type="submit" value="Submit">
+                    <input type="button" value="Add" onclick="addDataSource();">
                 </form> 
             </div>
+
+            <div id="updateDSN">
+                <div id="updateDSNBar">
+                    <a title="Close DSN box." class="closeBtn" onclick="closeUpdateDataSource();">×</a>
+                    <h4 class="headBar">Update Data Source Name (ODBC)</h4>
+                </div>
+
+                 <form id="updateDSNForm">
+                    Username:<br>
+                    <input type="text" name="username"><br>
+                    Password:<br>
+                    <input type="password" name="password"><br><br>
+                    <input type="button" value="Update" onclick="updateDataSource();">
+                </form> 
+            </div>
+            
             
         </div>
  

@@ -45,16 +45,26 @@ function SQLHelper() {
         columnIndex = index
     });
 
+
     if (columnIndex !== -1) {
       var type = columns[columnIndex].type.toLowerCase().trim();
+      
+      console.log(column);
+      console.log(type);
+
       switch(type) {
           case "int":
+          case "int unsigned":
           case "integer":
           case "integer unsigned":
           case "tinyint":
           case "tinyint unsigned":
           case "smallint":
+          case "smallint unsigned":
+          case "mediumint":
+          case "mediumint unsigned":
           case "bigint":
+          case "bigint unsigned":
           case "double":
           case "float":
           case "decimal":
@@ -69,7 +79,10 @@ function SQLHelper() {
               return SQLBlockly.Colours.date;
           case "bool":
           case "boolean":
+          case "binary":
               return SQLBlockly.Colours.boolean;
+          case "enum":
+              return SQLBlockly.Colours.list;
           case "blob":
               return SQLBlockly.Colours.undefined;
           default:
@@ -109,7 +122,7 @@ function SQLHelper() {
         return "date";
       case SQLBlockly.Colours.boolean:
         return "bool";
-      case SQLBlockly.Colour.list:
+      case SQLBlockly.Colours.list:
         return "tables_column_var";
     }
 

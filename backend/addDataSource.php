@@ -4,6 +4,7 @@ $username = "";         /* Username to login in database */
 $password = "";         /* Password to login in database */
 $tableResource = null;  /* Resource Identifier for fetching the tables over ODBC */
 $result = [];           /* Associative Array to save the needed strucutre of the DB */
+$feedback = [];         /* Feedback Array with message and code for the client */
 
 /* Getting POST DATA and sanitizing it */
 if (isset($_POST["dsn"]))
@@ -18,13 +19,15 @@ if (isset($_POST["password"]))
 /* Connecting to database over ODBC Connection */
 $connection = odbc_connect($dsn, $username, $password);
 if (!$connection) {
-    exit("Connection Failed: " . $connection);
+    $feedback["code"] = -2;
+    $feedback["message"] = "Connection Failed! Check your DSN, username or password.";   
 }
 
 /* Fetching tables over ODBC */
 $tableResource = odbc_tables($connection);
 if (!$tableResource) {
-    exit("Error while getting Table Information over ODBC!");
+    $feedback["code"] = -3;
+    $feedback["message"] = "Error while getting Table Information over ODBC!";
 }
 
 /** 
@@ -38,7 +41,8 @@ while (odbc_fetch_row($tableResource)) {
     /* Fetching column of the current table */
     $columnResource = odbc_columns($connection, "", "%", $tableName, "%");
     if (!$columnResource) {
-        exit("Error while getting Column Information over ODBC!");
+        $feedback["code"] = -4;
+        $feedback["message"] = "Error while getting Column Information over ODBC!";
     }
 
     /* Traversing columns and adding it to the result array */
@@ -57,9 +61,18 @@ while (odbc_fetch_row($tableResource)) {
 odbc_close($connection);
 
 /* Save result as JSON into a file in the databases folder */
-if ($dsn) {
-    $jfHandle = fopen("../databases/" . $dsn . ".json", "w");
-    fwrite($jfHandle, json_encode($result)); 
-    fclose($jfHandle);
+if (!empty($result) && !empty($dsn)) {
+    try {
+        $jfHandle = fopen("../databases/" . $dsn . ".json", "w");
+        fwrite($jfHandle, json_encode($result)); 
+        fclose($jfHandle);
+
+        $feedback["code"] = 0;
+        $feedback["message"] = "Successful.";
+    } catch (Exception $e) {
+        $feedback["code"] = -1;
+        $feedback["message"] = $e->getMessage();
+    }
 }
+echo json_encode($feedback);
 ?>

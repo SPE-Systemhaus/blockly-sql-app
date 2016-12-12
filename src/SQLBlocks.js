@@ -1069,8 +1069,10 @@ Blockly.Blocks['tables_and_columns'] = {
      * @this Blockly.Block
      */
     updateShape: function (table, column) {
-        this.removeInput('Table');
-        this.setup(table, column);
+        this.removeInput('Table');       
+        this.table = table;
+        this.column = column;
+        this.setup();
     },
     /**
      * onchange evaluates the input of the group by/group by having and colours
