@@ -22,6 +22,7 @@ function main() {
 	initHelp();
 	initError();
 	initAddDSN();
+	initUpdateDSN();
 
 	getDataSourceNames();
 
@@ -30,26 +31,18 @@ function main() {
 	document.onmouseup = _destroy;
 }
 
+function initUpdateDSN() {
+	var updateDSNDiv = document.getElementById ('updateDSN');
+	document.getElementById ('updateDSNBar').onmousedown = function () {
+		return _drag_init (updateDSNDiv);
+	};
+}
+
 function initAddDSN() {
 	var addDSNDiv = document.getElementById ('addDSN');
 	document.getElementById ('addDSNBar').onmousedown = function () {
 		return _drag_init (addDSNDiv);
 	};
-}
-
-function addDataSourceName() {
-	var form = document.getElementById("addDSNForm");
-	var xhr = new XMLHttpRequest();
-
-	xhr.open("POST", "backend/addDataSourceName.php", true);
-	xhr.responseType = "json";
-
-	xhr.onload = function() {
-        if (xhr.status == 200)
-			getDataSourceNames();			
-    };
-
-    xhr.send(new FormData(form));
 }
 
 /**
@@ -199,7 +192,7 @@ function closeErrorBox() {
 /**
  * Showing the SQL-statement text
  */
-function showStatement() {
+function editStatement() {
 	generateSQLCode();
 	openCodeEditor();
 }
@@ -220,7 +213,7 @@ function generateSQLCode() {
  * Open the Code Editor window.
  */
 function openCodeEditor() {
-	document.getElementById('writeSQL').style.display = 'block';
+	document.getElementById('writeSQL').style.display = "block";
 }
 
 /**
@@ -238,6 +231,8 @@ function closeAllPopups() {
 	closeHelp();
 	closeTooltip();
 	closeErrorBox();
+	closeUpdateDataSource();
+	closeAddDataSource();
 }
 
 /**
@@ -246,6 +241,22 @@ function closeAllPopups() {
 function closeHelp() {
 	var help = document.getElementById('help');
 	help.style.display = "none";
+}
+
+function openUpdateDataSource() {
+	document.getElementById("updateDSN").style.display = "block";
+}
+
+function closeUpdateDataSource() {
+	document.getElementById("updateDSN").style.display = "none";
+}
+
+function openAddDataSource() {
+	document.getElementById("addDSN").style.display = "block";	
+}
+
+function closeAddDataSource() {
+	document.getElementById("addDSN").style.display = "none";
 }
 
 /**
@@ -266,10 +277,66 @@ function closeTooltip() {
 	a.style.display = 'none';
 }
 
+function addDataSource(data) {
+	var form = document.getElementById("addDSNForm");
+	var xhr = new XMLHttpRequest();
+	var formData = null;
+
+	console.log(data);
+
+	if (!data)
+		formData = new FormData(form);
+	else
+		formData = data;
+
+	xhr.open("POST", "backend/addDataSource.php", true);
+	xhr.responseType = "json";
+	xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+			if (this.response) { 
+				if (this.response.code === 0) {
+					getDataSourceNames();
+					closeAddDataSource();
+					closeUpdateDataSource();
+				} else 
+					window.alert(this.response.code + " " + this.response.message);			
+			} else
+				window.alert("No response!");
+		}
+	};
+
+    xhr.send(formData);
+}
+
+function updateDataSource() {
+	var dsn = document.getElementById("dataSourceNames").value;
+	var data = new FormData(document.getElementById("updateDSNForm"));
+	data.append("dsn", dsn);
+	
+	console.log(dsn);
+
+	addDataSource(data);
+}
+
+function removeDataSource() {
+	var select = document.getElementById("dataSourceNames");
+	var dsn = select.value;
+	var xhr = new XMLHttpRequest();
+
+	xhr.open("GET", "backend/removeDataSource.php?dsn=" + dsn, true);
+	xhr.responseType = "json"; 
+	xhr.onreadystatechange = function() {
+        console.log(this);
+		if (this.readyState == 4 && this.status == 200)
+			getDataSourceNames();			
+    };
+
+    xhr.send();
+}
+
 function getDataSourceNames() {
 	var xhr = new XMLHttpRequest();
-	
-	xhr.open("GET", "backend/getDataSourceNames.php", true);
+	xhr.open("GET", "backend/getDataSources.php", true);
 	xhr.responseType = "json"; 
 	xhr.onload = function() {
         if (xhr.status == 200)
@@ -334,6 +401,7 @@ function getDBStructure() {
         if (status == 200) {
 			dbStructure = xhr.response;
 			initBlockly();
+			window.alert("Workspace updated!");
         }
     };
 
