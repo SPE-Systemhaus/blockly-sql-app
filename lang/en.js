@@ -43,7 +43,7 @@ var datefunct = [
     ["NOW", "now"],
     //["MONTH", "month"],
     //["YEAR", "year"],
-    ["EXTRACT", "extract"],
+    //["EXTRACT", "extract"],
     ["CURDATE", "curdate"],
     ["DATE", "date"],
     //["TO CHAR", "date_format"] //Using date_format instead of to_char, because to_char is not a mysql function
@@ -289,4 +289,4 @@ SQLBlocks.Msg.Warnings.DIFFERENT_TABLES = "Attention you are using different tab
 SQLBlocks.Msg.Warnings.NOT_ENOUGH_TABLES = "Not enough Tables. Please use all tables used in select";
 SQLBlocks.Msg.Warnings.WRONG_COLUMN = "Wrong column. Please use only tables and columns which are in the select.";
 SQLBlocks.Msg.Warnings.WRONG_ALIAS = "Wrong alias. Please use only alias which are used in subselects.";
-SQLBlocks.Msg.Warnings.TOO_MANY_COLUMNS = "Zu viele Spalten. Wählen Sie eine Spalte aus!";
+SQLBlocks.Msg.Warnings.TOO_MANY_COLUMNS = "Too many columns. Choose one specific column!";

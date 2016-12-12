@@ -139,7 +139,7 @@ function SQLXML() {
       [],
       values,
       [],
-      { "set" : valuesCnt - 1}
+      { "set" : valuesCnt - 1 }
     );
 
     return insertBlock;
@@ -153,8 +153,13 @@ function SQLXML() {
 
     pUpdate = parsed;
 
+    console.log("===UPDATE===");
+
     for (var parsedColumn in pUpdate.columns) {
         var key = "set" + valuesCnt;
+        
+        console.log(pUpdate.columns[valuesCnt]);
+        
         var tableBlock = this.createTableVar({ "table" : [pUpdate.table], "column" : [pUpdate.columns[valuesCnt]] });
         var valueBlock = pUpdate.values[parsedColumn];
         var toBlock = createBlock("to", [], {
@@ -239,7 +244,7 @@ function SQLXML() {
   this.createTable = function(column, table) {   
     if (!table)
       table = sqlHelp.getTableOfColumn(column);
-    
+
     var fields = { 
       "tabele" : table,
       "Column" : column 

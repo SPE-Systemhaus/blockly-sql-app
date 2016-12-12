@@ -261,7 +261,7 @@ UPDATE_COMMAND
     ;
 
 INSERT_COMMAND
-    : INSERT INTO TABLE_NAME LPAREN COLUMN_LIST RPAREN VALUES LPAREN VALUE_LIST RPAREN
+    : INSERT INTO TABLE_NAME LPAREN INSERT_COLUMN_LIST RPAREN VALUES LPAREN VALUE_LIST RPAREN
         {
             $$ = sqlXML.createInsert(
                 sqlStatement.setInsert($3, $5, $9)
@@ -279,6 +279,19 @@ INSERT_COMMAND
                 sqlStatement.setInsert($3, $4)
             );
         }
+    ;
+
+INSERT_COLUMN_LIST
+    : INSERT_COLUMN
+        { $$ = []; $$.push($1); }
+    | INSERT_COLUMN_LIST COMMA INSERT_COLUMN
+        { $$.push($3); }
+    ;
+
+INSERT_COLUMN
+    : IDENTIFIER_LEX
+    | IDENTIFIER_LEX PERIOD IDENTIFIER_LEX
+        { $$ = $3; }
     ;
 
 WHERE_CLAUSE
@@ -457,7 +470,7 @@ DISPLAYED_COLUMN
         }
     | IDENTIFIER_LEX PERIOD MULTIPLICATE
         { $$ = sqlXML.createTable('*', $1); }
-    | GROUP_FUNCTION LPAREN SELECTION EXPR RPAREN AS_ALIAS
+    | GROUP_FUNCTION LPAREN SELECTION COLUMN_LIST RPAREN AS_ALIAS
         {
             if ($3) {
                 if ($3.toLowerCase() === "distinct")
@@ -494,7 +507,7 @@ SELECTED_TABLE
     ;
 
 SETS
-    : SET COLUMN_NAME EQ VALUE
+    : SET INSERT_COLUMN EQ VALUE
         {
             $$ = [];
             $$.push({
@@ -502,7 +515,7 @@ SETS
                 "value" : $4
             });
         }
-    | SETS COMMA COLUMN_NAME EQ VALUE
+    | SETS COMMA INSERT_COLUMN EQ VALUE
         {
             $$.push({
                 "column" : $3,
@@ -512,8 +525,8 @@ SETS
     ;
 
 COLUMN_LIST
-    : COLUMN_NAME { $$ = []; $$.push($1); }
-    | COLUMN_LIST COMMA COLUMN_NAME { $$.push($3); }
+    : COLUMN_NAME { $$ = $1; }
+    | COLUMN_LIST COMMA COLUMN_NAME { $$ = sqlXML.addTable($1, $3); }
     ;
 
 VALUE_LIST
@@ -638,10 +651,14 @@ TABLE_NAME
     ;
 
 COLUMN_NAME
-    : '*'
+    : MULTIPLICATE
+        { $$ = sqlXML.createTable("*"); }
     | IDENTIFIER_LEX
+        { $$ = sqlXML.createTable($1); }
+    | IDENTIFIER_LEX MULTIPLICATE
+        { $$ = sqlXML.createTable("*", $1); }
     | IDENTIFIER_LEX PERIOD IDENTIFIER_LEX
-        { $$ = $3; }
+        { $$ = sqlXML.createTable($3, $1); }
     ;
 
 SORTED_DEF
