@@ -93,6 +93,8 @@ function SQLStatement() {
       parsedValues.push(val.value);
     }
 
+    console.log(parsedColumns);
+
     update.table = parsedTable;
     update.columns = parsedColumns;
     update.values = parsedValues;

@@ -2832,7 +2832,7 @@ Blockly.Blocks['datefunction'] = {
     init: function () {
         this.setHelpUrl(this.type);
         this.setColour(SQLBlockly.Colours.date);
-        this.setup(this, 'sysdate');
+        this.setup(this, 'now');
         this.setOutput(true, "datefunction");
     },
     /**

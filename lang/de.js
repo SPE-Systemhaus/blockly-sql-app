@@ -289,4 +289,4 @@ SQLBlocks.Msg.Warnings.DIFFERENT_TABLES = "Achtung Sie verwenden verschiedene Ta
 SQLBlocks.Msg.Warnings.NOT_ENOUGH_TABLES = "Not enough Tables. Please use all tables used in select";
 SQLBlocks.Msg.Warnings.WRONG_COLUMN = "Wrong column. Please use only tables and columns which are in the select.";
 SQLBlocks.Msg.Warnings.WRONG_ALIAS = "Wrong alias. Please use only alias which are used in subselects.";
-SQLBlocks.Msg.Warnings.TOO_MANY_COLUMNS = "Too many columns. Choose one specific column!";
+SQLBlocks.Msg.Warnings.TOO_MANY_COLUMNS = "Zu viele Spalten. Wählen Sie eine Spalte aus!";
