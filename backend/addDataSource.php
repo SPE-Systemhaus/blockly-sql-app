@@ -1,4 +1,7 @@
 <?php
+$errorLevel = error_reporting();
+error_reporting(0);
+
 $dsn = null;            /* Data Source Name */
 $username = "";         /* Username to login in database */
 $password = "";         /* Password to login in database */
@@ -19,15 +22,23 @@ if (isset($_POST["password"]))
 /* Connecting to database over ODBC Connection */
 $connection = odbc_connect($dsn, $username, $password);
 if (!$connection) {
-    $feedback["code"] = -2;
-    $feedback["message"] = "Connection Failed! Check your DSN, username or password.";   
+    array_push($feedback, 
+        array(
+            "code" => -2,
+            "message" => "Connection Failed! Check your DSN, username or password."
+        )
+    );   
 }
 
 /* Fetching tables over ODBC */
 $tableResource = odbc_tables($connection);
 if (!$tableResource) {
-    $feedback["code"] = -3;
-    $feedback["message"] = "Error while getting Table Information over ODBC!";
+    array_push($feedback, 
+        array(
+            "code" => -3,
+            "message" => "Error while getting Table Information over ODBC!"
+        )
+    );
 }
 
 /** 
@@ -41,8 +52,12 @@ while (odbc_fetch_row($tableResource)) {
     /* Fetching column of the current table */
     $columnResource = odbc_columns($connection, "", "%", $tableName, "%");
     if (!$columnResource) {
-        $feedback["code"] = -4;
-        $feedback["message"] = "Error while getting Column Information over ODBC!";
+        array_push($feedback, 
+            array(
+                "code" => -4,
+                "message" => "Error while getting Column Information over ODBC!"
+            )
+        );
     }
 
     /* Traversing columns and adding it to the result array */
@@ -67,12 +82,23 @@ if (!empty($result) && !empty($dsn)) {
         fwrite($jfHandle, json_encode($result)); 
         fclose($jfHandle);
 
-        $feedback["code"] = 0;
-        $feedback["message"] = "Successful.";
+        array_push($feedback, 
+            array(
+                "code" => 0,
+                "message" => "Successful."
+            )
+        );
     } catch (Exception $e) {
-        $feedback["code"] = -1;
-        $feedback["message"] = $e->getMessage();
+        array_push($feedback, 
+            array(
+                "code" => -1,
+                "message" => $e->getMessage()
+            )
+        );
     }
 }
+
 echo json_encode($feedback);
+
+error_reporting($errorLevel);
 ?>

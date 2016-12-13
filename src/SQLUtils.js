@@ -76,6 +76,7 @@ function colourTheParent(block) {
                 case "conditions" :
                 case "logical_conjunction" :
                 case "to":
+                case "array":
                     gradient.setHorizontalGradient(/*parent,*/ block);
                     break;
             }
@@ -304,9 +305,6 @@ function sortInputs(block) {
     };
     
     block.inputList.sort(function(a, b) {
-        console.log(a.name);
-        console.log(b.name);
-        console.log(inputPriority[a.name] - inputPriority[b.name]);
         return inputPriority[a.name] - inputPriority[b.name];
     });
 

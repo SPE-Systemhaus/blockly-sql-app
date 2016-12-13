@@ -31,6 +31,7 @@
 "."                   { return 'PERIOD' }
 ":"                   { return 'COLON' }
 ";"                   { return 'SEMICOLON' }
+"`"                   { return 'BACKTICKS' }
 
 /* Logical Terms */
 "NOT"                 { return 'NOT' }
@@ -453,23 +454,10 @@ DISPLAYED_COLUMNS
     ;
 
 DISPLAYED_COLUMN
-    : MULTIPLICATE
-        { $$ = sqlXML.createTable("*"); }
-    | COLUMN_NAME AS_ALIAS
-        { 
-            /*
-            var tabs = getColumnsArrayFromStructure($1);
-            
-            for (var tabKey in tabs) {
-                var column = tabs[tabKey];
-                //if (column === $1)  
-            }
-            */
-            
-            $$ = sqlXML.createTable($1); 
-        }
-    | IDENTIFIER_LEX PERIOD MULTIPLICATE
-        { $$ = sqlXML.createTable('*', $1); }
+    : COLUMN_NAME AS_ALIAS
+        { $$ = $1; }
+    /* | IDENTIFIER_LEX PERIOD MULTIPLICATE
+        { $$ = sqlXML.createTable('*', $1); } */
     | GROUP_FUNCTION LPAREN SELECTION COLUMN_LIST RPAREN AS_ALIAS
         {
             if ($3) {
@@ -601,6 +589,10 @@ EXPR
         { $$ = sqlXML.createCompareOperator($1, $3, "<="); }
     | EXPR LIKE EXPR
         { $$ = sqlXML.createCompareOperator($1, $3, "like"); }
+    | EXPR IN SUBQUERY
+        { $$ = sqlXML.createCompareOperator($1, $3, "in"); }
+    | EXPR IN LPAREN ARRAY RPAREN
+        { $$ = sqlXML.createCompareOperator($1, $4, "in"); }
     | EXPR IS NULL
         { $$ = sqlXML.createCompareOperator($1, null, "isnull"); }
     | EXPR IS NOT NULL
@@ -615,9 +607,25 @@ EXPR
         { $$ = $2; }
     ;
 
+ARRAY
+    : ARRAY_ENTRY
+        { $$ = sqlXML.createArray($1); }
+    | ARRAY COMMA ARRAY_ENTRY
+        { $$ = sqlXML.addArray($1, $3); }
+    ;
+
+ARRAY_ENTRY
+    : QUOTED_STRING
+    | NUMBER_LEX
+        { $$ = sqlXML.createNumber($1); }
+    | DATETIME
+    | BOOL
+        { $$ = sqlXML.createBool(($1.toLowerCase() == "true") ? true : false); }
+    ;
+
 QUOTED_STRING
     : QUOTE QUOTE
-        { $$ = sqlXML.createString(""); console.log("EMPTY_STRING!"); }
+        { $$ = sqlXML.createString(""); }
     | QUOTE NUMBER_LEX QUOTE
         { $$ = sqlXML.createString($2); }
     | QUOTE IDENTIFIER_LEX QUOTE
@@ -648,6 +656,8 @@ AS_ALIAS
 
 TABLE_NAME
     : IDENTIFIER_LEX
+    | BACKTICKS IDENTIFIER_LEX BACKTICKS
+        { $$ = $2; }
     ;
 
 COLUMN_NAME
@@ -655,10 +665,17 @@ COLUMN_NAME
         { $$ = sqlXML.createTable("*"); }
     | IDENTIFIER_LEX
         { $$ = sqlXML.createTable($1); }
-    | IDENTIFIER_LEX MULTIPLICATE
+    | BACKTICKS IDENTIFIER_LEX BACKTICKS
+        { $$ = sqlXML.createTable($2); }
+    | IDENTIFIER_LEX PERIOD MULTIPLICATE
         { $$ = sqlXML.createTable("*", $1); }
+    | BACKTICKS IDENTIFIER_LEX BACKTICKS PERIOD MULTIPLICATE
+        { $$ = sqlXML.createTable("*", $2); }
     | IDENTIFIER_LEX PERIOD IDENTIFIER_LEX
         { $$ = sqlXML.createTable($3, $1); }
+    | BACKTICKS IDENTIFIER_LEX BACKTICKS PERIOD BACKTICKS IDENTIFIER_LEX BACKTICKS
+        { $$ = sqlXML.createTable($6, $2); }
+    
     ;
 
 SORTED_DEF

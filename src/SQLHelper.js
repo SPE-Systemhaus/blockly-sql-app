@@ -45,12 +45,8 @@ function SQLHelper() {
         columnIndex = index
     });
 
-
     if (columnIndex !== -1) {
       var type = columns[columnIndex].type.toLowerCase().trim();
-      
-      console.log(column);
-      console.log(type);
 
       switch(type) {
           case "int":

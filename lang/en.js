@@ -175,6 +175,7 @@ SQLBlocks.Msg.Tooltips.STRING = 'String variable';
 SQLBlocks.Msg.Tooltips.DATE = 'Date variable';
 SQLBlocks.Msg.Tooltips.GET = "Returns the value of this variable.";
 SQLBlocks.Msg.Tooltips.BOOL = "Boolean variable";
+SQLBlocks.Msg.Tooltips.ARRAY = "Array.";
 
 /* FUNCTIONS */
 SQLBlocks.Msg.Tooltips.CONVERSION_FUNCTION = {};

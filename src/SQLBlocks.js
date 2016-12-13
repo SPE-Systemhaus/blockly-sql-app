@@ -18,45 +18,51 @@ Blockly.Blocks['init'] = function () {
     sqlHelp = new SQLHelper();
 
     return '<xml id="toolbox" style="display: none">' +
-        '<category name="' + SQLBlocks.Msg.Toolbox.COMMANDS + '">' +
-        '<block type="select"></block>' +
-        '<block type="insert"></block>' +
-        '<block type="update"></block>' +
-        '<block type="sub_select"></block>' +
-        '<block type="sub_select_where"></block>' +
-        '<block type="distinct"></block>' +
-        '</category>' +
-        '<category name="' + SQLBlocks.Msg.Toolbox.FIELDS + '">' +
-        '<block type="tables_and_columns"></block>' +
-        '<block type="tables_and_columns_var"></block>' +
-        '</category>' +
-        '<category name="' + SQLBlocks.Msg.Toolbox.OPERATORS + '">' +
-        '<block type="compare_operator"></block>' +
-        '<block type="compare_operator">' +
-        '<value name="A">' +
-        '<block type="tables_and_columns_var"></block>' +
-        '</value>' +
-        '</block>' +
-        '<block type="to"></block>' +
-        '<block type="logical_conjunction"></block>' +
-        '<block type="conditions"></block>' +
-        '<block type="terms_simple_expressions"></block>' +
-        '</category>' +
-        '<category name="' + SQLBlocks.Msg.Toolbox.VALUES + '">' +
-        '<block type="num"></block>' +
-        '<block type="string"></block>' +
-        '<block type="date" ></block>' +
-        '<block type="fieldname_get"></block>' +
-        '<block type="bool"></block>' +
-        '</category>' +
-        '<category name="' + SQLBlocks.Msg.Toolbox.FUNCTIONS + '">' +
-        '<block type="groupfunction"></block>' +
-        '<block type="charfunction"></block> ' +
-        '<block type="numberfunction"></block>' +
-        '<block type="datefunction"></block>' +
-        //'<block type="otherfunction"></block>' +
-        '</category>' +
-        '</xml>';
+            '<category name="' + SQLBlocks.Msg.Toolbox.COMMANDS + '">' +
+                '<block type="select"></block>' +
+                '<block type="insert"></block>' +
+                '<block type="update"></block>' +
+                '<block type="sub_select"></block>' +
+                '<block type="sub_select_where"></block>' +
+                '<block type="distinct"></block>' +
+            '</category>' +
+            '<category name="' + SQLBlocks.Msg.Toolbox.FIELDS + '">' +
+                '<block type="tables_and_columns"></block>' +
+                '<block type="tables_and_columns_var"></block>' +
+            '</category>' +
+            '<category name="' + SQLBlocks.Msg.Toolbox.OPERATORS + '">' +
+                '<block type="compare_operator"></block>' +
+                '<block type="compare_operator">' +
+                    '<value name="A">' +
+                        '<block type="tables_and_columns_var"></block>' +
+                    '</value>' +
+                '</block>' +
+                '<block type="to"></block>' +
+                '<block type="to">' + 
+                    '<value name="A">' +
+                        '<block type="tables_and_columns_var"></block>' +
+                    '</value>' +
+                '</block>' +
+                '<block type="logical_conjunction"></block>' +
+                '<block type="conditions"></block>' +
+                '<block type="terms_simple_expressions"></block>' +
+            '</category>' +
+            '<category name="' + SQLBlocks.Msg.Toolbox.VALUES + '">' +
+                '<block type="num"></block>' +
+                '<block type="string"></block>' +
+                '<block type="date" ></block>' +
+                '<block type="fieldname_get"></block>' +
+                '<block type="bool"></block>' +
+                '<block type="array"></block>' +
+            '</category>' +
+            '<category name="' + SQLBlocks.Msg.Toolbox.FUNCTIONS + '">' +
+                '<block type="groupfunction"></block>' +
+                '<block type="charfunction"></block> ' +
+                '<block type="numberfunction"></block>' +
+                '<block type="datefunction"></block>' +
+                //'<block type="otherfunction"></block>' +
+            '</category>' +
+           '</xml>';
 };
 
 /*------------------------------------------------------------------------------
@@ -1099,9 +1105,9 @@ Blockly.Blocks['tables_and_columns'] = {
                 }
             }
 
-            if (parent.type == "select")
-                if (this.column == "*")
-                    this.setWarningText(SQLBlocks.Msg.Warnings.TOO_MANY_COLUMNS);
+            //if (parent.type == "select")
+            //    if (this.column == "*")
+            //        this.setWarningText(SQLBlocks.Msg.Warnings.TOO_MANY_COLUMNS);
         }
     }
 };
@@ -1389,7 +1395,7 @@ Blockly.Blocks['compare_operator'] = {
                         .appendField(dropdown, "OP");
 
                     input.appendValueInput('B')
-                        .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction", "BolleanOPs"]);
+                        .setCheck(["date", "condition", "bool", "numberfunction", "charfunction", "ArithmethikOPs", "datefunction", "table_column_var", "sub_select", "number", "string", "groupfunction", "BolleanOPs", "Array"]);
                     // Assign 'this' to a variable for use in the tooltip closure below.
                     //Restoring the inputs
 
@@ -1623,6 +1629,130 @@ Blockly.Blocks['terms_simple_expressions'] = {
 /*------------------------------------------------------------------------------
  * Variables
  *----------------------------------------------------------------------------*/
+Blockly.Blocks['array'] = {
+  /**
+   * Block for creating a list with any number of elements of any type.
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.setHelpUrl(this.type);
+    this.setColour(SQLBlockly.Colours.list);
+    this.itemCount_ = 3;
+    this.updateShape_();
+    this.setOutput(true, 'Array');
+    this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
+    this.setTooltip(SQLBlocks.Msg.Tooltips.ARRAY);
+  },
+  /**
+   * Create XML to represent list inputs.
+   * @return {!Element} XML storage element.
+   * @this Blockly.Block
+   */
+  mutationToDom: function() {
+    var container = document.createElement('mutation');
+    container.setAttribute('items', this.itemCount_);
+    return container;
+  },
+  /**
+   * Parse XML to restore the list inputs.
+   * @param {!Element} xmlElement XML storage element.
+   * @this Blockly.Block
+   */
+  domToMutation: function(xmlElement) {
+    this.itemCount_ = parseInt(xmlElement.getAttribute('items'), 10);
+    this.updateShape_();
+  },
+  /**
+   * Populate the mutator's dialog with this block's components.
+   * @param {!Blockly.Workspace} workspace Mutator's workspace.
+   * @return {!Blockly.Block} Root block in mutator.
+   * @this Blockly.Block
+   */
+  decompose: function(workspace) {
+    var containerBlock = workspace.newBlock('lists_create_with_container');
+    containerBlock.initSvg();
+    var connection = containerBlock.getInput('STACK').connection;
+    for (var i = 0; i < this.itemCount_; i++) {
+      var itemBlock = workspace.newBlock('lists_create_with_item');
+      itemBlock.initSvg();
+      connection.connect(itemBlock.previousConnection);
+      connection = itemBlock.nextConnection;
+    }
+    return containerBlock;
+  },
+  /**
+   * Reconfigure this block based on the mutator dialog's components.
+   * @param {!Blockly.Block} containerBlock Root block in mutator.
+   * @this Blockly.Block
+   */
+  compose: function(containerBlock) {
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    // Count number of inputs.
+    var connections = [];
+    while (itemBlock) {
+      connections.push(itemBlock.valueConnection_);
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
+    // Disconnect any children that don't belong.
+    for (var i = 0; i < this.itemCount_; i++) {
+      var connection = this.getInput('ADD' + i).connection.targetConnection;
+      if (connection && connections.indexOf(connection) == -1) {
+        connection.disconnect();
+      }
+    }
+    this.itemCount_ = connections.length;
+    this.updateShape_();
+    // Reconnect any child blocks.
+    for (var i = 0; i < this.itemCount_; i++) {
+      Blockly.Mutator.reconnect(connections[i], this, 'ADD' + i);
+    }
+  },
+  /**
+   * Store pointers to any connected child blocks.
+   * @param {!Blockly.Block} containerBlock Root block in mutator.
+   * @this Blockly.Block
+   */
+  saveConnections: function(containerBlock) {
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var i = 0;
+    while (itemBlock) {
+      var input = this.getInput('ADD' + i);
+      itemBlock.valueConnection_ = input && input.connection.targetConnection;
+      i++;
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
+  },
+  /**
+   * Modify this block to have the correct number of inputs.
+   * @private
+   * @this Blockly.Block
+   */
+  updateShape_: function() {
+    if (this.itemCount_ && this.getInput('EMPTY')) {
+      this.removeInput('EMPTY');
+    } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
+      this.appendDummyInput('EMPTY')
+          .appendField(Blockly.Msg.LISTS_CREATE_EMPTY_TITLE);
+    }
+    // Add new inputs.
+    for (var i = 0; i < this.itemCount_; i++) {
+      if (!this.getInput('ADD' + i)) {
+        var input = this.appendValueInput('ADD' + i)
+                        .setCheck(["string", "number", "date", "bool"]);
+        if (i == 0) {
+          input.appendField(Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH);
+        }
+      }
+    }
+    // Remove deleted inputs.
+    while (this.getInput('ADD' + i)) {
+      this.removeInput('ADD' + i);
+      i++;
+    }
+  }
+};
 /*------------------------------------------------------------------------------
  * bool-symbolizes the bool variables
  *

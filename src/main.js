@@ -282,8 +282,6 @@ function addDataSource(data) {
 	var xhr = new XMLHttpRequest();
 	var formData = null;
 
-	console.log(data);
-
 	if (!data)
 		formData = new FormData(form);
 	else
@@ -293,15 +291,12 @@ function addDataSource(data) {
 	xhr.responseType = "json";
 	xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-			if (this.response) { 
-				if (this.response.code === 0) {
-					getDataSourceNames();
-					closeAddDataSource();
-					closeUpdateDataSource();
-				} else 
-					window.alert(this.response.code + " " + this.response.message);			
-			} else
-				window.alert("No response!");
+			if (this.response[0].code === 0) {
+				getDataSourceNames();
+				closeAddDataSource();
+				closeUpdateDataSource();
+			} else 
+				window.alert(JSON.stringify(this.response));			
 		}
 	};
 
@@ -312,8 +307,6 @@ function updateDataSource() {
 	var dsn = document.getElementById("dataSourceNames").value;
 	var data = new FormData(document.getElementById("updateDSNForm"));
 	data.append("dsn", dsn);
-	
-	console.log(dsn);
 
 	addDataSource(data);
 }
@@ -326,9 +319,10 @@ function removeDataSource() {
 	xhr.open("GET", "backend/removeDataSource.php?dsn=" + dsn, true);
 	xhr.responseType = "json"; 
 	xhr.onreadystatechange = function() {
-        console.log(this);
-		if (this.readyState == 4 && this.status == 200)
-			getDataSourceNames();			
+		if (this.readyState == 4 && this.status == 200 && this.response)
+			getDataSourceNames();
+		else
+			window.alert(JSON.stringify(this.response));	
     };
 
     xhr.send();
@@ -339,8 +333,10 @@ function getDataSourceNames() {
 	xhr.open("GET", "backend/getDataSources.php", true);
 	xhr.responseType = "json"; 
 	xhr.onload = function() {
-        if (xhr.status == 200)
-			updateDataSourceNames(xhr.response);			
+        if (this.status == 200)
+			updateDataSourceNames(xhr.response);
+		else
+			window.alert(JSON.stringify(this.response));			
     };
 
     xhr.send();
@@ -401,11 +397,16 @@ function getDBStructure() {
         if (status == 200) {
 			dbStructure = xhr.response;
 			initBlockly();
+
 			window.alert("Workspace updated!");
         }
     };
 
     xhr.send();
+}
+
+function showNotice(message) {
+
 }
 
 /**
