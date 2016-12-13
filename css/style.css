@@ -170,6 +170,25 @@ h5 {
     margin-top: -0.25em;
 }
 
+.odbc {
+    float: right;
+    border: 3px solid black; 
+    padding: 0.25em; 
+    border-radius: 8px;
+}
+
+.fade-in {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 2s linear;
+}
+
+.fade-out {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+
 #help {
     top: 98px;
     right: 150px;

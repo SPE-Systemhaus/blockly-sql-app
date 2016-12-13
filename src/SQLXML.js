@@ -153,8 +153,6 @@ function SQLXML() {
 
     pUpdate = parsed;
 
-    console.log("===UPDATE===");
-
     for (var parsedColumn in pUpdate.columns) {
         var key = "set" + valuesCnt;
         
@@ -216,6 +214,36 @@ function SQLXML() {
       [], 
       fields
     );
+  };
+
+  this.createArray = function(value) {
+    var fields = {
+      "ADD0" : value  
+    };
+    
+    return createBlock(
+      "array",
+      [],
+      fields
+    );
+  };
+
+  this.addArray = function(currentArray, value) {
+    var values = currentArray.getElementsByTagName("value");
+    var index = 0;
+
+    for (var i = 0; i < values.length; i++) {
+      var name = values[i].getAttribute("name");
+      if (name)
+        index = parseInt(name.substring(3, name.length), 10) + 1;
+    }
+
+    var newValue = document.createElement("value");
+    newValue.setAttribute("name", "ADD" + index);
+    newValue.appendChild(value);
+    currentArray.appendChild(newValue);
+
+    return currentArray;
   };
 
   this.addTable = function(currentTableNode, nextTableNode) {
@@ -390,6 +418,8 @@ function SQLXML() {
         fields.B = expression_b;
       }
       
+      console.log(fields);
+
       return createBlock(
               "compare_operator",
               [],

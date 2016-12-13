@@ -1,4 +1,6 @@
 <?php
+$errorLevel = error_reporting();
+error_reporting(0);
 
 $path = "../databases/";
 $dsn = null;
@@ -18,4 +20,6 @@ if ($isDeleted) {
 }
 
 echo json_encode($feedback);
+
+error_reporting($errorLevel);
 ?>

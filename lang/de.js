@@ -175,6 +175,7 @@ SQLBlocks.Msg.Tooltips.STRING = "Zeichenvariable";
 SQLBlocks.Msg.Tooltips.DATE = "Datumsvariable";
 SQLBlocks.Msg.Tooltips.GET = "Gibt den Wert der Variable zurück.";
 SQLBlocks.Msg.Tooltips.BOOL = "Boolesche Variable";
+SQLBlocks.Msg.Tooltips.ARRAY = "Liste von Werten.";
 
 /* FUNCTIONS */
 SQLBlocks.Msg.Tooltips.CONVERSION_FUNCTION = {};
