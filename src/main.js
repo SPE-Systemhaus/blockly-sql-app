@@ -296,7 +296,7 @@ function addDataSource(data) {
 				closeAddDataSource();
 				closeUpdateDataSource();
 			} else 
-				window.alert(JSON.stringify(this.response));			
+				openErrorBox(JSON.stringify(this.response));			
 		}
 	};
 
@@ -322,7 +322,7 @@ function removeDataSource() {
 		if (this.readyState == 4 && this.status == 200 && this.response)
 			getDataSourceNames();
 		else
-			window.alert(JSON.stringify(this.response));	
+			openErrorBox(JSON.stringify(this.response));	
     };
 
     xhr.send();
@@ -336,7 +336,7 @@ function getDataSourceNames() {
         if (this.status == 200)
 			updateDataSourceNames(xhr.response);
 		else
-			window.alert(JSON.stringify(this.response));			
+			openErrorBox(JSON.stringify(this.response));			
     };
 
     xhr.send();
@@ -398,15 +398,31 @@ function getDBStructure() {
 			dbStructure = xhr.response;
 			initBlockly();
 
-			window.alert("Workspace updated!");
+			showNotification("Workspace updated!", 2);
         }
     };
 
     xhr.send();
 }
 
-function showNotice(message) {
+function showNotification(message, time) {
+	var notifications = document.getElementById("notifications");
+	notifications.innerHTML = message;
+	notifications.style.visibility = "visible";
+	notifications.style.opacity = 1;
+	notifications.style.transition = "opacity " + time + "s linear";
 
+	setTimeout(function() {
+		hideNotification(time);
+	}, time * 1000);
+}
+
+function hideNotification(time) {
+	var notifications = document.getElementById("notifications");
+	//notifications.innerHTML = "";
+	notifications.style.visibility = "hidden";
+	notifications.style.opacity = 0;
+	notifications.style.transition = "visibility 0s " + time + "s, opacity " + time + "s linear";
 }
 
 /**

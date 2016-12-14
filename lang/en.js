@@ -158,6 +158,11 @@ SQLBlocks.Msg.Blocks.MORE = "New Input";
 SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME = " ";
 SQLBlocks.Msg.Blocks.VARIABLES_GET_ITEM = SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME;
 SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE = "AS";
+SQLBlocks.Msg.Blocks.ARRAY = "LIST";
+SQLBlocks.Msg.Blocks.ARRAY_EMPTY = "EMPTY LIST";
+SQLBlocks.Msg.Blocks.LIST = "LISTENTRIES";
+SQLBlocks.Msg.Blocks.LIST_ENTRY = "ENTRY";
+
 
 /**
  * TOOLTIPS
@@ -278,6 +283,8 @@ SQLBlocks.Msg.Tooltips.Mutators.ORDER_BY = "Adding ORDER BY.";
 SQLBlocks.Msg.Tooltips.Mutators.LIMIT = "Adding a limit.";
 SQLBlocks.Msg.Tooltips.Mutators.SET = "Adding a SET.";
 SQLBlocks.Msg.Tooltips.Mutators.INTO = "Adding INTO.";
+SQLBlocks.Msg.Tooltips.Mutators.LIST = "Adding a list entry.";
+SQLBlocks.Msg.Tooltips.Mutators.LIST_ENTRY = "List entry.";
 
 /**
  * CheckInput Messages

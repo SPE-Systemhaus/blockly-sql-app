@@ -517,12 +517,21 @@ Blockly.Blocks['select'] = {
      * @this Blockly.Block
      */
     decompose: function (workspace) {
-        var mutator = createBlock(workspace, 'ADD');
+        var mutator = createBlock(workspace, 'opts_select');
 
         decomposeGroupBy(workspace, this, mutator);
         decomposeOrderBy(workspace, this, mutator);
         decomposeLimit(workspace, this, mutator);
         decomposeAlias(workspace, this, mutator);
+        
+        var inputs = ["Clause", "limit", "group_by", "group_by_have", "order_by", "having", "sort"];
+        this.gradient.setVerticalGradient(
+            this, {
+                "start": "#5BA58C",
+                "stop": getChildColour(this)
+            },
+            inputs
+        );
 
         return mutator;
     },
@@ -531,7 +540,7 @@ Blockly.Blocks['select'] = {
      * @param {!Blockly.Block} containerBlock Root block in mutator.
      * @this Blockly.Block
      */
-    compose: function (mutator) {
+    compose: function (mutator) {       
         composeGroupBy(this, mutator);             
         composeOrderBy(this, mutator);
         composeLimit(this, mutator);
@@ -548,7 +557,6 @@ Blockly.Blocks['select'] = {
             return;
 
         var inputs = ["Clause", "limit", "group_by", "group_by_have", "order_by", "having", "sort"];
-
         this.gradient.setVerticalGradient(
             this, {
                 "start": "#5BA58C",
@@ -558,7 +566,6 @@ Blockly.Blocks['select'] = {
         );
 
         var selectBlock = this;
-
         /** TRYOUT ... TODO: Find a way to do this without Timeout */
         window.setTimeout(function () {
             selectBlock.gradient.setVerticalGradient(
@@ -1637,10 +1644,10 @@ Blockly.Blocks['array'] = {
   init: function() {
     this.setHelpUrl(this.type);
     this.setColour(SQLBlockly.Colours.list);
-    this.itemCount_ = 3;
+    this.itemCount_ = 2;
     this.updateShape_();
     this.setOutput(true, 'Array');
-    this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
+    this.setMutator(new Blockly.Mutator(['list_entry']));
     this.setTooltip(SQLBlocks.Msg.Tooltips.ARRAY);
   },
   /**
@@ -1669,11 +1676,11 @@ Blockly.Blocks['array'] = {
    * @this Blockly.Block
    */
   decompose: function(workspace) {
-    var containerBlock = workspace.newBlock('lists_create_with_container');
+    var containerBlock = workspace.newBlock('list');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 0; i < this.itemCount_; i++) {
-      var itemBlock = workspace.newBlock('lists_create_with_item');
+      var itemBlock = workspace.newBlock('list_entry');
       itemBlock.initSvg();
       connection.connect(itemBlock.previousConnection);
       connection = itemBlock.nextConnection;
@@ -1734,7 +1741,7 @@ Blockly.Blocks['array'] = {
       this.removeInput('EMPTY');
     } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
       this.appendDummyInput('EMPTY')
-          .appendField(Blockly.Msg.LISTS_CREATE_EMPTY_TITLE);
+          .appendField(SQLBlocks.Msg.Blocks.ARRAY_EMPTY);
     }
     // Add new inputs.
     for (var i = 0; i < this.itemCount_; i++) {
@@ -1742,7 +1749,7 @@ Blockly.Blocks['array'] = {
         var input = this.appendValueInput('ADD' + i)
                         .setCheck(["string", "number", "date", "bool"]);
         if (i == 0) {
-          input.appendField(Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH);
+          input.appendField(SQLBlocks.Msg.Blocks.ARRAY);
         }
       }
     }
@@ -3199,6 +3206,29 @@ Blockly.Blocks['datefunction'] = {
 /*******************************************************************************
  * Mutator blocks section
  ******************************************************************************/
+Blockly.Blocks['list'] = {
+    init: function () {
+        this.setColour(SQLBlockly.Colours.mutators);
+        this.appendDummyInput()
+            .appendField(SQLBlocks.Msg.Blocks.LIST);
+        this.appendStatementInput('STACK');
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.LIST);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks['list_entry'] = {
+    init: function () {
+        this.setColour(SQLBlockly.Colours.list);
+        this.appendDummyInput()
+            .appendField(SQLBlocks.Msg.Blocks.LIST_ENTRY);
+        this.setPreviousStatement(true, "list_entry");
+        this.setNextStatement(true, "list_entry");
+        this.setTooltip(SQLBlocks.Msg.Tooltips.Mutators.LIST_ENTRY);
+        this.contextMenu = false;
+    }
+};
+
 Blockly.Blocks['ADD'] = {
     /**
      * Initialization of the ADD block.

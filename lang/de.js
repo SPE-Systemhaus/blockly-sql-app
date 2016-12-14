@@ -158,6 +158,8 @@ SQLBlocks.Msg.Blocks.MORE = "NEUE EINGABE";
 SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME = " ";
 SQLBlocks.Msg.Blocks.VARIABLES_GET_ITEM = SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME;
 SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE = "ALS";
+SQLBlocks.Msg.Blocks.LIST = "LISTENEINTRÄGE";
+SQLBlocks.Msg.Blocks.LIST_ENTRY = "EINTRAG";
 
 /**
  * TOOLTIPS
@@ -278,6 +280,8 @@ SQLBlocks.Msg.Tooltips.Mutators.ORDER_BY = "Füge ORDER BY hinzu.";
 SQLBlocks.Msg.Tooltips.Mutators.LIMIT = "Füge ein Limit hinzu.";
 SQLBlocks.Msg.Tooltips.Mutators.SET = "Füge eine SET Eingabe.";
 SQLBlocks.Msg.Tooltips.Mutators.INTO = "Füge INTO hinzu.";
+SQLBlocks.Msg.Tooltips.Mutators.LIST = "Füge einen Listeneintrag hinzu.";
+SQLBlocks.Msg.Tooltips.Mutators.LIST_ENTRY = "Listeneintrag.";
 
 /**
  * WARNINGS
