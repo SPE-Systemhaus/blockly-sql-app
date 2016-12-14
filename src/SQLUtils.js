@@ -57,6 +57,8 @@ function getColumnDropdowndata(tableName, withAll) {
 
 /**
  * Set the colour of a block, if it is the parent Block of a particular block.
+ * If the parent block has blocks with different colors, it will be colored 
+ * back to his standard color.
  *
  * @param {type} object-symbolizes the block, which uses the function
  */
@@ -70,7 +72,28 @@ function colourTheParent(block) {
     if (parent) {
         block.lastConnectedParent = parent;
 
-        if (parent.getColour() !== block.getColour()) {
+        /* Getting the colors of all children of the parent block */
+        var multipleColors = false;
+        var children = parent.getChildren();
+        var colors = [];
+        children.forEach(function(block) {
+            var color = block.getColour();
+
+            if (!(color in colors))
+                colors.push(color);
+        });
+
+        /* Check if different colours are used in the parent block */
+        if (colors.length > 1) {
+            colors.forEach(function(color) {
+                if (colors[0] !== color) {
+                    multipleColors = true;
+                    parent.setColour(parent.getColour());
+                }
+            });
+        }
+
+        if (parent.getColour() !== block.getColour() && !multipleColors) {
             switch(parent.type) {
                 case "compare_operator" :
                 case "conditions" :
@@ -81,11 +104,6 @@ function colourTheParent(block) {
                     break;
             }
         }
-    } else {    /* Resetting color if disonnected */
-        /*if (block.lastConnectedParent)
-            block.lastConnectedParent.setColour(
-                block.lastConnectedParent.getColour()
-            ); */
     }
 }
 
@@ -308,5 +326,6 @@ function sortInputs(block) {
         return inputPriority[a.name] - inputPriority[b.name];
     });
 
-    block.render();
+    //block.render();
+    block.onchange();
 }

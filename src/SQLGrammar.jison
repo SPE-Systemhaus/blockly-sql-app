@@ -212,11 +212,11 @@
 "as"                  { return 'AS' }
 
 /******************************************************/
-[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}  { return 'DATE_LEX' }
-[0-9]{2}[:][0-9]{2}[:][0-9]{2}        { return 'TIME_LEX' }
-(-)?[0-9]+("."[0-9]+)?\b  { return 'NUMBER_LEX' }
-[a-zA-Z]{1}[a-zA-Z0-9_$#]* { return 'IDENTIFIER_LEX' }
-[^ '\f\n\r\t\v​\u00A0\u1680​\u180e\u2000​\u2001\u2002​\u2003\u2004​ \u2005\u2006​\u2007\u2008​\u2009\u200a​\u2028\u2029​\u2028\u2029​ \u202f\u205f​\u3000]* { return 'IDENTIFIER_LEX' }
+[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}  { return 'DATE' }
+[0-9]{2}[:][0-9]{2}[:][0-9]{2}        { return 'TIME' }
+(-)?[0-9]+("."[0-9]+)?\b  { return 'NUMBER' }
+[a-zA-Z]{1}[a-zA-Z0-9_$#]* { return 'IDENTIFIER' }
+[^ '\f\n\r\t\v​\u00A0\u1680​\u180e\u2000​\u2001\u2002​\u2003\u2004​ \u2005\u2006​\u2007\u2008​\u2009\u200a​\u2028\u2029​\u2028\u2029​ \u202f\u205f​\u3000]* { return 'IDENTIFIER' }
 /lex
 
 /* operator associations and precedence */
@@ -290,8 +290,8 @@ INSERT_COLUMN_LIST
     ;
 
 INSERT_COLUMN
-    : IDENTIFIER_LEX
-    | IDENTIFIER_LEX PERIOD IDENTIFIER_LEX
+    : IDENTIFIER
+    | IDENTIFIER PERIOD IDENTIFIER
         { $$ = $3; }
     ;
 
@@ -309,9 +309,9 @@ EXPRESSIONS
     ;
 
 VARIABLE
-    : IDENTIFIER_LEX
+    : IDENTIFIER
         { $$ = { "column" : $1 }; }
-    | IDENTIFIER_LEX PERIOD IDENTIFIER_LEX
+    | IDENTIFIER PERIOD IDENTIFIER
         { $$ = { "column" : $3, "table": $1 }; }
     ;
 
@@ -431,7 +431,7 @@ ORDERBY_CLAUSE
 
 LIMIT_CLAUSE
     : %empty
-    | LIMIT NUMBER_LEX
+    | LIMIT NUMBER
         { $$ = sqlXML.createNumber(parseInt($2)); }
     ;
 
@@ -456,7 +456,7 @@ DISPLAYED_COLUMNS
 DISPLAYED_COLUMN
     : COLUMN_NAME AS_ALIAS
         { $$ = $1; }
-    /* | IDENTIFIER_LEX PERIOD MULTIPLICATE
+    /* | IDENTIFIER PERIOD MULTIPLICATE
         { $$ = sqlXML.createTable('*', $1); } */
     | GROUP_FUNCTION LPAREN SELECTION COLUMN_LIST RPAREN AS_ALIAS
         {
@@ -525,20 +525,20 @@ VALUE_LIST
 VALUE
     : %empty
     | QUOTED_STRING
-    | IDENTIFIER_LEX
+    | IDENTIFIER
         { $$ = sqlXML.createString($1); }
-    | MINUS IDENTIFIER_LEX
+    | MINUS IDENTIFIER
         { $$ = sqlXML.createString($1 + $2); }
-    | PLUS IDENTIFIER_LEX
+    | PLUS IDENTIFIER
         { $$ = sqlXML.createString($2); }
-    | NUMBER_LEX
+    | NUMBER
         { $$ = sqlXML.createNumber($1); }
-    | MINUS NUMBER_LEX
+    | MINUS NUMBER
         {
             var num = ($1) ? $1 + $2 : $2;
             $$ = sqlXML.createNumber(num);
         }
-    | PLUS NUMBER_LEX
+    | PLUS NUMBER
         { $$ = sqlXML.createNumber($2); }
     | FUNCTION
     | SUBQUERY
@@ -547,7 +547,7 @@ VALUE
 EXPR
     : BOOL
         { $$ = sqlXML.createBool(($1.toLowerCase() == "true") ? true : false); }
-    | NUMBER_LEX
+    | NUMBER
         { $$ = sqlXML.createNumber(parseInt($1)); }
     | QUOTED_STRING
     | DATETIME
@@ -616,7 +616,7 @@ ARRAY
 
 ARRAY_ENTRY
     : QUOTED_STRING
-    | NUMBER_LEX
+    | NUMBER
         { $$ = sqlXML.createNumber($1); }
     | DATETIME
     | BOOL
@@ -626,54 +626,54 @@ ARRAY_ENTRY
 QUOTED_STRING
     : QUOTE QUOTE
         { $$ = sqlXML.createString(""); }
-    | QUOTE NUMBER_LEX QUOTE
+    | QUOTE NUMBER QUOTE
         { $$ = sqlXML.createString($2); }
-    | QUOTE IDENTIFIER_LEX QUOTE
+    | QUOTE IDENTIFIER QUOTE
         { $$ = sqlXML.createString($2); }
-    | DOUBLEQUOTE NUMBER_LEX DOUBLEQUOTE
+    | DOUBLEQUOTE NUMBER DOUBLEQUOTE
         { $$ = sqlXML.createString($2); }
-    | DOUBLEQUOTE IDENTIFIER_LEX DOUBLEQUOTE
+    | DOUBLEQUOTE IDENTIFIER DOUBLEQUOTE
         { $$ = sqlXML.createString($2); } 
     ;
 
 SCHEMA_NAME
-    : IDENTIFIER_LEX PERIOD
+    : IDENTIFIER PERIOD
     ;
 
 DATETIME
-    : QUOTE DATE_LEX QUOTE
+    : QUOTE DATE QUOTE
         { $$ = sqlXML.createDate($2); }
-    | QUOTE DATE_LEX TIME_LEX QUOTE
+    | QUOTE DATE TIME QUOTE
         { $$ = sqlXML.createDate($2 + " " + $3); }
     ;
 
 AS_ALIAS
     : %empty
-    | IDENTIFIER_LEX
-    | AS IDENTIFIER_LEX
+    | IDENTIFIER
+    | AS IDENTIFIER
         { $$ = $2; }
     ;
 
 TABLE_NAME
-    : IDENTIFIER_LEX
-    | BACKTICKS IDENTIFIER_LEX BACKTICKS
+    : IDENTIFIER
+    | BACKTICKS IDENTIFIER BACKTICKS
         { $$ = $2; }
     ;
 
 COLUMN_NAME
     : MULTIPLICATE
         { $$ = sqlXML.createTable("*"); }
-    | IDENTIFIER_LEX
+    | IDENTIFIER
         { $$ = sqlXML.createTable($1); }
-    | BACKTICKS IDENTIFIER_LEX BACKTICKS
+    | BACKTICKS IDENTIFIER BACKTICKS
         { $$ = sqlXML.createTable($2); }
-    | IDENTIFIER_LEX PERIOD MULTIPLICATE
+    | IDENTIFIER PERIOD MULTIPLICATE
         { $$ = sqlXML.createTable("*", $1); }
-    | BACKTICKS IDENTIFIER_LEX BACKTICKS PERIOD MULTIPLICATE
+    | BACKTICKS IDENTIFIER BACKTICKS PERIOD MULTIPLICATE
         { $$ = sqlXML.createTable("*", $2); }
-    | IDENTIFIER_LEX PERIOD IDENTIFIER_LEX
+    | IDENTIFIER PERIOD IDENTIFIER
         { $$ = sqlXML.createTable($3, $1); }
-    | BACKTICKS IDENTIFIER_LEX BACKTICKS PERIOD BACKTICKS IDENTIFIER_LEX BACKTICKS
+    | BACKTICKS IDENTIFIER BACKTICKS PERIOD BACKTICKS IDENTIFIER BACKTICKS
         { $$ = sqlXML.createTable($6, $2); }
     
     ;
@@ -705,7 +705,7 @@ DATE_FUNCTION
         { $$ = sqlXML.createDateFunction($1); }
     | CURTIME LPAREN RPAREN
         { $$ = sqlXML.createDateFunction($1); }
-    | DATE LPAREN DATE_LEX RPAREN
+    | DATE LPAREN DATE RPAREN
         { $$ = sqlXML.createDateFunction($1, $3); }
     ;
 
