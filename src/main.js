@@ -95,7 +95,7 @@ function _move_elem (e) {
 	x_pos = document.all ? window.event.clientX : e.pageX;
 	y_pos = document.all ? window.event.clientY : e.pageY;
 
-	if (selected !== null) {
+	if (selected != null) {
 		selected.style.left = (x_pos - x_elem) + 'px';
 		selected.style.top = (y_pos - y_elem) + 'px';
 	}
@@ -202,7 +202,7 @@ function editStatement() {
  * the Code Editor window.
  */
 function generateSQLCode() {
-	var code = BlocklyPlugins.SQLGen.workspaceToCode(Blockly.mainWorkspace);
+	var code = SQLBlockly.SQLGen.workspaceToCode(Blockly.mainWorkspace);
 	if (code.length === 1 && code === ";")
 		code = "";
 

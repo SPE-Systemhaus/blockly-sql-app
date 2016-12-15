@@ -6,7 +6,7 @@ module.exports = function(grunt) {
       sql : {
         options : { 
           output: 'build/SQLParser.js',
-          grammar: 'src/SQLGrammar.jison',
+          grammar: 'src/parser/SQLGrammar.jison',
 		  debug: true
         }
       }
@@ -25,7 +25,12 @@ module.exports = function(grunt) {
       },
     concat: {
       dist: {
-        src: ['lang/**/*.js', 'src/**/*.js', 'build/SQLParser.js'],
+        src: ['lang/**/*.js', 
+              'src/constants.js', 
+              'src/generator/sql.js', 
+              'src/generator/blocks/*.js', 
+              'src/**/*.js', 
+              'build/SQLParser.js'],
         dest: 'build/<%= pkg.name %>.concat.js',
       },
     },
