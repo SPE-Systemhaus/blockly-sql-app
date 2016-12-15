@@ -1,13 +1,13 @@
 {
   "name": "SQLBlockly",
-  "description": "",
+  "description": "SQL Blockly workspace.",
   "main": "",
   "authors": [
-    "Michael Kolodziejczyk <mk@spe-systemhaus.de>",
+    "Michael Kolodziejczyk <mk@spe-systemhaus.de> (https://www.spe-systemhaus.de/)",
 	"Kirsten Schwarz"
   ],
-  "license": "MIT",
-  "homepage": "https://github.com/SPE-Systemhaus/sql-blockly/",
+  "license": "Apache 2.0",
+  "homepage": "http://sql.print2forms.de/",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -18,6 +18,12 @@
   ],
   "dependencies": {
     "blockly-events": "^1.0.2",
-    "blockly-type-indicator": "^1.0.2"
+    "blockly-type-indicator": "^1.0.2",
+    "blockly-colour-gradient": "^1.0.1",
+    "ace-builds": "^1.2.6"
+  },
+  "devDependencies": {
+    "closure-library": "*",
+    "GoogleBlockly": "*"
   }
 }
