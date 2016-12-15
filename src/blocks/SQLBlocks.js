@@ -131,12 +131,12 @@ Blockly.Blocks['insert'] = {
      * @this Blockly.Block
      */
     decompose: function (workspace) {
-        var containerBlock = createBlock(workspace, 'ADD');
+        var containerBlock = sqlHelp.createBlock(workspace, 'ADD');
         containerBlock.setColour(SQLBlockly.Colours.list);
         var connection = containerBlock.getInput('STACK').connection;
 
         for (var s = 1; s <= this.setCount_; s++) {
-            var setBlock = createBlock(workspace, 'into');
+            var setBlock = sqlHelp.createBlock(workspace, 'into');
             connection.connect(setBlock.previousConnection);
             connection = setBlock.nextConnection;
         }
@@ -319,12 +319,12 @@ Blockly.Blocks['update'] = {
      * @this Blockly.Block
      */
     decompose: function (workspace) {
-        var containerBlock = createBlock(workspace, 'ADD');
+        var containerBlock = sqlHelp.createBlock(workspace, 'ADD');
         containerBlock.setColour(SQLBlockly.Colours.list);
         var connection = containerBlock.getInput('STACK').connection;
 
         for (var s = 1; s <= this.setCount_; s++) {
-            var setBlock = createBlock(workspace, 'set');
+            var setBlock = sqlHelp.createBlock(workspace, 'set');
             connection.connect(setBlock.previousConnection);
             connection = setBlock.nextConnection;
         }
@@ -421,7 +421,7 @@ Blockly.Blocks['update'] = {
         this.gradient.setVerticalGradient(
             this, {
                 "start": "#5BA58C",
-                "stop": getChildColour(this)
+                "stop": sqlHelp.getChildColour(this)
             },
             ["Clause"]
         );
@@ -499,16 +499,16 @@ Blockly.Blocks['select'] = {
         this.orderByCount_ = parseInt(xmlElement.getAttribute('orderby'), 10);
 
         if (this.groupByCount_)
-            addGroupByInput(this);
+            sqlHelp.addGroupByInput(this);
         
         if (this.groupByHavingCount_)
-            addHavingInput(this);
+            sqlHelp.addHavingInput(this);
         
         if (this.orderByCount_)
-            addOrderByInput(this);
+            sqlHelp.addOrderByInput(this);
 
         if (this.limitCount_)
-            addLimitInput(this);
+            sqlHelp.addLimitInput(this);
     },
     /**
      * Populate the mutator's dialog with this block's components.
@@ -517,18 +517,18 @@ Blockly.Blocks['select'] = {
      * @this Blockly.Block
      */
     decompose: function (workspace) {
-        var mutator = createBlock(workspace, 'opts_select');
+        var mutator = sqlHelp.createBlock(workspace, 'opts_select');
 
-        decomposeGroupBy(workspace, this, mutator);
-        decomposeOrderBy(workspace, this, mutator);
-        decomposeLimit(workspace, this, mutator);
-        decomposeAlias(workspace, this, mutator);
+        sqlHelp.decomposeGroupBy(workspace, this, mutator);
+        sqlHelp.decomposeOrderBy(workspace, this, mutator);
+        sqlHelp.decomposeLimit(workspace, this, mutator);
+        sqlHelp.decomposeAlias(workspace, this, mutator);
         
         var inputs = ["Clause", "limit", "group_by", "group_by_have", "order_by", "having", "sort"];
         this.gradient.setVerticalGradient(
             this, {
                 "start": "#5BA58C",
-                "stop": getChildColour(this)
+                "stop": sqlHelp.getChildColour(this)
             },
             inputs
         );
@@ -541,11 +541,11 @@ Blockly.Blocks['select'] = {
      * @this Blockly.Block
      */
     compose: function (mutator) {       
-        composeGroupBy(this, mutator);             
-        composeOrderBy(this, mutator);
-        composeLimit(this, mutator);
-        composeAlias(this, mutator);
-        sortInputs(this);   
+        sqlHelp.composeGroupBy(this, mutator);             
+        sqlHelp.composeOrderBy(this, mutator);
+        sqlHelp.composeLimit(this, mutator);
+        sqlHelp.composeAlias(this, mutator);
+        sqlHelp.sortInputs(this);   
     },
     /**
      * onchange evaluates the input of the group by/group by having
@@ -560,7 +560,7 @@ Blockly.Blocks['select'] = {
         this.gradient.setVerticalGradient(
             this, {
                 "start": "#5BA58C",
-                "stop": getChildColour(this)
+                "stop": sqlHelp.getChildColour(this)
             },
             inputs
         );
@@ -571,7 +571,7 @@ Blockly.Blocks['select'] = {
             selectBlock.gradient.setVerticalGradient(
                 selectBlock, {
                     "start": "#5BA58C",
-                    "stop": getChildColour(selectBlock)
+                    "stop": sqlHelp.getChildColour(selectBlock)
                 },
                 inputs
             );
@@ -699,19 +699,19 @@ Blockly.Blocks['sub_select'] = {
             this.setColour(this.getColour());
 
         if (this.aliasCount_)
-            addAliasInput(this);
+            sqlHelp.addAliasInput(this);
 
         if (this.groupByCount_)
-            addGroupByInput(this);
+            sqlHelp.addGroupByInput(this);
         
         if (this.groupByHavingCount_)
-            addHavingInput(this);
+            sqlHelp.addHavingInput(this);
         
         if (this.orderByCount_)
-            addOrderByInput(this);
+            sqlHelp.addOrderByInput(this);
 
         if (this.limitCount_)
-            addLimitInput(this);
+            sqlHelp.addLimitInput(this);
     },
     /**
      * Populate the mutator's dialog with this block's components.
@@ -720,12 +720,12 @@ Blockly.Blocks['sub_select'] = {
      * @this Blockly.Block
      */
     decompose: function (workspace) {
-        var mutator = createBlock(workspace, "opts_subselect");
+        var mutator = sqlHelp.createBlock(workspace, "opts_subselect");
 
-        decomposeGroupBy(workspace, this, mutator);
-        decomposeOrderBy(workspace, this, mutator);
-        decomposeLimit(workspace, this, mutator);
-        decomposeAlias(workspace, this, mutator);
+        sqlHelp.decomposeGroupBy(workspace, this, mutator);
+        sqlHelp.decomposeOrderBy(workspace, this, mutator);
+        sqlHelp.decomposeLimit(workspace, this, mutator);
+        sqlHelp.decomposeAlias(workspace, this, mutator);
 
         return mutator;
     },
@@ -735,11 +735,11 @@ Blockly.Blocks['sub_select'] = {
      * @this Blockly.Block
      */
     compose: function (mutator) {
-        composeGroupBy(this, mutator);             
-        composeOrderBy(this, mutator);
-        composeLimit(this, mutator);
-        composeAlias(this, mutator);
-        sortInputs(this);        
+        sqlHelp.composeGroupBy(this, mutator);             
+        sqlHelp.composeOrderBy(this, mutator);
+        sqlHelp.composeLimit(this, mutator);
+        sqlHelp.composeAlias(this, mutator);
+        sqlHelp.sortInputs(this);        
     },
     /**
      * Return all variables referenced by this block.
@@ -772,7 +772,7 @@ Blockly.Blocks['sub_select'] = {
         this.gradient.setVerticalGradient(
             this, {
                 "start": "#5BA58C",
-                "stop": getChildColour(this)
+                "stop": sqlHelp.getChildColour(this)
             },
             ["Clause", "limit", "group_by", "group_by_having", "order_by", "alias"]
         );
@@ -870,19 +870,19 @@ Blockly.Blocks['sub_select_where'] = {
             this.setColour(this.getColour());
 
         if (this.aliasCount_)
-            addAliasInput(this);
+            sqlHelp.addAliasInput(this);
 
         if (this.groupByCount_)
-            addGroupByInput(this);
+            sqlHelp.addGroupByInput(this);
         
         if (this.groupByHavingCount_)
-            addHavingInput(this);
+            sqlHelp.addHavingInput(this);
         
         if (this.orderByCount_)
-            addOrderByInput(this);
+            sqlHelp.addOrderByInput(this);
 
         if (this.limitCount_)
-            addLimitInput(this);
+            sqlHelp.addLimitInput(this);
     },
     /**
      * Populate the mutator's dialog with this block's components.
@@ -891,12 +891,12 @@ Blockly.Blocks['sub_select_where'] = {
      * @this Blockly.Block
      */
     decompose: function (workspace) {
-        var mutator = createBlock(workspace, "opts_subselect");
+        var mutator = sqlHelp.createBlock(workspace, "opts_subselect");
 
-        decomposeGroupBy(workspace, this, mutator);
-        decomposeOrderBy(workspace, this, mutator);
-        decomposeLimit(workspace, this, mutator);
-        decomposeAlias(workspace, this, mutator);
+        sqlHelp.decomposeGroupBy(workspace, this, mutator);
+        sqlHelp.decomposeOrderBy(workspace, this, mutator);
+        sqlHelp.decomposeLimit(workspace, this, mutator);
+        sqlHelp.decomposeAlias(workspace, this, mutator);
 
         return mutator;
     },
@@ -906,11 +906,11 @@ Blockly.Blocks['sub_select_where'] = {
      * @this Blockly.Block
      */
     compose: function (mutator) {
-        composeGroupBy(this, mutator);             
-        composeOrderBy(this, mutator);
-        composeLimit(this, mutator);
-        composeAlias(this, mutator);
-        sortInputs(this);        
+        sqlHelp.composeGroupBy(this, mutator);             
+        sqlHelp.composeOrderBy(this, mutator);
+        sqlHelp.composeLimit(this, mutator);
+        sqlHelp.composeAlias(this, mutator);
+        sqlHelp.sortInputs(this);        
     },
     /**
      * Return all variables referenced by this block.
@@ -944,7 +944,7 @@ Blockly.Blocks['sub_select_where'] = {
         this.gradient.setVerticalGradient(
             this, {
                 "start": "#5BA58C",
-                "stop": getChildColour(this)
+                "stop": sqlHelp.getChildColour(this)
             },
             ["Clause", "limit", "group_by", "group_by_having", "order_by", "alias"]
         );
@@ -989,7 +989,7 @@ Blockly.Blocks['tables_and_columns'] = {
     setup: function () {
         var block = this;
         var tableDropdown = new Blockly.FieldDropdown(
-            getTableDropdowndata(),
+            sqlHelp.getTableDropdowndata(),
             function (table) {
                 /* Updating this block */
                 block.updateShape(table, "*");
@@ -1007,7 +1007,7 @@ Blockly.Blocks['tables_and_columns'] = {
         );
 
         var columnDropdown = new Blockly.FieldDropdown(
-            getColumnDropdowndata(this.table, true),
+            sqlHelp.getColumnDropdowndata(this.table, true),
             function (column) {
                 /* Updating this block */
                 var table = block.getFieldValue("tabele");
@@ -1098,7 +1098,7 @@ Blockly.Blocks['tables_and_columns'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent(this);
+        sqlHelp.colourTheParent(this);
         var parent = this.getParent();
 
         if (parent) {
@@ -1159,7 +1159,7 @@ Blockly.Blocks['tables_and_columns_var'] = {
     setup: function (table, column) {
         var block = this;
         var tableDropdown = new Blockly.FieldDropdown(
-            getTableDropdowndata(),
+            sqlHelp.getTableDropdowndata(),
             function (table) {
                 block.updateShape(table, dbStructure[table][0].name);
 
@@ -1170,7 +1170,7 @@ Blockly.Blocks['tables_and_columns_var'] = {
             }
         );
         var columnDropdown = new Blockly.FieldDropdown(
-            getColumnDropdowndata(table, false),
+            sqlHelp.getColumnDropdowndata(table, false),
             function (column) {
                 var table = block.getFieldValue("tabele");
                 var type = sqlHelp.getType(table, column);
@@ -1259,7 +1259,7 @@ Blockly.Blocks['tables_and_columns_var'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent(this);
+        sqlHelp.colourTheParent(this);
     }
 };
 
@@ -1347,7 +1347,7 @@ Blockly.Blocks['compare_operator'] = {
             this.sourceBlock_.updateShape(option);
         });
 
-        clearInputList(this);
+        sqlHelp.clearInputList(this);
 
         if (dir != '') {
             dropdown.setValue(dir);
@@ -1793,7 +1793,7 @@ Blockly.Blocks['bool'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent(this);
+        sqlHelp.colourTheParent(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -1829,7 +1829,7 @@ Blockly.Blocks['num'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent(this);
+        sqlHelp.colourTheParent(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -1865,7 +1865,7 @@ Blockly.Blocks['string'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent(this);
+        sqlHelp.colourTheParent(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -1902,7 +1902,7 @@ Blockly.Blocks['date'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent(this);
+        sqlHelp.colourTheParent(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -2199,7 +2199,7 @@ Blockly.Blocks['numberfunction'] = {
             this.sourceBlock_.updateShape(option);
         });
 
-        clearInputList(this);
+        sqlHelp.clearInputList(this);
 
         if (dirnum != '') {
             dropdown.setValue(dirnum);
@@ -2359,7 +2359,7 @@ Blockly.Blocks['numberfunction'] = {
         allowOnlyNumeric(this.getInputTargetBlock("number"));
 
         /* Colouring */
-        colourTheParent(this);
+        sqlHelp.colourTheParent(this);
     }
 };
 /*------------------------------------------------------------------------------
@@ -2543,12 +2543,12 @@ Blockly.Blocks['otherfunction'] = {
      * @this Blockly.Block
      */
     decompose: function (workspace) {
-        var containerBlock = createBlock(workspace, 'ADD');
+        var containerBlock = sqlHelp.createBlock(workspace, 'ADD');
         containerBlock.setColour(SQLBlockly.Colours.list);
         var connection = containerBlock.getInput('STACK').connection;
 
         for (var x = 2; x <= this.valueCount_; x++) {
-            var newInput = createBlock(workspace, 'more');
+            var newInput = sqlHelp.createBlock(workspace, 'more');
             connection.connect(newInput.previousConnection);
             connection = newInput.nextConnection;
         }
@@ -2948,7 +2948,7 @@ Blockly.Blocks['charfunction'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent(this);
+        sqlHelp.colourTheParent(this);
         chareval(this); //Checking the inputs
     }
 };
@@ -3198,7 +3198,7 @@ Blockly.Blocks['datefunction'] = {
         if (!this.workspace)
             return;
 
-        colourTheParent(this);
+        sqlHelp.colourTheParent(this);
         dateeval(this);         //Checking the inputs
     }
 };

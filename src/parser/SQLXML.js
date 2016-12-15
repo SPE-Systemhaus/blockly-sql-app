@@ -94,7 +94,7 @@ function SQLXML() {
       values["limit"] = pSelect.limit;
     }
 
-    var selectBlock = createBlock(
+    var selectBlock = createXMLBlock(
       "select",
       statements,
       values,
@@ -128,13 +128,13 @@ function SQLXML() {
         "A" : tableNode,
         "B" : valueNode
       };
-      var toBlock = createBlock("to", [], fields);
+      var toBlock = createXMLBlock("to", [], fields);
 
       values[key] = toBlock;
       valuesCnt++
     }
 
-    insertBlock = createBlock(
+    insertBlock = createXMLBlock(
       "insert",
       [],
       values,
@@ -160,7 +160,7 @@ function SQLXML() {
         
         var tableBlock = this.createTableVar({ "table" : [pUpdate.table], "column" : [pUpdate.columns[valuesCnt]] });
         var valueBlock = pUpdate.values[parsedColumn];
-        var toBlock = createBlock("to", [], {
+        var toBlock = createXMLBlock("to", [], {
           "A" : tableBlock,
           "B" : valueBlock
         }, [], {
@@ -173,7 +173,7 @@ function SQLXML() {
 
     values["Clause"] = pUpdate.where;
 
-    updateBlock = createBlock(
+    updateBlock = createXMLBlock(
       "update",
       [],
       values,
@@ -209,7 +209,7 @@ function SQLXML() {
       "B" : value
     };
 
-    return createBlock(
+    return createXMLBlock(
       "to",
       [], 
       fields
@@ -221,7 +221,7 @@ function SQLXML() {
       "ADD0" : value  
     };
     
-    return createBlock(
+    return createXMLBlock(
       "array",
       [],
       fields
@@ -280,7 +280,7 @@ function SQLXML() {
 
     var mutations = fields;
 
-    return createBlock(
+    return createXMLBlock(
       "tables_and_columns",
       [],
       [], 
@@ -305,7 +305,7 @@ function SQLXML() {
     
     var mutations = fields;
 
-    return createBlock(
+    return createXMLBlock(
         "tables_and_columns_var",
         [],
         [],
@@ -320,7 +320,7 @@ function SQLXML() {
     if (expression_b)
       values["number"] = expression_b;
 
-    return createBlock(
+    return createXMLBlock(
       "numberfunction",
       [],
       values,
@@ -338,7 +338,7 @@ function SQLXML() {
     if (expression_c)
       values["option2"] = expression_c;
 
-    return createBlock(
+    return createXMLBlock(
       "charfunction",
       [],
       values,
@@ -352,7 +352,7 @@ function SQLXML() {
 
     console.log(date);
 
-    return createBlock(
+    return createXMLBlock(
       "datefunction",
       [],
       [],
@@ -368,7 +368,7 @@ function SQLXML() {
    * @return mathBlock {XML} - MathBlock as XML
    */
   this.createMath = function(operand_a, operand_b, operator) {
-    return createBlock(
+    return createXMLBlock(
       "terms_simple_expressions",
       [],
       { "A" : operand_a, "B" : operand_b },
@@ -381,7 +381,7 @@ function SQLXML() {
   this.createAnd = function(factor_a, factor_b) {
     var values = { "A" : factor_a, "B" : factor_b };
 
-    return andBlock = createBlock(
+    return andBlock = createXMLBlock(
         "logical_conjunction",
         [],
         values,
@@ -392,7 +392,7 @@ function SQLXML() {
   this.createOr = function(factor_a, factor_b) {
     var values = { "A" : factor_a, "B" : factor_b };
 
-    return createBlock(
+    return createXMLBlock(
       "logical_conjunction",
       [],
       values,
@@ -420,7 +420,7 @@ function SQLXML() {
       
       console.log(fields);
 
-      return createBlock(
+      return createXMLBlock(
               "compare_operator",
               [],
               fields,
@@ -431,7 +431,7 @@ function SQLXML() {
   };
 
   this.createString = function(value) {
-    return createBlock(
+    return createXMLBlock(
       'string',
       [],
       [],
@@ -440,7 +440,7 @@ function SQLXML() {
   };
 
   this.createNumber = function(value) {
-    return createBlock(
+    return createXMLBlock(
       "num",
       [],
       [],
@@ -449,7 +449,7 @@ function SQLXML() {
   };
 
   this.createDate = function(value) {
-    return createBlock(
+    return createXMLBlock(
       "date",
       [],
       [],
@@ -458,7 +458,7 @@ function SQLXML() {
   };
 
   this.negate = function(value) {
-    return createBlock(
+    return createXMLBlock(
       "conditions",
       [],
       { "A" : value }
@@ -466,7 +466,7 @@ function SQLXML() {
   };
 
   this.createBool = function(value) {
-    return createBlock(
+    return createXMLBlock(
       "bool",
       [],
       [],
@@ -484,7 +484,7 @@ function SQLXML() {
       if (expression_b)
         values["number"] = expression_b;
 
-      return createBlock(
+      return createXMLBlock(
               "numberfunction",
               [],
               values,
@@ -501,7 +501,7 @@ function SQLXML() {
     };
     
     var fields = { "group" : expressions };
-    var block =  createBlock(
+    var block =  createXMLBlock(
       "groupfunction",
       [],
       fields,
@@ -519,7 +519,7 @@ function SQLXML() {
 
   this.createGroupFunctionFactor =
     function(func, expressions) {
-      return createBlock(
+      return createXMLBlock(
         "groupfunction_factor",
         [],
         { "group" : expressions },
@@ -530,7 +530,7 @@ function SQLXML() {
   };
 
   this.createDistinct = function() {
-    return createBlock(
+    return createXMLBlock(
       "distinct"
     );
   };
@@ -608,7 +608,7 @@ function SQLXML() {
    * @param mutations {Object} - Creating mutations by key/value structure.
    * @return blockNode {XML} - Created Block Node.
    */
-  var createBlock = function(type, statements, values, fields, mutations) {
+  var createXMLBlock = function(type, statements, values, fields, mutations) {
     var blockNode = document.createElement("block");
     blockNode.setAttribute("type", type);
 

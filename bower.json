@@ -3,10 +3,11 @@
   "description": "",
   "main": "",
   "authors": [
-    "michael <mk@spe-systemhaus.de>"
+    "Michael Kolodziejczyk <mk@spe-systemhaus.de>",
+	"Kirsten Schwarz"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/SPE-Systemhaus/sql-blockly/",
   "ignore": [
     "**/.*",
     "node_modules",
