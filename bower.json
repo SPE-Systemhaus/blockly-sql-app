@@ -23,7 +23,7 @@
     "ace-builds": "^1.2.6"
   },
   "devDependencies": {
-    "closure-library": "*",
+    "google-closure-library": "*",
     "GoogleBlockly": "*"
   }
 }
