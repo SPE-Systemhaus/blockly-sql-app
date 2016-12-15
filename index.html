@@ -5,15 +5,15 @@
         <title>Blockly SQL Abfrage Generator</title>
 		
         <!-- Adding Blockly [DEBUG] (Google-Closure-Library is needed!) -->
-        <script type="text/javascript" src="../common/libs/blockly/blockly_uncompressed.js"></script>
-        <script type="text/javascript" src="../common/libs/blockly/blocks_compressed.js"></script>
-        <script type="text/javascript" src="../common/libs/blockly/msg/messages.js"></script>
+        <script type="text/javascript" src="../common/modules/GoogleBlockly/blockly_uncompressed.js"></script>
+        <script type="text/javascript" src="../common/modules/GoogleBlockly/blocks_compressed.js"></script>
+        <script type="text/javascript" src="../common/modules/GoogleBlockly/msg/messages.js"></script>
         <!-- [DEBUG] -->
 
         <!-- Adding Blockly [RELEASE] -->
-        <!-- <script type="text/javascript" src="../common/libs/blockly/blockly_compressed.js"></script>
-        <script type="text/javascript" src="../common/libs/blockly/blocks_compressed.js"></script>
-        <script type="text/javascript" src="../common/libs/blockly/msg/js/en.js"></script> -->
+        <!-- <script type="text/javascript" src="libs/blockly/blockly_compressed.js"></script>
+        <script type="text/javascript" src="libs/blockly/blocks_compressed.js"></script>
+        <script type="text/javascript" src="libs/blockly/msg/js/en.js"></script> -->
         <!-- [RELEASE] -->
 
         <!-- Adding Blockly plugins -->
@@ -24,7 +24,7 @@
 		<script type="text/javascript" src="dist/SQLBlockly.min.js"></script>
         
         <!-- Adding ACE library (Code Editor) -->
-        <script type="text/javascript" src="../common/libs/ace/ace.js"></script>
+        <script type="text/javascript" src="../common/modules/ace-builds/src/ace.js"></script>
 
         <!-- Including StyleSheets -->
         <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -45,7 +45,7 @@
             
             <!-- Header -->
             <div id="head" style="padding-bottom: 3.5em;">
-                <img src="../common/img/p2fs.png" alt="SQL GUI" style="float: left;"> 
+                <img src="img/p2fs.png" alt="SQL GUI" style="float: left;"> 
                 
                 <div style="float: left; margin: 1.25em; padding-left: 1em;">
                     <button class="sqlBtn" onclick="editStatement();">Edit SQL Statement</button>
