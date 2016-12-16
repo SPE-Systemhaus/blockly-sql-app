@@ -4,9 +4,9 @@
   "main": "",
   "authors": [
     "Michael Kolodziejczyk <mk@spe-systemhaus.de> (https://www.spe-systemhaus.de/)",
-	"Kirsten Schwarz"
+	"Kirsten Schwarz (https://www.spe-systemhaus.de/)"
   ],
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "homepage": "http://sql.print2forms.de/",
   "ignore": [
     "**/.*",

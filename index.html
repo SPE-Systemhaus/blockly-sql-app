@@ -4,27 +4,22 @@
         <meta charset="utf-8">
         <title>Blockly SQL Abfrage Generator</title>
 		
-        <!-- Adding Blockly [DEBUG] (Google-Closure-Library is needed!) -->
+        <!-- Start Includes for DEBUG (Google-Closure-Library is needed!) -->
         <script type="text/javascript" src="../common/modules/GoogleBlockly/blockly_uncompressed.js"></script>
         <script type="text/javascript" src="../common/modules/GoogleBlockly/blocks_compressed.js"></script>
         <script type="text/javascript" src="../common/modules/GoogleBlockly/msg/messages.js"></script>
-        <!-- [DEBUG] -->
-
-        <!-- Adding Blockly [RELEASE] -->
-        <!-- <script type="text/javascript" src="libs/blockly/blockly_compressed.js"></script>
-        <script type="text/javascript" src="libs/blockly/blocks_compressed.js"></script>
-        <script type="text/javascript" src="libs/blockly/msg/js/en.js"></script> -->
-        <!-- [RELEASE] -->
-
-        <!-- Adding Blockly plugins -->
         <script type="text/javascript" src="../common/modules/blockly-colour-gradient/colour-gradient.js"></script>
         <script type="text/javascript" src="../common/modules/blockly-type-indicator/typeIndicator.js"></script>
-        
-        <!-- Adding SQLBlockly Addon -->
-		<script type="text/javascript" src="dist/SQLBlockly.min.js"></script>
-        
-        <!-- Adding ACE library (Code Editor) -->
         <script type="text/javascript" src="../common/modules/ace-builds/src/ace.js"></script>
+        <script type="text/javascript" src="build/SQLBlockly.concat.js"></script>
+        <!-- End Includes for DEBUG -->
+
+        <!-- Start Includes for RELEASE -->
+        <!-- <script type="text/javascript" src="libs/blockly/blockly_compressed.js"></script>
+        <script type="text/javascript" src="libs/blockly/blocks_compressed.js"></script>
+        <script type="text/javascript" src="libs/blockly/msg/en.js"></script> 
+        <script type="text/javascript" src="dist/SQLBlockly.min.js"></script> -->
+        <!-- End Includes for RELEASE -->
 
         <!-- Including StyleSheets -->
         <link rel="stylesheet" type="text/css" href="css/style.css">
