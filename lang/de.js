@@ -166,10 +166,35 @@ SQLBlocks.Msg.Blocks.LIST_ENTRY = "EINTRAG";
  */
 SQLBlocks.Msg.Tooltips = {};
 
-/* COMMANDS */
-SQLBlocks.Msg.Tooltips.DISTINCT = "The DISTINCT keyword can be used to return only distinct (different) values.";
+/* COMMANDS Tooltips of commands by http://www.w3schools.com/sql/ */
+SQLBlocks.Msg.Tooltips.DISTINCT = "Das Schlüsselwort DISTINCT wird dazu benutzt, um ausschließlich eindeutige Werte zurückbekommen (ausschließlich verschiedene Werte).";
+SQLBlocks.Msg.Tooltips.SELECT = "Das Schlüsselwort SELECT wird dazu benutzt Daten aus einer Datenbank zu selektieren.";
+SQLBlocks.Msg.Tooltips.INSERT = "Das Schlüsselwort INSERT wird dazu benutzt neue Daten einer Datenbank hinzuzufügen.";
+SQLBlocks.Msg.Tooltips.UPDATE = "Das Schlüsselwort UPDATE wird dazu benutzt existierende Daten einer Datenbank zu aktualisieren.";
+SQLBlocks.Msg.Tooltips.SUB_SELECT = SQLBlocks.Msg.Tooltips.SELECT;
 
-/* TABLES */
+/* FIELDS */
+SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS = "Wählen Sie die Tabelle und Spalte aus der Datenbank.";
+SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS_VAR = SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS;
+
+/* OPERATORS */
+SQLBlocks.Msg.Tooltips.TO = "The TO statement represents the INTO from the INSERT INTO, which is needed in the INSERT block.";
+SQLBlocks.Msg.Tooltips.COMPARE_OPERATOR = "";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE = {};
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Ist wahr (true) wenn beide Werte identisch sind.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Ist wahr (true) wenn beide Werte unterschiedlich sind.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LT = "Ist wahr (true) wenn der erste Wert kleiner als der zweite Wert ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LTE = "Ist wahr (true) wenn der erste Wert kleiner als oder gleich gross wie zweite Wert ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT = "Ist wahr (true) wenn der erste Wert grösser als der zweite Wert ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Ist wahr (true) wenn der erste Wert grösser als oder gleich gross wie zweite Wert ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Ist wahr (true) wenn der Ausdruck leer (null) ist.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Ist wahr (true) wenn der Ausdruck nicht leer (not null) ist.";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM = {};
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS ="Addiert zwei Ausdrücke";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS ="Subtrahiert zwei Ausdrücke";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE ="Dividiert zwei Ausdrücke";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE ="Multipliziert zwei Ausdrücke";
+SQLBlocks.Msg.Tooltips.CONDITIONS = "Negiert die Eingabe.";
 
 /* VALUES */
 SQLBlocks.Msg.Tooltips.NUMBER = "Nummernvariable";
@@ -196,14 +221,15 @@ SQLBlocks.Msg.Tooltips.DATE_FUNCTION.YEAR = "Nutzt eine Datumsvariable oder Datu
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.SYSDATE = "Gibt die Systemzeit als Wert zurück";
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.DATE = "Returns the date of today.";
 
+/* https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Math/ */
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION = {};
-SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ABS = "Uses one number-value. Returns the absolute value of the number_value.";
-SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.CEIL = "Uses one number-value. Returns the smallest integer value not less than the used value";
-SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.FLOOR = "Uses one number-value. Returns the largest integer value not greater than the used value. ";
-SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.MOD = "Uses two number-values.Modulo operation. Returns the remainder of value 1 divided by value 2.";
-SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.POWER = "Uses two number-values.Returns the value of value 1 raised to the power of value 2. ";
-SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ROUND = "Uses one number-value, which holds the number, and optionaly a second number value, which can be negative, to hold the decimal places.Is the second value not specified it's null by default. Returns the rounded value of the choosen number.";
-SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SIGN = "Uses one number-value. Returns the sign of the number value.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ABS = "Gibt den Betrag eines Zahlenwerts zurück.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.CEIL = "Die kleinste ganze Zahl größer oder gleich der übergebenen Zahl.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.FLOOR = "Eine größte ganze Zahl, die kleiner oder gleich der übergebenen Zahl ist.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.MOD = "Modulo ist eine mathematische Funktion, die den Rest aus einer Division zweier ganzer Zahlen benennt. ";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.POWER = "Gibt eine Zahl, die die Basis potenziert mit dem Exponenten repräsentiert, zurück";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ROUND = "Die ROUND() Funktion gibt die nächstgelegenen Ganzzahl einer Zahl zurück (kaufmännisches Runden).";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SIGN = "Die SIGN() Funktion gibt das Vorzeichen einer Zahl zurück, welches angibt, ob eine Zahl positiv, negativ oder 0 ist.";
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SQRT = "Uses one number-value. Returns the square root of a nonnegative number.";
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.TRUNCATE = "Uses one number-value, which holds the number, and a second number-value, which can be negative, to hold the decimal places. Returns the value 1, truncated to value 2 decimal places. ";
 
@@ -227,12 +253,6 @@ SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.GREATEST = "Compares as many values, but m
 SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.LEAST = "Compares as many values, but minimum two, as you like. They must be of the same type. For example it will only compare a string with a string and a number with a number.  Returns the least (minmum-valued) argument.";
 SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.NVL = "Uses two expressions, either string, a number, a column or an operation. If expression 1 is not NULL, IFNULL() returns expr1; otherwise it returns expression 2. IFNULL() returns a numeric or string value, depending on the context in which it is used. ";
 
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM = {};
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS ="Addiert zwei Ausdrücke";
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS ="Subtrahiert zwei Ausdrücke";
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE ="Dividiert zwei Ausdrücke";
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE ="Multipliziert zwei Ausdrücke";
-
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION = {};
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.COUNT = "Counts the matching rows of the selected column.";
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MIN = "Returns the minimum value of an column \n " + "Could be used with distinct"; 
@@ -241,18 +261,6 @@ SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.AVG = "Returns the average value of an col
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.STDDEV = "Returns the population standard deviation of an column.";
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.SUM = "Returns the sum of an expression.";
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.VARIANCE = "Returns the population standard variance of column.";
-
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE = {};
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Ist wahr (true) wenn beide Werte identisch sind.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Ist wahr (true) wenn beide Werte unterschiedlich sind.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LT = "Ist wahr (true) wenn der erste Wert kleiner als der zweite Wert ist.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LTE = "Ist wahr (true) wenn der erste Wert kleiner als oder gleich gross wie zweite Wert ist.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT = "Ist wahr (true) wenn der erste Wert grösser als der zweite Wert ist.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Ist wahr (true) wenn der erste Wert grösser als oder gleich gross wie zweite Wert ist.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Ist wahr (true) wenn der Ausdruck leer (null) ist.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Ist wahr (true) wenn der Ausdruck nicht leer (not null) ist.";
-
-SQLBlocks.Msg.Tooltips.CONDITIONS = "Returns true if the expression is not.";
 
 /**
  * TOOLBOX
@@ -288,10 +296,10 @@ SQLBlocks.Msg.Tooltips.Mutators.LIST_ENTRY = "Listeneintrag.";
  */
 SQLBlocks.Msg.Warnings = {};
 
-SQLBlocks.Msg.Warnings.EMPTY_STRING = "Please change the default value to a text of your choice";
+SQLBlocks.Msg.Warnings.EMPTY_STRING = "Geben Sie einen Text ein.";
 SQLBlocks.Msg.Warnings.TWO_VALUES_SAME_COLUMN = "Achtung Sie versuchen mehr als einen Wert in diesselbe Spalte einzufügen. Bitte wählen Sie eine andere Spalte aus.";
 SQLBlocks.Msg.Warnings.DIFFERENT_TABLES = "Achtung Sie verwenden verschiedene Tabellen in einer INSERT/UPDATE Anweisung. Bitte verwenden Sie pro INSERT/UPDATE Anweisung ausschließlich eine Tabelle.";
-SQLBlocks.Msg.Warnings.NOT_ENOUGH_TABLES = "Not enough Tables. Please use all tables used in select";
-SQLBlocks.Msg.Warnings.WRONG_COLUMN = "Wrong column. Please use only tables and columns which are in the select.";
-SQLBlocks.Msg.Warnings.WRONG_ALIAS = "Wrong alias. Please use only alias which are used in subselects.";
+SQLBlocks.Msg.Warnings.NOT_ENOUGH_TABLES = "Es werden nicht genügend Tabellen verwendet. Verwenden Sie alle, welche im SELECT selektiert werden.";
+SQLBlocks.Msg.Warnings.WRONG_COLUMN = "Falsche Spalte. Verwenden Sie ausschließlich Tabellen und Spalten, welche Sie im SELECT verwenden";
+SQLBlocks.Msg.Warnings.WRONG_ALIAS = "Falsche Variable. Verwenden Sie ausschließlich Variablen, welche Sie auch definiert haben.";
 SQLBlocks.Msg.Warnings.TOO_MANY_COLUMNS = "Zu viele Spalten. Wählen Sie eine Spalte aus!";

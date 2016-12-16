@@ -18,7 +18,7 @@ function SQLHelper() {
   };
 
   this.getTableOfColumn = function(checkColumn) {
-    console.warn("This table is only the first occurence!");
+    console.warn("Caution this table is only the first occurence!");
 
     for (var table in dbStructure) {
       var columns = dbStructure[table];
@@ -29,7 +29,7 @@ function SQLHelper() {
       }
     }
 
-    return null;
+    throw new TableNotFoundException();
   };
 
   this.getTypeColour = function(table, column) {

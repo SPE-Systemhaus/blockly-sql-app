@@ -498,19 +498,18 @@ function SQLXML() {
     var mutations = { 
       "group_function" : func.toLowerCase(), 
       "colour" : "#000000" 
-    };
-    
-    var fields = { "group" : expressions };
+    };   
+    var values = { "group" : expressions };
+    var fields = { "group_function" : func.toLowerCase() };
+
     var block =  createXMLBlock(
       "groupfunction",
       [],
+      values,
       fields,
-      [],
       mutations
     );
     
-    console.log(alias);
-
     if (alias)
       return this.addAlias(block, alias);
     

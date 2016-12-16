@@ -169,10 +169,36 @@ SQLBlocks.Msg.Blocks.LIST_ENTRY = "ENTRY";
  */
 SQLBlocks.Msg.Tooltips = {};
 
-/* COMMANDS */
+/* COMMANDS Tooltips of commands by http://www.w3schools.com/sql/ */
 SQLBlocks.Msg.Tooltips.DISTINCT = "The DISTINCT keyword can be used to return only distinct (different) values.";
+SQLBlocks.Msg.Tooltips.SELECT = "The SELECT statement is used to select data from a database.";
+SQLBlocks.Msg.Tooltips.INSERT = "The INSERT statement is used to insert new records in a table.";
+SQLBlocks.Msg.Tooltips.UPDATE = "The UPDATE statement is used to update existing records in a table.";
+SQLBlocks.Msg.Tooltips.SUB_SELECT = SQLBlocks.Msg.Tooltips.SELECT;
 
-/* TABLES */
+/* FIELDS */
+SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS = "Specifiing the table and column you want to select from the database.";
+SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS_VAR = SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS;
+
+/* OPERATORS */
+SQLBlocks.Msg.Tooltips.TO = "The TO statement represents the INTO from the INSERT INTO, which is needed in the INSERT block.";
+SQLBlocks.Msg.Tooltips.COMPARE_OPERATOR = "";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE = {};
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Return true if both inputs equal each other.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Return true if both inputs are not equal to each other.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LT = "Return true if the first input is smaller than the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LTE = "Return true if the first input is smaller than or equal to the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT = "Return true if the first input is greater than the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Return true if the first input is greater than or equal to the second input.";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Return true if expression is null";
+SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Return true if expression is not null";
+SQLBlocks.Msg.Tooltips.LOGICAL_CONJUNCTION = "Gating two expression with an AND/OR conjunction.";
+SQLBlocks.Msg.Tooltips.CONDITIONS = "Returns true if the expression is not.";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM = {};
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS="Sums two expressions";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS="Subtracts two espressions";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE="Divides two espressions";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE="Mulitplicates two espressions";
 
 /* VALUES */
 SQLBlocks.Msg.Tooltips.NUMBER = 'Number variable';
@@ -230,12 +256,6 @@ SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.GREATEST = "Compares as many values, but m
 SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.LEAST = "Compares as many values, but minimum two, as you like. They must be of the same type. For example it will only compare a string with a string and a number with a number.  Returns the least (minmum-valued) argument.";
 SQLBlocks.Msg.Tooltips.OTHER_FUNCTION.NVL = "Uses two expressions, either string, a number, a column or an operation. If expression 1 is not NULL, IFNULL() returns expr1; otherwise it returns expression 2. IFNULL() returns a numeric or string value, depending on the context in which it is used. ";
 
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM = {};
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS="Sums two expressions";
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS="Subtracts two espressions";
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE="Divides two espressions";
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE="Mulitplicates two espressions";
-
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION = {};
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.COUNT = "Counts the matching rows of the selected column.";
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.MIN = "Returns the minimum value of an column \n " + "Could be used with distinct"; 
@@ -244,18 +264,6 @@ SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.AVG = "Returns the average value of an col
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.STDDEV = "Returns the population standard deviation of an column.";
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.SUM = "Returns the sum of an expression.";
 SQLBlocks.Msg.Tooltips.GROUP_FUNCTION.VARIANCE = "Returns the population standard variance of column.";
-
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE = {};
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Return true if both inputs equal each other.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Return true if both inputs are not equal to each other.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LT = "Return true if the first input is smaller than the second input.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.LTE = "Return true if the first input is smaller than or equal to the second input.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT = "Return true if the first input is greater than the second input.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Return true if the first input is greater than or equal to the second input.";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Return true if expression is null";
-SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Return true if expression is not null";
-
-SQLBlocks.Msg.Tooltips.CONDITIONS = "Returns true if the expression is not.";
 
 /**
  * TOOLBOX

@@ -4,8 +4,11 @@ We (SPE Systemhaus Gmbh) developed a Blockly SQL Workspace, so that anyone can u
 ## Goal
 The goal is giving people, with less knowledge of SQL, the ability to develop SQL Statements. No Joins are supported. Our audience are managers and housewives. 
 
+## Usage 
+Feel free to use the SQL Workspace in your project. We choosed the Apache-2.0 License for this project. If you want to use you can include 
+
 ## Requirements
-The Google Blockly Library [https://github.com/google/blockly] is required, to use the SQL Workspace. You can download the actual release from this link: [https://github.com/google/blockly/zipball/master] or use the version I pushed into this repository. If you want to use the compressed version from the download, you have to build this version by your own, because the date picker is commented and only if you need it you can comment this line out. So you have to go into the file "core/blockly.js" and comment the line with the following code ```Javascript goog.require('Blockly.FieldDate');` out or use the version in the libs folder of this repository. 
+The Google Blockly Library [https://github.com/google/blockly] is required, to use the SQL Workspace. You can download the actual release from this link: [https://github.com/google/blockly/zipball/master] or use the version I pushed into this repository. If you want to use the compressed version from the download, you have to build this version by your own, because the date picker is commented and only if you need it you can comment this line out. So you have to go into the file "core/blockly.js" and comment the line with the following code `goog.require('Blockly.FieldDate');` out or use the version in the libs folder of this repository. 
 
 PHP is required, additionally. Watch out: PHP 5.6 has a problem with ODBC connections !!! So you can't update or add ODBC connections to load the tables to the Blockly Workspace. 
 
@@ -18,12 +21,16 @@ If you want to start developing on this project, you need to install:
 If you want to build the Blockly library by yourself you need following, too:
 * Python [https://www.python.org/]
 
-By using Bower all requirements will be fetched that are required for production and development. You only have to do the following steps:
+By using Bower all requirements will be fetched that are required for production and development. You only have to do the following steps, initially:
 1. `git clone http://git ...` Cloning repository
 2. `npm install` -> Getting all Grunt dependencies
 3. `bower update` -> Getting all Bower dependencies
-4. `grunt withJison` -> Building Parser
-5. `grunt` -> Building SQL Workspace as single file
+
+For developing you can use the following commands:
+* `grunt parser` -> Generates the Parser from the Grammar located in "src/parser/SQLGrammar.jison"
+* `grunt debug` -> Building SQL Workspace for debugging without concating the needed modules from the common folder
+* `grunt` or `grunt release` -> Create a release version with concating all 
+
 
 For building Blockly by yourself you have todo two things:
 * rename the folder "../common/modules/google-closure-library" to "../common/modules/closure-library"
