@@ -126,9 +126,9 @@ function SQLHelper() {
   };
 
   /**
-   * This functions returns an array with columns, which can 
+   * This functions returns an array with columns, which can
    * be used in Blockly DropDownFieldValues.
-   * 
+   *
    * @return {Array} options Array for Blockly.Dropdown.
    */
   this.getTableDropdowndata = function() {
@@ -146,14 +146,14 @@ function SQLHelper() {
   };
 
   /**
-   * This functions returns an array with columns, which can 
+   * This functions returns an array with columns, which can
    * be used in Blockly DropDownFieldValues.
-   * 
+   *
    * @param {String} tableName Name of the table, which should return all columns.
-   * @pram {bool} withAll Return with '*' as column or not as first entry. 
+   * @pram {bool} withAll Return with '*' as column or not as first entry.
    * @return {Array} options Array for Blockly.Dropdown.
    */
-  this.getColumnDropdowndata = function(tableName, withAll) {   
+  this.getColumnDropdowndata = function(tableName, withAll) {
       var columns = getColumnsArrayFromStructure(tableName);
       var options = new Array();
 
@@ -165,7 +165,7 @@ function SQLHelper() {
 
       for (var i = 0; i < columns.length; i++) {
           var optCnt = i;
-          
+
           if (withAll)
               optCnt++;
 
@@ -179,7 +179,7 @@ function SQLHelper() {
 
   /**
    * Set the colour of a block, if it is the parent Block of a particular block.
-   * If the parent block has blocks with different colors, it will be colored 
+   * If the parent block has blocks with different colors, it will be colored
    * back to his standard color.
    *
    * @param {type} object-symbolizes the block, which uses the function
@@ -187,7 +187,7 @@ function SQLHelper() {
   this.colourTheParent = function(block) {
       if (!block)
           return;
-      
+
       var parent = block.getParent();
       var gradient = new ColourGradient();
 
@@ -232,7 +232,7 @@ function SQLHelper() {
   /**
    * Getting the colour of the first table_column child. If there is more
    * than one child, the colour of the block will be taken.
-   * 
+   *
    * @param {Blockly.Block} block Current block.
    * @return {String} colour The colour of the child or of the current block.
    */
@@ -240,7 +240,7 @@ function SQLHelper() {
     var stopColor = block.getColour();
     var children = block.getChildren();
 
-    /* Get the colour of the first table_column block and set 
+    /* Get the colour of the first table_column block and set
         this on the select block */
     for (var childKey in children) {
         var child = children[childKey];
@@ -257,7 +257,7 @@ function SQLHelper() {
 
   /**
    * Create on the specific workspace a new Blockly.Block.
-   * 
+   *
    * @param {Blockly.Workspace} workspace Blockly Workspace, where the block should be added.
    * @param {String} name Name of the block that should be created.
    * @return {Blockly.Block} block The created block.
@@ -272,7 +272,7 @@ function SQLHelper() {
 
   /**
    * Clearing all inputs of a block that are existing at the moment.
-   * 
+   *
    * @param {Blockly.Block} block The inputs of this block will be removed.
    */
   this.clearInputList = function(block) {
@@ -324,7 +324,7 @@ function SQLHelper() {
     if (block.groupByCount_ === 1) {
         var groupByBlock = this.createBlock(workspace, "group_by");
         mutator.getInput("group_by").connection.connect(groupByBlock.outputConnection);
-        
+
         if (block.groupByHavingCount_) {
             var havingBlock = this.createBlock(workspace, "having");
             groupByBlock.getInput("having").connection.connect(havingBlock.outputConnection);
@@ -336,15 +336,15 @@ function SQLHelper() {
     var groupByBlock = mutator.getInputTargetBlock("group_by");
     if (groupByBlock) {
         if (block.groupByCount_ === 0)
-            addGroupByInput(block);                  
+            this.addGroupByInput(block);
 
         if (groupByBlock.getInputTargetBlock("having")) {
             if (block.groupByHavingCount_ < 1)
-                addHavingInput(block);           
+                this.addHavingInput(block);
         } else
             removeHavingInput(block);
     } else
-        removeGroupByInput(block);     
+        removeGroupByInput(block);
   };
 
   this.decomposeOrderBy = function(workspace, block, mutator) {
@@ -357,8 +357,8 @@ function SQLHelper() {
   this.composeOrderBy = function(block, mutator) {
     if (mutator.getInputTargetBlock("order_by")) {
         if (block.orderByCount_ === 0)
-            addOrderByInput(block);
-    } else 
+            this.addOrderByInput(block);
+    } else
         removeOrderByInput(block);
   };
 
@@ -372,9 +372,9 @@ function SQLHelper() {
   this.composeLimit = function(block, mutator) {
     if (mutator.getInputTargetBlock("limit")) {
         if (block.limitCount_ === 0)
-            addLimitInput(block);
+            this.addLimitInput(block);
     } else
-        removeLimitInput(block);          
+        removeLimitInput(block);
   };
 
   this.decomposeAlias = function(workspace, block, mutator) {
@@ -387,7 +387,7 @@ function SQLHelper() {
   this.composeAlias = function(block, mutator) {
     if (mutator.getInputTargetBlock("alias")) {
         if (block.aliasCount_ === 0)
-            addAliasInput(block);
+            this.addAliasInput(block);
     } else
         removeAliasInput(block);
   };
@@ -405,7 +405,7 @@ function SQLHelper() {
         "limit" : 8,
         "VALUE" : 9     /* ALIAS */
     };
-    
+
     block.inputList.sort(function(a, b) {
         return inputPriority[a.name] - inputPriority[b.name];
     });
