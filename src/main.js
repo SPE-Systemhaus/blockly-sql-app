@@ -181,6 +181,7 @@ function parsingSQL() {
 
   try {
     parser.parse(sqlStatement);
+	showNotification("Workspace updated!", 2);
   } catch (e) {
 	Blockly.Xml.domToWorkspace(tmpWorkspace, currentWorkspace);
 	openErrorBox(e.message);

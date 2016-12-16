@@ -188,7 +188,8 @@ h5 {
     position: absolute; 
     border-color: green;
     overflow-y: auto;
-    max-height: 500px;
+    height: auto;
+    /* max-height: 500px; */
     text-align: center;
 }
 
