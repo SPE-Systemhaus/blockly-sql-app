@@ -142,7 +142,7 @@ Blockly.Blocks['select'] = {
         );
 
         var selectBlock = this;
-        /** TRYOUT ... TODO: Find a way to do this without Timeout */
+        /** TRYOUT ... TODO: Find a way to do this without Timeout 
         window.setTimeout(function () {
             selectBlock.gradient.setVerticalGradient(
                 selectBlock, {
@@ -151,7 +151,7 @@ Blockly.Blocks['select'] = {
                 },
                 inputs
             );
-        }, 100);
+        }, 100); */
 
     }
 };

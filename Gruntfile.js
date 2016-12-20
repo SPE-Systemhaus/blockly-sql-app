@@ -24,8 +24,9 @@ module.exports = function(grunt) {
   ];
 
   var sources = [
-    'lang/**/*.js', 
     'src/constants.js', 
+    'src/Language.js',
+    //'lang/*.js', 
     'src/generator/sql.js', 
     'src/generator/blocks/*.js',
     'src/blocks/init.js',
@@ -65,14 +66,14 @@ module.exports = function(grunt) {
         src: sources,
         dest: 'build/<%= pkg.name %>.concat.js',
       },
-	  relase: {
-      src: modules.concat(sources),
-      dest: 'build/<%= pkg.name %>.concat_release.js'
-	  }
+      release: {
+        src: modules.concat(sources),
+        dest: 'build/<%= pkg.name %>.concat_release.js'
+      }
     },
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> by Michael Kolodziejczyk, SPE Systemhaus GmbH <mk@spe-systemhaus.de> */\n\n' + license,
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> by SPE Systemhaus GmbH <spe@spe-systemhaus.de> */\n\n' + license,
         sourceMap: true,
         sourceMapName: 'dist/<%= pkg.name %>.min.map',
         beautify: false,
@@ -102,6 +103,6 @@ module.exports = function(grunt) {
   grunt.registerTask('debug', ['concat:dist', 'rename']);
   grunt.registerTask('parser', ['jison-processor', 'concat:dist']); 
 
-  grunt.registerTask('default', ['jison-processor', 'concat:relase', 'uglify']);  
-  grunt.registerTask('release', ['jison-processor', 'concat:relase', 'uglify']);
+  grunt.registerTask('default', ['jison-processor', 'concat:release', 'uglify']);  
+  grunt.registerTask('release', ['jison-processor', 'concat:release', 'uglify']);
 };

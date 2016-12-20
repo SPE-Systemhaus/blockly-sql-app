@@ -12,7 +12,8 @@ SQLBlocks.Msg = {};
  * @type Array: group-array for the group-function-block
  * @type Array: numbers-array for the number-function-block
  */
-var time = [
+SQLBlocks.Msg.DROPDOWN = {};
+SQLBlocks.Msg.DROPDOWN.TIME = [
     ["MICROSENCONDS", "MICROSECONDS"],
     ["SECOND", "SECOND"],
     ["MINUTE", "MINUTE"],
@@ -35,7 +36,7 @@ var time = [
     ["YEAR_MONTH", "YEAR_MONTH"]
 ];
 
-var datefunct = [
+SQLBlocks.Msg.DROPDOWN.DATEFUNCTION = [
     //["SYSDATE", "sysdate"],
     //["DATE ADD", "add_months"], //using date_add()because add-month is an oracle function. It is equivalent to date_add() in mysql
     //["DATE SUB", "sub_months"],
@@ -49,14 +50,14 @@ var datefunct = [
     //["TO CHAR", "date_format"] //Using date_format instead of to_char, because to_char is not a mysql function
 ];
 
-var other = [
+SQLBlocks.Msg.DROPDOWN.OTHER = [
     ["IF", "decode"], //using if because decode is an oracle function. It is equivalent to if in mysql
     ["GREATEST", "greatest"],
     ["LEAST", "least"],
     ["IFNULL", "nvl"] //using ifNull because nvl is an oracle function. It is equivalent to ifNULL in mysql
 ];
 
-var funct = [
+SQLBlocks.Msg.DROPDOWN.CHARFUNCTION = [
     ['LOWER', 'lower'],
     ['LPAD', 'lpad'],
     ['LTRIM', 'ltrim'],
@@ -71,7 +72,14 @@ var funct = [
     ["TO DATE", "str_to_date"]//Using str_to_date instead of to date, because to_date is not a mysql function];
 ];
 
-var OPERATORS = [
+SQLBlocks.Msg.DROPDOWN.MATHOPERATORS = [
+    ['+', 'PLUS'],
+    ['-', 'MINUS'],
+    ['/', 'DIVIDE'],
+    ['*', 'MULTIPLICATE']
+];
+
+SQLBlocks.Msg.DROPDOWN.COMPAREOPERATORS = [
     ['=', 'EQ'],
     ['\u2260', 'NEQ'],
     ['>', 'LT'],
@@ -84,7 +92,7 @@ var OPERATORS = [
     ['LIKE', 'like']
 ];
 
-var group = [
+SQLBlocks.Msg.DROPDOWN.GROUPFUNCTIONS = [
     ["AVG", "avg"],
     ["COUNT", "count"],
     ["MIN", "min"],
@@ -94,7 +102,7 @@ var group = [
     ["VARIANCE", "variance"]
 ];
 
-var numbers = [
+SQLBlocks.Msg.DROPDOWN.NUMBERFUNCTIONS = [
     ["ABS", "abs"],
     ["CEIL", "ceil"],
     ["FLOOR", "floor"],
@@ -106,35 +114,62 @@ var numbers = [
     ["TRUNCATE", "truncate"]
 ];
 
-var sort = [
+SQLBlocks.Msg.DROPDOWN.SORTDIRECTIONS = [
     ["ASCENDANT", "asc"],
     ["DESCENDANT", "desc"]
 ];
 
-var logical_conjunction = [
-  ["AND", "AND"],
-  ["OR", "OR"]
+SQLBlocks.Msg.DROPDOWN.LOGICALCONJUNCTION = [
+    ["AND", "AND"],
+    ["OR", "OR"]
 ];
 
-var bool = [
-  ["true", "1"],
-  ["false", "0"]
+SQLBlocks.Msg.DROPDOWN.BOOL = [
+    ["true", "1"],
+    ["false", "0"]
 ];
+
+/**
+ * HTML 
+ */
+SQLBlocks.Msg.html = {};
+SQLBlocks.Msg.html.innerHTML = {};
+SQLBlocks.Msg.html.innerHTML.ADD_ODBC_BUTTON = "Add";
+SQLBlocks.Msg.html.innerHTML.DEL_ODBC_BUTTON = "Delete";
+SQLBlocks.Msg.html.innerHTML.UPDATE_ODBC_BUTTON = "Update";
+SQLBlocks.Msg.html.innerHTML.ODBC_HEADLINE = "ODBC - Data Sources";
+SQLBlocks.Msg.html.innerHTML.EDIT_SQL_BUTTON = "Edit SQL Statement";
+SQLBlocks.Msg.html.innerHTML.CODE_EDITOR_HEADLINE = "SQL Statement";
+SQLBlocks.Msg.html.innerHTML.HELP_BOX_HEADLINE = "Help";
+SQLBlocks.Msg.html.innerHTML.ADD_ODBC_HEADLINE = "Add Data Source Name";
+SQLBlocks.Msg.html.innerHTML.UPDATE_ODBC_HEADLINE = "Update Data Source Name";
+SQLBlocks.Msg.html.innerHTML.DATA_SOURCE_NAME = "Data Source Name (DSN):";
+SQLBlocks.Msg.html.innerHTML.USER_NAME = "Username:";
+SQLBlocks.Msg.html.innerHTML.USER_PW = "Password:";
+SQLBlocks.Msg.html.innerHTML.ERROR_MESSAGE_HEADLINE = "Error Message";
+SQLBlocks.Msg.html.innerHTML.OK = "OK";
+
+SQLBlocks.Msg.html.title = {};
+SQLBlocks.Msg.html.title.CLOSE_BUTTON = "Close";
+
+SQLBlocks.Msg.html.value = {};
+SQLBlocks.Msg.html.value.UPDATE_ODBC_BUTTON = "Update";
+SQLBlocks.Msg.html.value.ADD_ODBC_BUTTON = "Add";
 
 /**
  * USER messages
  */
 SQLBlocks.Msg.User = {};
-
 SQLBlocks.Msg.User.CONFIRM_SAVE_WORKSPACE = "Do you really want to save the actual workspace?";
 SQLBlocks.Msg.User.CONFIRM_LOAD_WORKSPACE = "Are you sure to load a new SQL statement into the workspace?";
 SQLBlocks.Msg.User.TOOLTIP_SQL_BOX = "To convert your SQL statement into blocks, just type it in. Be sure to check you spelling and set all the blanks. Then klick OK.";
+SQLBlocks.Msg.User.WORKSPACE_UPDATED = "Workspace updated.";
+SQLBlocks.Msg.User.DSN_DELETED = "Datasource deleted.";
 
 /**
  * BLOCKS
  */
 SQLBlocks.Msg.Blocks = {};
-
 SQLBlocks.Msg.Blocks.INSERT_VALUES = "INSERT VALUES";
 SQLBlocks.Msg.Blocks.SET = "SET";
 SQLBlocks.Msg.Blocks.WHERE = "WHERE"
@@ -163,7 +198,6 @@ SQLBlocks.Msg.Blocks.ARRAY_EMPTY = "EMPTY LIST";
 SQLBlocks.Msg.Blocks.LIST = "LISTENTRIES";
 SQLBlocks.Msg.Blocks.LIST_ENTRY = "ENTRY";
 
-
 /**
  * TOOLTIPS
  */
@@ -182,7 +216,7 @@ SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS_VAR = SQLBlocks.Msg.Tooltips.TABLES_AN
 
 /* OPERATORS */
 SQLBlocks.Msg.Tooltips.TO = "The TO statement represents the INTO from the INSERT INTO, which is needed in the INSERT block.";
-SQLBlocks.Msg.Tooltips.COMPARE_OPERATOR = "";
+SQLBlocks.Msg.Tooltips.COMPARE_OPERATOR = "Comparing two expressions.";
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE = {};
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Return true if both inputs equal each other.";
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Return true if both inputs are not equal to each other.";
@@ -193,12 +227,12 @@ SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Return true if the first input is gr
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Return true if expression is null";
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Return true if expression is not null";
 SQLBlocks.Msg.Tooltips.LOGICAL_CONJUNCTION = "Gating two expression with an AND/OR conjunction.";
-SQLBlocks.Msg.Tooltips.CONDITIONS = "Returns true if the expression is not.";
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM = {};
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS="Sums two expressions";
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS="Subtracts two espressions";
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE="Divides two espressions";
-SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE="Mulitplicates two espressions";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS ="Sums two expressions.";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS ="Subtracts two espressions.";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.DIVIDE ="Divides two espressions.";
+SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MULTIPLICATE ="Multiplicates two expressions.";
+SQLBlocks.Msg.Tooltips.CONDITIONS = "Returns true if the expression is not.";
 
 /* VALUES */
 SQLBlocks.Msg.Tooltips.NUMBER = 'Number variable';
@@ -225,6 +259,7 @@ SQLBlocks.Msg.Tooltips.DATE_FUNCTION.YEAR = "Uses a date-value. Returns the year
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.SYSDATE = "Returns the time at which it executes";
 SQLBlocks.Msg.Tooltips.DATE_FUNCTION.DATE = "Returns the date of today.";
 
+/* https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Math/ */
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION = {};
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ABS = "Uses one number-value. Returns the absolute value of the number_value.";
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.CEIL = "Uses one number-value. Returns the smallest integer value not less than the used value";

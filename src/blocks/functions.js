@@ -58,7 +58,7 @@ Blockly.Blocks['groupfunction'] = {
      * @this Blockly.Block
      */
     setup: function (input, groupdir) {
-        var dropdown = new Blockly.FieldDropdown(group, function (option) {
+        var dropdown = new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.GROUPFUNCTIONS, function (option) {
             this.sourceBlock_.updateShape(option);
 
         });
@@ -221,7 +221,7 @@ Blockly.Blocks['numberfunction'] = {
      * @this Blockly.Block
      */
     setup: function (input, dirnum) {
-        var dropdown = new Blockly.FieldDropdown(numbers, function (option) {
+        var dropdown = new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.NUMBERFUNCTIONS, function (option) {
             this.sourceBlock_.updateShape(option);
         });
 
@@ -419,7 +419,7 @@ Blockly.Blocks['otherfunction'] = {
      */
     setup: function (input, dirother) {
         var mut = new Blockly.Mutator(['more']);
-        var dropdown = new Blockly.FieldDropdown(other, function (option) {
+        var dropdown = new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.OTHER, function (option) {
             this.sourceBlock_.updateShape(option);
         });
 
@@ -734,7 +734,7 @@ Blockly.Blocks['charfunction'] = {
      * @this Blockly.Block
      */
     setup: function (input, dirchar) {
-        var dropdown = new Blockly.FieldDropdown(funct, function (option) {
+        var dropdown = new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.CHARFUNCTION, function (option) {
             this.sourceBlock_.updateShape(option);
         });
         if (dirchar != '') {
@@ -1008,7 +1008,7 @@ Blockly.Blocks['datefunction'] = {
      * @this Blockly.Block
      */
     setup: function (input, dirdate) {
-        var dropdown = new Blockly.FieldDropdown(datefunct, function (option) {
+        var dropdown = new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.DATEFUNCTION, function (option) {
             this.sourceBlock_.updateShape(option);
         });
         if (dirdate != '') {
@@ -1063,7 +1063,7 @@ Blockly.Blocks['datefunction'] = {
                     .appendField(" ")
                     .appendField(new Blockly.FieldTextInput("", checkNumeric), "intervallvalue")
                     .appendField(" ")
-                    .appendField(new Blockly.FieldDropdown(time), "UNIT");
+                    .appendField(new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.TIME), "UNIT");
                 var thisBlock = this;
                 input.setHelpUrl(function () {
                     var op = thisBlock.getFieldValue('date_function');
@@ -1081,7 +1081,7 @@ Blockly.Blocks['datefunction'] = {
             }
 
             if (dirdate == "extract") {
-                var select = new Blockly.FieldDropdown(time);
+                var select = new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.TIME);
 
                 input.appendDummyInput('vals2')
                     .appendField(dropdown, 'date_function')

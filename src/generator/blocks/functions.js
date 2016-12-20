@@ -2,7 +2,7 @@
 	'use strict';
 	SQLBlockly.SQLGen.groupfunction = function(block) {
 	  var code = "";
-	  var groupfunc = block.getField("group_function").getValue();
+		var groupfunc = block.getField("group_function").getValue().toUpperCase();
 	  var table = SQLBlockly.SQLGen.statementToCode(block, "group");
 	  var variable = block.getField("VAR").getValue();
 	  table = table.substring(0, table.length - 1);
