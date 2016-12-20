@@ -20,7 +20,6 @@
 			for (var key in group) {
 				var g = group[key][0];
 				var regex = new RegExp(g + "\\(", "i");
-				//console.log(regex);
 				var n = column.search(regex);
 				var tableName = null;
 				
@@ -57,7 +56,6 @@
 				!(tableName.includes("SELECT"))
 				) {
 				tablesArray[tableName] = tableName;
-				console.log(tableName);
 				tables += tableName + ",";
 			}
 	  }

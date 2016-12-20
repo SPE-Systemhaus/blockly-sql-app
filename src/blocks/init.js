@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Inside this file the SQL Blocks will be defined and initialized.
+ * This file has the init function and creates the Toolbox XML.
  * 
  * @author Kirsten Schwarz, SPE Systemhaus GmbH (2013-2014)
  * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)

@@ -1,5 +1,9 @@
 /******************************************************************************
- * COMMANDS                                                                   *
+ * This file contains the command blocks.   
+ * 
+ * @author Kirsten Schwarz, SPE Systemhaus GmbH (2013-2014)
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)
+ *                                                                  
  ******************************************************************************/
 
 /*------------------------------------------------------------------------------
