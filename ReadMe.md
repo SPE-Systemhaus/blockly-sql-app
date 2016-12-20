@@ -50,4 +50,7 @@ The Parser is generated with the help of the Jison Parser Generator [https://zaa
 * Blocks
 * Generator
 * constants.js
+* exceptions.js
+* Language.js
 * main.js
+* SQLHelper.js

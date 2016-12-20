@@ -48,9 +48,6 @@ Blockly.Blocks['tables_and_columns'] = {
             function (table) {
                 /* Updating this block */
                 block.updateShape(table, "*");
-
-                console.log(table);
-
                 block.table = table;
                 block.column = "*";
 
@@ -154,6 +151,7 @@ Blockly.Blocks['tables_and_columns'] = {
             return;
 
         sqlHelp.colourTheParent(this);
+        /*
         var parent = this.getParent();
 
         if (parent) {
@@ -166,11 +164,9 @@ Blockly.Blocks['tables_and_columns'] = {
                     groupbyval(parent);
                 }
             }
-
-            //if (parent.type == "select")
-            //    if (this.column == "*")
-            //        this.setWarningText(SQLBlocks.Msg.Warnings.TOO_MANY_COLUMNS);
         }
+        */
+
     }
 };
 

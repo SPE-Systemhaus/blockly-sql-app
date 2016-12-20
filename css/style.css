@@ -335,7 +335,7 @@ h5 {
     display: none;
 }
 
-#updateDSNForm {
+.DSNForm {
     margin-top: 1em;
 }
 
@@ -355,13 +355,13 @@ h5 {
     z-index: 50;
 }
 
-.ok{
+.ok {
     margin-left: 80px;
     display:block;
 
 }
 
-#wait{
+#wait {
     margin-top: 70px;
     z-index: 98;
     font-size: 16px;
@@ -390,7 +390,7 @@ h5 {
     visibility: visible;
 }
 
-#selectfirstdb{
+#selectfirstdb {
     z-index:99; 
     background-color:#ffffff; 
     position:fixed;  
@@ -405,8 +405,7 @@ h5 {
     -moz-opacity:1.00;*/
 }
 
-#choosingText{
-
+#choosingText {
     padding: 20px;
     font-size: 18px;
     color: #333;

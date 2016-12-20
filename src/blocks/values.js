@@ -149,7 +149,7 @@ Blockly.Blocks['bool'] = {
         this.setColour(SQLBlockly.Colours.boolean);
         this.appendDummyInput('boolean')
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(new Blockly.FieldDropdown(bool), "BOOL");
+            .appendField(new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.BOOL), "BOOL");
         this.setOutput(true, "bool");
         this.setTooltip(SQLBlocks.Msg.Tooltips.BOOL);
     },

@@ -30,8 +30,8 @@
         <!-- Help Container -->
         <div id="help">
             <div id="sqlHelpBar">
-                <a title="Anzeige schliessen" class="closeBtn" onclick="closeHelp();">×</a>
-                <h4 class="headBar">Help</h4>
+                <a class="closeBtn CLOSE_BUTTON" onclick="closeHelp();">×</a>
+                <h4 class="headBar HELP_BOX_HEADLINE">_</h4>
             </div>
             <div id="helpcontent"></div>
         </div>
@@ -43,15 +43,15 @@
                 <img src="img/p2fs.png" alt="SQL GUI" style="float: left;"> 
                 
                 <div style="float: left; margin: 1.25em; padding-left: 1em;">
-                    <button class="sqlBtn" onclick="editStatement();">Edit SQL Statement</button>
+                    <button class="sqlBtn EDIT_SQL_BUTTON" onclick="editStatement();">_</button>
                 </div>
                 
                 <div class="odbc">
-                    <h5>ODBC - Data Sources</h5>
+                    <h5 class="ODBC_HEADLINE">_</h5>
                     <select id="dataSourceNames" onchange="loadDatabaseStructure(this);"></select>
-                    <button class="sqlBtn" onclick="openAddDataSource();">Add</button>
-                    <button class="sqlBtn" onclick="removeDataSource();">Delete</button>
-                    <button class="sqlBtn" onclick="openUpdateDataSource();">Update</button>
+                    <button class="sqlBtn ADD_ODBC_BUTTON" onclick="openAddDataSource();">_</button>
+                    <button class="sqlBtn DEL_ODBC_BUTTON" onclick="removeDataSource();">_</button>
+                    <button class="sqlBtn UPDATE_ODBC_BUTTON" onclick="openUpdateDataSource();">_</button>
                 </div>
             </div>
 
@@ -61,8 +61,8 @@
             <!-- SQL Code Editor -->
             <div id="writeSQL">
                 <div id="sqlEditorBar">
-                    <a title="Close Statement box." class="closeBtn" onclick="closeCodeEditor();">×</a>
-                    <h4 class="headBar">SQL Statement</h4>
+                    <a class="closeBtn CLOSE_BUTTON" onclick="closeCodeEditor();">×</a>
+                    <h4 class="headBar CODE_EDITOR_HEADLINE">_</h4>
                 </div>
                 
                 <div id="sqlStatement" class="textual"></div>
@@ -70,49 +70,49 @@
                 <img src="img/icons/help.png" class="helpicon" onmouseover="setTooltip();" onmouseout="closeTooltip();">
                 <p id="tooltip" class ="tooltips"></p>
                 
-                <button id="parseSQLBtn" onclick="parsingSQL();" class="okayy">OK</button>
+                <button id="parseSQLBtn" onclick="parsingSQL();" class="okayy OK">_</button>
             </div>
             
             <!-- Error Box -->
             <div id="errorSQL">
                 <div id="sqlErrorBar">
-                    <a title="Close error box." class="closeBtn" onclick="closeErrorBox();">×</a>
-                    <h4 class="headBar">Error Message</h4>
+                    <a class="closeBtn CLOSE_BUTTON" onclick="closeErrorBox();">×</a>
+                    <h4 class="headBar ERROR_MESSAGE_HEADLINE">_</h4>
                 </div>
 
                 <textarea id="sqlErrorMessage" name="text" class="textual" readonly="readonly"></textarea>
-                <button id="toblock" onclick="closeErrorBox();" class="okayy">OK</button>
+                <button id="toblock" onclick="closeErrorBox();" class="okayy OK">_</button>
             </div>
 
             <div id="addDSN">
                 <div id="addDSNBar">
-                    <a title="Close DSN box." class="closeBtn" onclick="closeAddDataSource();">×</a>
-                    <h4 class="headBar">Add Data Source Name (ODBC)</h4>
+                    <a class="closeBtn CLOSE_BUTTON" onclick="closeAddDataSource();">×</a>
+                    <h4 class="headBar ADD_ODBC_HEADLINE"></h4>
                 </div>
 
-                 <form id="addDSNForm">
-                    Data Source Name (DSN):<br>
-                    <input type="text" name="dsn"><br>
-                    Username:<br>
-                    <input type="text" name="username"><br>
-                    Password:<br>
-                    <input type="password" name="password"><br><br>
-                    <input type="button" value="Add" onclick="addDataSource();">
+                 <form id="addDSNForm" class="DSNForm">
+                    <label for="add_dsn" class="DATA_SOURCE_NAME">_</label>
+                    <input type="text" id="add_dsn" name="dsn"><br>
+                    <label for="add_username" class="USER_NAME">_</label><br>
+                    <input type="text" id="add_username" name="username"><br>
+                    <label for="add_password" class="USER_PW">_</label><br>
+                    <input type="password" id="add_password" name="password"><br><br>
+                    <input id="add_button" type="button" onclick="addDataSource();" class="ADD_ODBC_BUTTON">
                 </form> 
             </div>
 
             <div id="updateDSN">
                 <div id="updateDSNBar">
-                    <a title="Close DSN box." class="closeBtn" onclick="closeUpdateDataSource();">×</a>
-                    <h4 class="headBar">Update Data Source Name</h4>
+                    <a class="closeBtn CLOSE_BUTTON" onclick="closeUpdateDataSource();">×</a>
+                    <h4 class="headBar UPDATE_ODBC_HEADLINE">_</h4>
                 </div>
 
-                 <form id="updateDSNForm">
-                    Username:<br>
-                    <input type="text" name="username"><br>
-                    Password:<br>
-                    <input type="password" name="password"><br><br>
-                    <input type="button" value="Update" onclick="updateDataSource();">
+                 <form id="updateDSNForm" class="DSNForm">
+                    <label for="update_username" class="USER_NAME">_</label><br>
+                    <input type="text" id="update_username" name="username"><br>
+                    <label for="update_password" class="USER_PW">_</label><br>
+                    <input type="password" id="update_password" name="password"><br><br>
+                    <input type="button" onclick="updateDataSource();" class="UPDATE_ODBC_BUTTON">
                 </form> 
             </div>
             

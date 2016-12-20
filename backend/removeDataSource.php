@@ -13,7 +13,7 @@ $isDeleted = unlink($path . $dsn . ".json");
 
 if ($isDeleted) {
     $feedback["code"] = 0;
-    $feedback["message"] = $dsn . " successful deleted.";
+    $feedback["message"] = $dsn . " deleted, successfully.";
 } else {
     $feedback["code"] = -1;
     $feedback["message"] = "Error while deleting " . $dsn;

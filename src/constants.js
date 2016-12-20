@@ -1,6 +1,6 @@
 var SQLBlockly = {};
 
-SQLBlockly.LANG = "en";
+SQLBlockly.LANG = "en"; /* DEFAULT LANGUAGE */
 SQLBlockly.MEDIA_PATH = "../common/libs/blockly/media/";    /* RELEASE: libs/blockly/media/ */
 SQLBlockly.DSN = "";
 

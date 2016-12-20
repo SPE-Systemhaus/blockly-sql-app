@@ -33,6 +33,18 @@ var x_elem = 0, y_elem = 0; // Stores top, left values (edge) of the element
  * the Blockly workspace will be initialized.
  */
 function main() {
+	if (!sessionStorage.getItem("lang"))
+		sessionStorage.setItem("lang", SQLBlockly.LANG);
+
+	var lang = new Language();
+	lang.readLanguageFile(sessionStorage.getItem("lang"), init);
+
+	/* Move/Drag behaviour */
+	document.onmousemove = _move_elem;
+	document.onmouseup = _destroy;
+}
+
+function init() {
 	initCodeEditor();
 	initHelp();
 	initError();
@@ -40,10 +52,6 @@ function main() {
 	initUpdateDSN();
 
 	getDataSourceNames();
-
-	/* Move/Drag behaviour */
-	document.onmousemove = _move_elem;
-	document.onmouseup = _destroy;
 }
 
 function initUpdateDSN() {
@@ -181,7 +189,7 @@ function parsingSQL() {
 
   try {
     parser.parse(sqlStatement);
-	showNotification("Workspace updated!", 2);
+	showNotification(SQLBlocks.Msg.User.WORKSPACE_UPDATED, 2);
   } catch (e) {
 	Blockly.Xml.domToWorkspace(tmpWorkspace, currentWorkspace);
 	openErrorBox(e.message);
@@ -335,10 +343,15 @@ function removeDataSource() {
 	xhr.open("GET", "backend/removeDataSource.php?dsn=" + dsn, true);
 	xhr.responseType = "json"; 
 	xhr.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200 && this.response)
-			getDataSourceNames();
-		else
-			openErrorBox(JSON.stringify(this.response));	
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			if (xhr.response.code === 0) {
+				getDataSourceNames();
+				showNotification(dsn + SQLBlocks.Msg.User.DSN_DELETED, 2);
+			}
+		}
+		
+		if (xhr.status != 200)
+			openErrorBox(JSON.stringify(xhr.response));	
     };
 
     xhr.send();
@@ -349,10 +362,10 @@ function getDataSourceNames() {
 	xhr.open("GET", "backend/getDataSources.php", true);
 	xhr.responseType = "json"; 
 	xhr.onload = function() {
-        if (this.status == 200)
+        if (xhr.status == 200)
 			updateDataSourceNames(xhr.response);
 		else
-			openErrorBox(JSON.stringify(this.response));			
+			openErrorBox(JSON.stringify(xhr.response));			
     };
 
     xhr.send();
@@ -414,7 +427,7 @@ function getDBStructure() {
 			dbStructure = xhr.response;
 			initBlockly();
 
-			showNotification("Workspace updated!", 2);
+			showNotification(SQLBlocks.Msg.User.WORKSPACE_UPDATED, 2);
         }
     };
 

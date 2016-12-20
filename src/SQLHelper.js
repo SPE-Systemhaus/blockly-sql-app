@@ -198,6 +198,7 @@ function SQLHelper() {
           var multipleColors = false;
           var children = parent.getChildren();
           var colors = [];
+          console.log(children);
           children.forEach(function(block) {
               var color = block.getColour();
 
@@ -214,6 +215,8 @@ function SQLHelper() {
                   }
               });
           }
+
+          console.log(colors);
 
           if (parent.getColour() !== block.getColour() && !multipleColors) {
               switch(parent.type) {
@@ -283,7 +286,7 @@ function SQLHelper() {
   this.addGroupByInput = function(block) {
     block.groupByCount_ = 1;
     block.appendStatementInput('group_by')
-        .setCheck(["table_column", "name"])
+        .setCheck(["table_column"])
         .appendField(SQLBlocks.Msg.Blocks.GROUP_BY);
   };
 
@@ -300,7 +303,7 @@ function SQLHelper() {
         .setCheck(["table_column", "name"])
         .appendField(SQLBlocks.Msg.Blocks.ORDER_BY);
     block.appendDummyInput("sort")
-        .appendField(new Blockly.FieldDropdown(sort), "sort");
+        .appendField(new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.SORTDIRECTIONS), "sort");
   };
 
   this.addLimitInput = function(block) {

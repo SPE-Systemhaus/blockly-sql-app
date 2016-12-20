@@ -17,8 +17,8 @@
 		for (var colKey in columnsArray) {
 			var column = columnsArray[colKey];
 
-			for (var key in group) {
-				var g = group[key][0];
+			for (var key in SQLBlocks.Msg.DROPDOWN.GROUPFUNCTIONS) {
+				var g = SQLBlocks.Msg.DROPDOWN.GROUPFUNCTIONS[key][1];
 				var regex = new RegExp(g + "\\(", "i");
 				var n = column.search(regex);
 				var tableName = null;

@@ -83,7 +83,7 @@ Blockly.Blocks['compare_operator'] = {
      * @this Blockly.Block
      */
     setup: function (input, dir) {
-        var dropdown = new Blockly.FieldDropdown(OPERATORS, function (option) {
+        var dropdown = new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.COMPAREOPERATORS, function (option) {
             this.sourceBlock_.updateShape(option);
         });
 
@@ -285,12 +285,12 @@ Blockly.Blocks['logical_conjunction'] = {
             .setAlign(Blockly.ALIGN_CENTRE)
             .setCheck(["condition", "BolleanOPs", "bool", "LogicOPs"]);
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown(logical_conjunction), 'operator');
+            .appendField(new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.LOGICALCONJUNCTION), 'operator');
         this.appendValueInput('B')
             .setAlign(Blockly.ALIGN_RIGHT)
             .setCheck(["condition", "BolleanOPs", "bool", "LogicOPs"]);
         this.setOutput(true, 'BolleanOPs');
-        this.setTooltip(SQLBlocks.Msg.Tooltips.LOGICAL_CONJUNCTION );
+        this.setTooltip(SQLBlocks.Msg.Tooltips.LOGICAL_CONJUNCTION);
         this.setInputsInline(false);
     }
 };
@@ -336,13 +336,6 @@ Blockly.Blocks['terms_simple_expressions'] = {
      * @this Blockly.Block
      */
     init: function () {
-        var OPERATORS = [
-            ['+', 'PLUS'],
-            ['-', 'MINUS'],
-            ['/', 'DIVIDE'],
-            ['*', 'MULTIPLICATE']
-        ];
-
         this.setHelpUrl(this.type);
         this.setColour(SQLBlockly.Colours.number);
         this.setOutput(true, "ArithmethikOPs");
@@ -350,7 +343,7 @@ Blockly.Blocks['terms_simple_expressions'] = {
             .setCheck(["table_column_var", "number", "ArithmethikOPs", "numberfunction"]);
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField(new Blockly.FieldDropdown(OPERATORS), 'OP');
+            .appendField(new Blockly.FieldDropdown(SQLBlocks.Msg.DROPDOWN.MATHOPERATORS), 'OP');
         this.appendValueInput('B')
             .setAlign(Blockly.ALIGN_LEFT)
             .setCheck(["table_column_var", "number", "ArithmethikOPs", "numberfunction"]);

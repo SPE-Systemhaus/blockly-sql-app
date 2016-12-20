@@ -12,7 +12,8 @@ SQLBlocks.Msg = {};
  * @type Array: group-array for the group-function-block
  * @type Array: numbers-array for the number-function-block
  */
-var time = [
+SQLBlocks.Msg.DROPDOWN = {};
+SQLBlocks.Msg.DROPDOWN.TIME = [
     ["Millisekunden", "MICROSECONDS"],
     ["Sekunde", "SECOND"],
     ["Minute", "MINUTE"],
@@ -35,7 +36,7 @@ var time = [
     ["YEAR_MONTH", "YEAR_MONTH"]
 ];
 
-var datefunct = [
+SQLBlocks.Msg.DROPDOWN.DATEFUNCTION = [
     //["SYSDATE", "sysdate"],
     //["DATE ADD", "add_months"], //using date_add()because add-month is an oracle function. It is equivalent to date_add() in mysql
     //["DATE SUB", "sub_months"],
@@ -49,92 +50,126 @@ var datefunct = [
     //["TO CHAR", "date_format"] //Using date_format instead of to_char, because to_char is not a mysql function
 ];
 
-var other = [
+SQLBlocks.Msg.DROPDOWN.OTHER = [
     ["Wenn", "decode"], //using if because decode is an oracle function. It is equivalent to if in mysql
     ["Größte(r)", "greatest"],
     ["Kleinste(r)", "least"],
     ["Wenn nicht vorhanden", "nvl"] //using ifNull because nvl is an oracle function. It is equivalent to ifNULL in mysql
 ];
 
-var funct = [
-    ['LOWER', 'lower'],
+SQLBlocks.Msg.DROPDOWN.CHARFUNCTION = [
+    ['ZU KLEINBUCHSTABEN', 'lower'],
     ['LPAD', 'lpad'],
     ['LTRIM', 'ltrim'],
-    ['REPLACE', 'replace'],
+    ['ERSETZE', 'replace'],
     ['RPAD', 'rpad'],
     ['RTRIM', 'rtrim'],
-    ['SUBSTRING', 'substring'],
-    ['UPPER', 'upper'],
+    ['TEILSTRING', 'substring'],
+    ['ZU GROßBUCHSTABEN', 'upper'],
     ['ASCII', 'ascii'],
-    ['INSTR', 'instr'],
-    ['LENGTH', 'length'],
-    ["TO DATE", "str_to_date"]//Using str_to_date instead of to date, because to_date is not a mysql function];
+    ['IST IN STRING', 'instr'],
+    ['LÄNGE', 'length'],
+    ["KONVENTIERE IN DATUM", "str_to_date"]//Using str_to_date instead of to date, because to_date is not a mysql function];
 ];
 
-var OPERATORS = [
+SQLBlocks.Msg.DROPDOWN.MATHOPERATORS = [
+    ['+', 'PLUS'],
+    ['-', 'MINUS'],
+    ['/', 'DIVIDE'],
+    ['*', 'MULTIPLICATE']
+];
+
+SQLBlocks.Msg.DROPDOWN.COMPAREOPERATORS = [
     ['=', 'EQ'],
     ['\u2260', 'NEQ'],
     ['>', 'LT'],
     ['\u2265', 'LTE'],
     ['<', 'GT'],
     ['\u2264', 'GTE'],
-    ['IS NULL', 'isnull'],
-    ['IS NOT NULL', 'isnotnull'],
-    ["IN", "in"],
-    ['LIKE', 'like']
+    ['IST NULL', 'isnull'],
+    ['IST NICHT NULL', 'isnotnull'],
+    ["IST IN", "in"],
+    ['WIE', 'like']
 ];
 
-var group = [
+SQLBlocks.Msg.DROPDOWN.GROUPFUNCTIONS = [
     ["AVG", "avg"],
-    ["COUNT", "count"],
-    ["MIN", "min"],
-    ["MAX", "max"],
-    ["STDDEV", "stddev"],
-    ["SUM", "sum"],
-    ["VARIANCE", "variance"]
+    ["ZÄHLE DURCH", "count"],
+    ["SUCHE DAS MINIMUM", "min"],
+    ["SUCHE DAS MAXIMUM", "max"],
+    ["STANDARDABWEICHUNG", "stddev"],
+    ["SUMMME", "sum"],
+    ["VARIANZ", "variance"]
 ];
 
-var numbers = [
-    ["ABS", "abs"],
-    ["CEIL", "ceil"],
-    ["FLOOR", "floor"],
-    ["MOD", "mod"],
-    ["POWER", "power"],
-    ["ROUND", "round"],
+SQLBlocks.Msg.DROPDOWN.NUMBERFUNCTIONS = [
+    ["BETRAG", "abs"],
+    ["RUNDE AUF", "ceil"],
+    ["RUNDE AB", "floor"],
+    ["MODULO", "mod"],
+    ["POTENZIEREN", "power"],
+    ["RUNDEN", "round"],
     ["SIGN", "sign"],
-    ["SQRT", "sqrt"],
-    ["TRUNCATE", "truncate"]
+    ["ZIEHE QUADRATWURZEL", "sqrt"],
+    ["KÜRZE", "truncate"]
 ];
 
-var sort = [
-    ["Aufsteigend", "asc"],
-    ["Absteigend", "desc"]
+SQLBlocks.Msg.DROPDOWN.SORTDIRECTIONS = [
+    ["AUFSTEIGEND", "asc"],
+    ["ABSTEIGEND", "desc"]
 ];
 
-var logical_conjunction = [
-  ["und", "AND"],
-  ["oder", "OR"]
+SQLBlocks.Msg.DROPDOWN.LOGICALCONJUNCTION = [
+    ["UND", "AND"],
+    ["ODER", "OR"]
 ];
 
-var bool = [
-  ["wahr", "1"],
-  ["falsch", "0"]
+SQLBlocks.Msg.DROPDOWN.BOOL = [
+    ["WAHR", "1"],
+    ["FALSCH", "0"]
 ];
+
+/**
+ * HTML 
+ */
+SQLBlocks.Msg.html = {};
+SQLBlocks.Msg.html.innerHTML = {};
+SQLBlocks.Msg.html.innerHTML.ADD_ODBC_BUTTON = "Hinzufügen";
+SQLBlocks.Msg.html.innerHTML.DEL_ODBC_BUTTON = "Löschen";
+SQLBlocks.Msg.html.innerHTML.UPDATE_ODBC_BUTTON = "Aktualisieren";
+SQLBlocks.Msg.html.innerHTML.ODBC_HEADLINE = "ODBC - Datenquellen";
+SQLBlocks.Msg.html.innerHTML.EDIT_SQL_BUTTON = "Bearbeite SQL Anweisung";
+SQLBlocks.Msg.html.innerHTML.CODE_EDITOR_HEADLINE = "SQL Anweisung";
+SQLBlocks.Msg.html.innerHTML.HELP_BOX_HEADLINE = "Hilfe";
+SQLBlocks.Msg.html.innerHTML.ADD_ODBC_HEADLINE = "Füge Datenquellennamen hinzu";
+SQLBlocks.Msg.html.innerHTML.UPDATE_ODBC_HEADLINE = "Aktualisiere Datenquelle";
+SQLBlocks.Msg.html.innerHTML.DATA_SOURCE_NAME = "Datenquellenname (DSN):";
+SQLBlocks.Msg.html.innerHTML.USER_NAME = "Benutzername:";
+SQLBlocks.Msg.html.innerHTML.USER_PW = "Passwort:";
+SQLBlocks.Msg.html.innerHTML.ERROR_MESSAGE_HEADLINE = "Fehlermeldung";
+SQLBlocks.Msg.html.innerHTML.OK = "OK";
+
+SQLBlocks.Msg.html.title = {};
+SQLBlocks.Msg.html.title = "Schließen";
+
+SQLBlocks.Msg.html.value = {};
+SQLBlocks.Msg.html.value.UPDATE_ODBC_BUTTON = "Aktualisiere";
+SQLBlocks.Msg.html.value.ADD_ODBC_BUTTON = "Add";
 
 /**
  * USER messages
  */
 SQLBlocks.Msg.User = {};
-
 SQLBlocks.Msg.User.CONFIRM_SAVE_WORKSPACE = "Möchten Sie wirklich die aktuelle Arbeitsfläche speichern?";
 SQLBlocks.Msg.User.CONFIRM_LOAD_WORKSPACE = "Möchten Sie wirklich eine neue SQL Anweisung in die Arbeitsfläche laden?";
 SQLBlocks.Msg.User.TOOLTIP_SQL_BOX = "Um eine SQL Anweisung in Blöcke umzuwandeln, geben Sie diese in dieses Textfeld ein und klicken anschließend auf OK.";
+SQLBlocks.Msg.User.WORKSPACE_UPDATED = "Die Arbeitsfläche wurde aktualisiert.";
+SQLBlocks.Msg.User.DSN_DELETED = "Datenquelle gelöscht.";
 
 /**
  * BLOCKS
  */
 SQLBlocks.Msg.Blocks = {};
-
 SQLBlocks.Msg.Blocks.INSERT_VALUES = "FÜGE WERTE HINZU";
 SQLBlocks.Msg.Blocks.SET = "SETZE";
 SQLBlocks.Msg.Blocks.WHERE = "WO"
@@ -158,6 +193,8 @@ SQLBlocks.Msg.Blocks.MORE = "NEUE EINGABE";
 SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME = " ";
 SQLBlocks.Msg.Blocks.VARIABLES_GET_ITEM = SQLBlocks.Msg.Blocks.VARIABLES_DEFAULT_NAME;
 SQLBlocks.Msg.Blocks.VARIABLES_SET_TITLE = "ALS";
+SQLBlocks.Msg.Blocks.ARRAY = "LISTE";
+SQLBlocks.Msg.Blocks.ARRAY_EMPTY = "LEERE LISTE";
 SQLBlocks.Msg.Blocks.LIST = "LISTENEINTRÄGE";
 SQLBlocks.Msg.Blocks.LIST_ENTRY = "EINTRAG";
 
@@ -178,8 +215,8 @@ SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS = "Wählen Sie die Tabelle und Spalte 
 SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS_VAR = SQLBlocks.Msg.Tooltips.TABLES_AND_COLUMNS;
 
 /* OPERATORS */
-SQLBlocks.Msg.Tooltips.TO = "The TO statement represents the INTO from the INSERT INTO, which is needed in the INSERT block.";
-SQLBlocks.Msg.Tooltips.COMPARE_OPERATOR = "";
+SQLBlocks.Msg.Tooltips.TO = "Setzt beim INSERT Befehl den Wert in die angegebene Spalte.";
+SQLBlocks.Msg.Tooltips.COMPARE_OPERATOR = "Vergleich zwischen zwei Ausdrücken.";
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE = {};
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.EQ = "Ist wahr (true) wenn beide Werte identisch sind.";
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NEQ = "Ist wahr (true) wenn beide Werte unterschiedlich sind.";
@@ -189,6 +226,7 @@ SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GT = "Ist wahr (true) wenn der erste Wert g
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.GTE = "Ist wahr (true) wenn der erste Wert grösser als oder gleich gross wie zweite Wert ist.";
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NULL = "Ist wahr (true) wenn der Ausdruck leer (null) ist.";
 SQLBlocks.Msg.Tooltips.LOGIC_COMPARE.NOT_NULL = "Ist wahr (true) wenn der Ausdruck nicht leer (not null) ist.";
+SQLBlocks.Msg.Tooltips.LOGICAL_CONJUNCTION = "Verknüpfe zwei Ausdrücke mit UND/ODER.";
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM = {};
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM.PLUS ="Addiert zwei Ausdrücke";
 SQLBlocks.Msg.Tooltips.SIMPLE_TERM.MINUS ="Subtrahiert zwei Ausdrücke";
@@ -230,11 +268,11 @@ SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.MOD = "Modulo ist eine mathematische Funk
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.POWER = "Gibt eine Zahl, die die Basis potenziert mit dem Exponenten repräsentiert, zurück";
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.ROUND = "Die ROUND() Funktion gibt die nächstgelegenen Ganzzahl einer Zahl zurück (kaufmännisches Runden).";
 SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SIGN = "Die SIGN() Funktion gibt das Vorzeichen einer Zahl zurück, welches angibt, ob eine Zahl positiv, negativ oder 0 ist.";
-SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SQRT = "Uses one number-value. Returns the square root of a nonnegative number.";
-SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.TRUNCATE = "Uses one number-value, which holds the number, and a second number-value, which can be negative, to hold the decimal places. Returns the value 1, truncated to value 2 decimal places. ";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.SQRT = "Die SQRT() Funktion gibt die Quadratwurzel einer Zahl zurück.";
+SQLBlocks.Msg.Tooltips.NUMBER_FUNCTION.TRUNCATE = "Die TRUNCATE() Funktion gibt den ganzzahligen Teil einer Zahl zurück, indem alle Nachkommastellen entfernt werden.";
 
 SQLBlocks.Msg.Tooltips.CHAR_FUNCTION = {};
-SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LOWER = 'Uses one string-value. \n' + 'Returns string in lower \n' + 'case letters.';
+SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LOWER = "Die LCASE () Funktion wandelt den Wert eines Feldes in Kleinbuchstaben.";
 SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LPAD = 'Uses two string and one number value \n' + "(syntax: string, number, string). \n" + "Return the string argument,\n" + "left-padded with the specified string and \n " + "the length of the number-value";
 SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.LTRIM = "Uses one string-value. \n" + " Returns the string with \n" + " leading space characters removed.";
 SQLBlocks.Msg.Tooltips.CHAR_FUNCTION.REPLACE = "Uses three string-values. \n" + " Returns first string with \n" + " all occurrences of the second \n string replaced by the third/nstring.";
