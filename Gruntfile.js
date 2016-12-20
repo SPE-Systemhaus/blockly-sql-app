@@ -82,6 +82,12 @@ module.exports = function(grunt) {
         src: 'build/<%= pkg.name %>.concat_release.js',
         dest: 'dist/<%= pkg.name %>.min.js'
       }
+    },
+    rename: {
+        rnClosure: {
+            src: '../common/modules/google-closure-library',
+            dest: '../common/modules/closure-library'
+        }
     }
   });
 
@@ -89,10 +95,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-rename');
   grunt.loadNpmTasks('grunt-jison');
   grunt.loadNpmTasks('grunt-jison-processor');
   
-  grunt.registerTask('debug', ['concat:dist']);
+  grunt.registerTask('debug', ['concat:dist', 'rename']);
   grunt.registerTask('parser', ['jison-processor', 'concat:dist']); 
 
   grunt.registerTask('default', ['jison-processor', 'concat:relase', 'uglify']);  

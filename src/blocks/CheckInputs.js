@@ -7,10 +7,10 @@
  * 
  ******************************************************************************/
 
-/*------------------------------------------------------------------------------
+/**
  * Checking the variableinsert
  * @ param{type} object-symbolizes the block, which uses the function
- *----------------------------------------------------------------------------*/
+ */
 function checkInsertStatement(object) {
     var sC = object.setCount_;
     var tab = new Array();

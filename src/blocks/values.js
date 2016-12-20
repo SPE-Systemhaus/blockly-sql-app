@@ -1,6 +1,11 @@
 /******************************************************************************
- * VARIABLES                                                                  *
+ * This file contains the variable blocks.                 
+ * 
+ * @author Kirsten Schwarz, SPE Systemhaus GmbH (2013-2014)
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)
+ *                                                                                        
  ******************************************************************************/
+
 Blockly.Blocks['array'] = {
   /**
    * Block for creating a list with any number of elements of any type.

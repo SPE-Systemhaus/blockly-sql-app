@@ -1,5 +1,8 @@
 /*******************************************************************************
  * The SQLStatement class represents the parsed SQL Statement.
+ * 
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH 
+ * 
  ******************************************************************************/
 function SQLStatement() {
   var select = null;
@@ -92,8 +95,6 @@ function SQLStatement() {
       parsedColumns.push(val.column);
       parsedValues.push(val.value);
     }
-
-    console.log(parsedColumns);
 
     update.table = parsedTable;
     update.columns = parsedColumns;

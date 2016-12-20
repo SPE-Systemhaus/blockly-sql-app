@@ -1,5 +1,9 @@
 /******************************************************************************
- * OPERATORS                                                                  *
+ * This file contains the operator blocks.    
+ * 
+ * @author Kirsten Schwarz, SPE Systemhaus GmbH (2013-2014)
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)
+ *
  ******************************************************************************/
 
 /*------------------------------------------------------------------------------

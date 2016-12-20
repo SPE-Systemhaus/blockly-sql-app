@@ -2,7 +2,7 @@
  * The SQLXML class has functions that helps to generate a blockly compatible *
  * XML format to use in the Blockly SQL Generator.                            *
  *                                                                            *
- * @author Michael Kolodziejczyk, SPE Systemhaus GmbH (since 2016)            * 
+ * @author Michael Kolodziejczyk, SPE Systemhaus GmbH                         * 
  ******************************************************************************/
 function SQLXML() {
 
@@ -111,8 +111,6 @@ function SQLXML() {
     var valuesCnt = 0;
 
     pInsert = parsed;
-
-    console.log(pInsert);
 
     if (pInsert.columns === '*')
       pInsert.columns = getColumnsArrayFromStructure(pInsert.table);
@@ -350,8 +348,6 @@ function SQLXML() {
   this.createDateFunction = function(func, date) {
     var fields = { "date_function" : func };
 
-    console.log(date);
-
     return createXMLBlock(
       "datefunction",
       [],
@@ -417,17 +413,15 @@ function SQLXML() {
 
         fields.B = expression_b;
       }
-      
-      console.log(fields);
 
       return createXMLBlock(
-              "compare_operator",
-              [],
-              fields,
-              { "OP" : comp },
-              { "op" : comp,
-              "colour" : "#5ba58c" }
-            );
+        "compare_operator",
+        [],
+        fields,
+        { "OP" : comp },
+        { "op" : comp,
+        "colour" : "#5ba58c" }
+      );
   };
 
   this.createString = function(value) {
