@@ -13,6 +13,8 @@ function SQLXML() {
   var pInsert = null;
   var pUpdate = null;
 
+  var allColumnsCnt = 0;
+
   var __construct = function() {
     sqlHelp = new SQLHelper();
 
@@ -40,7 +42,12 @@ function SQLXML() {
     pSelect = parsed;
 
     var fields = {};
-    var mutations = {};
+    var mutations = {
+      "groupby" : 0,
+      "groupbyhaving" : 0,
+      "orderby" : 0,
+      "limit" : 0
+    };
     var values = {};
     var statements = {};
 
@@ -71,13 +78,12 @@ function SQLXML() {
 
     if (pSelect.groupby) {
       checkTables(pSelect.tables, pSelect.groupby.expressions);
+      mutations["groupby"] = 1;
+      statements["group_by"] = pSelect.groupby.expressions;
+      
       if (pSelect.groupby.having) {
         mutations["groupbyhaving"] = 1;
-        statements["group_by_have"] = pSelect.groupby.expressions;
         values["having"] = pSelect.groupby.having;
-      } else {
-        mutations["groupby"] = 1;
-        statements["group_by"] = pSelect.groupby.expressions;
       }
     }
 
@@ -101,6 +107,8 @@ function SQLXML() {
       fields,
       mutations
     );
+
+    allColumnsCnt = 0;
 
     return selectBlock;
   };
@@ -129,7 +137,7 @@ function SQLXML() {
       var toBlock = createXMLBlock("to", [], fields);
 
       values[key] = toBlock;
-      valuesCnt++
+      valuesCnt++;
     }
 
     insertBlock = createXMLBlock(
@@ -153,9 +161,6 @@ function SQLXML() {
 
     for (var parsedColumn in pUpdate.columns) {
         var key = "set" + valuesCnt;
-        
-        console.log(pUpdate.columns[valuesCnt]);
-        
         var tableBlock = this.createTableVar({ "table" : [pUpdate.table], "column" : [pUpdate.columns[valuesCnt]] });
         var valueBlock = pUpdate.values[parsedColumn];
         var toBlock = createXMLBlock("to", [], {
@@ -268,8 +273,16 @@ function SQLXML() {
    * @return tableBode {XML} - TableBlock as XML
    */
   this.createTable = function(column, table) {   
-    if (!table)
+    if (!table && column !== '*')
       table = sqlHelp.getTableOfColumn(column);
+    
+    if (column === '*')
+      allColumnsCnt++;
+
+    if (allColumnsCnt > 1) {
+      allColumnsCnt = 0;
+      throw new AllColumnsException();
+    }
 
     var fields = { 
       "tabele" : table,
@@ -328,7 +341,7 @@ function SQLXML() {
   };
 
   this.createCharFunction = function(func, expression_a, expression_b, expression_c) {
-    var values = { "option" : expression_a};
+    var values = { "option" : expression_a };
 
     if (expression_b)
       values["num"] = expression_b;

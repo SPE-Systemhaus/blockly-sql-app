@@ -26,7 +26,6 @@ module.exports = function(grunt) {
   var sources = [
     'src/constants.js', 
     'src/Language.js',
-    //'lang/*.js', 
     'src/generator/sql.js', 
     'src/generator/blocks/*.js',
     'src/blocks/init.js',

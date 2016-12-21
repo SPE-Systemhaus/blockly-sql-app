@@ -198,7 +198,6 @@ function SQLHelper() {
           var multipleColors = false;
           var children = parent.getChildren();
           var colors = [];
-          console.log(children);
           children.forEach(function(block) {
               var color = block.getColour();
 
@@ -242,6 +241,10 @@ function SQLHelper() {
   this.getChildColour = function(block) {
     var stopColor = block.getColour();
     var children = block.getChildren();
+
+    //console.log("STOPCOLOR ==> " + stopColor);
+    if (children.length > 1)
+        return SQLBlockly.Colours.list;
 
     /* Get the colour of the first table_column block and set
         this on the select block */

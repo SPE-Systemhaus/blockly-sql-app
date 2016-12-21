@@ -130,6 +130,13 @@ SQLBlocks.Msg.DROPDOWN.BOOL = [
 ];
 
 /**
+ * Languages
+ */
+SQLBlocks.Msg.languages = {};
+SQLBlocks.Msg.languages.de = "German";
+SQLBlocks.Msg.languages.en = "English";
+
+/**
  * HTML 
  */
 SQLBlocks.Msg.html = {};
@@ -165,6 +172,7 @@ SQLBlocks.Msg.User.CONFIRM_LOAD_WORKSPACE = "Are you sure to load a new SQL stat
 SQLBlocks.Msg.User.TOOLTIP_SQL_BOX = "To convert your SQL statement into blocks, just type it in. Be sure to check you spelling and set all the blanks. Then klick OK.";
 SQLBlocks.Msg.User.WORKSPACE_UPDATED = "Workspace updated.";
 SQLBlocks.Msg.User.DSN_DELETED = "Datasource deleted.";
+SQLBlocks.Msg.User.CONFIRM_DELETE_DSN = "Are you sure to delete this Data Source?";
 
 /**
  * BLOCKS

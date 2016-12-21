@@ -7,9 +7,10 @@
         <!-- Start Includes for DEBUG (Google-Closure-Library is needed!) -->
         <script type="text/javascript" src="../common/modules/GoogleBlockly/blockly_uncompressed.js"></script>
         <script type="text/javascript" src="../common/modules/GoogleBlockly/blocks_compressed.js"></script>
-        <script type="text/javascript" src="../common/modules/GoogleBlockly/msg/messages.js"></script>
+        <!-- <script type="text/javascript" src="../common/modules/GoogleBlockly/msg/messages.js"></script> -->
         <script type="text/javascript" src="../common/modules/blockly-colour-gradient/colour-gradient.js"></script>
         <script type="text/javascript" src="../common/modules/blockly-type-indicator/typeIndicator.js"></script>
+        <script type="text/javascript" src="../common/modules/blockly-events/events.js"></script>
         <script type="text/javascript" src="../common/modules/ace-builds/src/ace.js"></script>
         <script type="text/javascript" src="build/SQLBlockly.concat.js"></script>
         <!-- End Includes for DEBUG -->
@@ -44,8 +45,9 @@
                 
                 <div style="float: left; margin: 1.25em; padding-left: 1em;">
                     <button class="sqlBtn EDIT_SQL_BUTTON" onclick="editStatement();">_</button>
+                    <select id="languageSelect" onchange="new Language().updateLanguage(this.value);"></select>
                 </div>
-                
+               
                 <div class="odbc">
                     <h5 class="ODBC_HEADLINE">_</h5>
                     <select id="dataSourceNames" onchange="loadDatabaseStructure(this);"></select>

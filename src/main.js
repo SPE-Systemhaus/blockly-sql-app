@@ -33,11 +33,8 @@ var x_elem = 0, y_elem = 0; // Stores top, left values (edge) of the element
  * the Blockly workspace will be initialized.
  */
 function main() {
-	if (!sessionStorage.getItem("lang"))
-		sessionStorage.setItem("lang", SQLBlockly.LANG);
-
 	var lang = new Language();
-	lang.readLanguageFile(sessionStorage.getItem("lang"), init);
+	lang.readLanguageFile(init);
 
 	/* Move/Drag behaviour */
 	document.onmousemove = _move_elem;
@@ -45,6 +42,9 @@ function main() {
 }
 
 function init() {
+	var lang = new Language();
+	lang.updateLanguageSelect();
+
 	initCodeEditor();
 	initHelp();
 	initError();
@@ -72,9 +72,6 @@ function initAddDSN() {
  * Initializing Blockly.
  */
 function initBlockly() {
-	if (Blockly.mainWorkspace)		/* Cleaning Workspace, if already one existed */
-		Blockly.mainWorkspace.clear();	
-
 	var Toolbox = Blockly.Blocks.init();
 	var blocklyDiv = document.getElementById('blocklyDiv');
 	var workspace = Blockly.inject(
@@ -94,6 +91,34 @@ function initBlockly() {
 			scrollbars: true
 		}
 	);
+
+	loadWorkspace();
+	workspace.addChangeListener(onchangeWorkspace);
+}
+
+function onchangeWorkspace(event) {
+	saveWorkspace();
+}
+
+function saveWorkspace() {
+	localStorage.setItem(
+		"tmpSQLWorkspace",
+		Blockly.Xml.domToText(
+			Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
+		)
+	);
+}
+
+function loadWorkspace() {
+	var tmpWorkspace = localStorage.getItem("tmpSQLWorkspace");
+	if (tmpWorkspace) {
+		Blockly.Xml.domToWorkspace(
+			Blockly.Xml.textToDom(tmpWorkspace),
+			Blockly.mainWorkspace
+		);
+
+		Blockly.mainWorkspace.render();
+	}
 }
 
 /**
@@ -336,6 +361,10 @@ function updateDataSource() {
 }
 
 function removeDataSource() {
+	var load = confirm(SQLBlocks.Msg.User.CONFIRM_DELETE_DSN);
+	if (!load)
+		return false;
+
 	var select = document.getElementById("dataSourceNames");
 	var dsn = select.value;
 	var xhr = new XMLHttpRequest();
@@ -448,7 +477,6 @@ function showNotification(message, time) {
 
 function hideNotification(time) {
 	var notifications = document.getElementById("notifications");
-	//notifications.innerHTML = "";
 	notifications.style.visibility = "hidden";
 	notifications.style.opacity = 0;
 	notifications.style.transition = "visibility 0s " + time + "s, opacity " + time + "s linear";
