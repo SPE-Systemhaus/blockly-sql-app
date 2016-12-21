@@ -130,6 +130,13 @@ SQLBlocks.Msg.DROPDOWN.BOOL = [
 ];
 
 /**
+ * Languages
+ */
+SQLBlocks.Msg.languages = {};
+SQLBlocks.Msg.languages.de = "Deutsch";
+SQLBlocks.Msg.languages.en = "Englisch";
+
+/**
  * HTML 
  */
 SQLBlocks.Msg.html = {};
@@ -165,6 +172,7 @@ SQLBlocks.Msg.User.CONFIRM_LOAD_WORKSPACE = "Möchten Sie wirklich eine neue SQL
 SQLBlocks.Msg.User.TOOLTIP_SQL_BOX = "Um eine SQL Anweisung in Blöcke umzuwandeln, geben Sie diese in dieses Textfeld ein und klicken anschließend auf OK.";
 SQLBlocks.Msg.User.WORKSPACE_UPDATED = "Die Arbeitsfläche wurde aktualisiert.";
 SQLBlocks.Msg.User.DSN_DELETED = "Datenquelle gelöscht.";
+SQLBlocks.Msg.User.CONFIRM_DELETE_DSN = "Sind Sie sicher diese Datenquelle zu löschen?";
 
 /**
  * BLOCKS

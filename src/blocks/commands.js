@@ -100,7 +100,7 @@ Blockly.Blocks['select'] = {
         sqlHelp.decomposeLimit(workspace, this, mutator);
         sqlHelp.decomposeAlias(workspace, this, mutator);
         
-        var inputs = ["Clause", "limit", "group_by", "group_by_have", "order_by", "having", "sort"];
+        var inputs = ["Clause", "limit", "group_by", "order_by", "having", "sort"];
         this.gradient.setVerticalGradient(
             this, {
                 "start": "#5BA58C",
