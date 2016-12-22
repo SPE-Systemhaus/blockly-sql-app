@@ -99,15 +99,6 @@ Blockly.Blocks['select'] = {
         sqlHelp.decomposeOrderBy(workspace, this, mutator);
         sqlHelp.decomposeLimit(workspace, this, mutator);
         sqlHelp.decomposeAlias(workspace, this, mutator);
-        
-        var inputs = ["Clause", "limit", "group_by", "order_by", "having", "sort"];
-        this.gradient.setVerticalGradient(
-            this, {
-                "start": "#5BA58C",
-                "stop": sqlHelp.getChildColour(this)
-            },
-            inputs
-        );
 
         return mutator;
     },
@@ -132,7 +123,7 @@ Blockly.Blocks['select'] = {
         if (!this.workspace)
             return;
 
-        var inputs = ["Clause", "limit", "group_by", "group_by_have", "order_by", "having", "sort"];
+        var inputs = ["Clause", "limit", "group_by", "having", "order_by", "sort"];
         this.gradient.setVerticalGradient(
             this, {
                 "start": "#5BA58C",
@@ -140,19 +131,6 @@ Blockly.Blocks['select'] = {
             },
             inputs
         );
-
-        var selectBlock = this;
-        /** TRYOUT ... TODO: Find a way to do this without Timeout 
-        window.setTimeout(function () {
-            selectBlock.gradient.setVerticalGradient(
-                selectBlock, {
-                    "start": "#5BA58C",
-                    "stop": sqlHelp.getChildColour(selectBlock)
-                },
-                inputs
-            );
-        }, 100); */
-
     }
 };
 
@@ -685,7 +663,7 @@ Blockly.Blocks['sub_select'] = {
                 "start": "#5BA58C",
                 "stop": sqlHelp.getChildColour(this)
             },
-            ["Clause", "limit", "group_by", "group_by_having", "order_by", "alias"]
+            ["Clause", "limit", "group_by", "having", "order_by", "alias", "bla"]
         );
     }
 };
@@ -857,7 +835,7 @@ Blockly.Blocks['sub_select_where'] = {
                 "start": "#5BA58C",
                 "stop": sqlHelp.getChildColour(this)
             },
-            ["Clause", "limit", "group_by", "group_by_having", "order_by", "alias"]
+            ["Clause", "limit", "group_by", "having", "order_by", "alias", "bla"]
         );
     }
 };

@@ -2,7 +2,7 @@
   var sqlStatement = new SQLStatement();
   var sqlXML = new SQLXML();
   var sqlHelp = new SQLHelper();
-  
+
   function cleanUp() {
     delete sqlStatement;
     delete sqlXML;
@@ -20,6 +20,8 @@
 /* Special Characters */
 \s+                   /* skip whitespace */
 \n                    /* skip newline */
+[/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]   /* skip long commentar */
+[-]{2}.*                              /* skip single line commentar */
 <<EOF>>               { return 'EOF' }
 "\""                  { return 'DOUBLEQUOTE' }
 "%"                   { return 'PERCENT' }
@@ -440,8 +442,6 @@ SUBQUERY
         {
             if ($2.getAttribute("type") === "select")
                 $2.setAttribute("type", "sub_select_where");
-            
-            
 
             $$ = $2;
         }

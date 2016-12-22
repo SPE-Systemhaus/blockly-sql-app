@@ -1,7 +1,8 @@
 var SQLBlockly = {};
 
 SQLBlockly.LANG = "en"; /* DEFAULT LANGUAGE */
-SQLBlockly.MEDIA_PATH = "../common/libs/blockly/media/";    /* RELEASE: libs/blockly/media/ */
+SQLBlockly.BLOCKLY_PATH = "libs/blockly/"; //"../common/modules/GoogleBlockly/";   /* RELEASE: libs/blockly/media/ */
+SQLBlockly.MEDIA_PATH = SQLBlockly.BLOCKLY_PATH + "media/";    
 SQLBlockly.DSN = "";
 
 /* COLOURS */

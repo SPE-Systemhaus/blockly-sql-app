@@ -86,7 +86,7 @@ function SQLHelper() {
       }
     }
 
-    console.warn("Type of column is not in list, yet!");
+    //console.warn("Type of column is not in list, yet!");
     return SQLBlockly.Colours.undefined;
   };
 
@@ -215,8 +215,6 @@ function SQLHelper() {
               });
           }
 
-          console.log(colors);
-
           if (parent.getColour() !== block.getColour() && !multipleColors) {
               switch(parent.type) {
                   case "compare_operator" :
@@ -242,7 +240,6 @@ function SQLHelper() {
     var stopColor = block.getColour();
     var children = block.getChildren();
 
-    //console.log("STOPCOLOR ==> " + stopColor);
     if (children.length > 1)
         return SQLBlockly.Colours.list;
 
