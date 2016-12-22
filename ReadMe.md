@@ -1,5 +1,5 @@
 # SQL Blockly App
-We (SPE Systemhaus Gmbh) developed a Blockly SQL Workspace, so that anyone can use this visual code editor and generate SQL Statements. Therefore new blocks were created to build these SQL Statements. A transformation from SQL Statements into SQL Blocks is possible, too. For this purpose we developed a SQL Parser which parses the statements and create a Blockly XML to load it into the workspace. You can play on our Demo Workspace on [http://sql.print2forms.de].
+We (SPE Systemhaus Gmbh) developed a Blockly SQL Workspace, so that anyone can use this visual code editor and generate SQL Statements. Therefore new blocks were created to build these SQL Statements. A transformation from SQL Statements into SQL Blocks is possible, too. For this purpose we developed a SQL Parser which parses the statements and create a Blockly XML to load it into the workspace. You can play on our Demo Workspace on [https://sql.spe-systemhaus.de/].
 
 ## Goal
 The goal is giving people, with less knowledge of SQL, the ability to develop their own SQL Statements. Our audience are managers and housewives.
@@ -20,7 +20,7 @@ If you want to start developing on this project, you need to install:
 * Grunt [http://gruntjs.com/] type `npm install -g grunt`
 
 By using Bower all requirements will be fetched that are required for production and development. You only have to do the following steps, initially:
-1. `git clone http://git ...` Cloning repository
+1. `git clone https://github.com/SPE-Systemhaus/blockly-sql-app.git` -> Cloning repository
 2. `npm install` -> Getting all Grunt dependencies
 3. `bower update` -> Getting all Bower dependencies
 

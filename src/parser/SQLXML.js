@@ -13,8 +13,6 @@ function SQLXML() {
   var pInsert = null;
   var pUpdate = null;
 
-  var allColumnsCnt = 0;
-
   var __construct = function() {
     sqlHelp = new SQLHelper();
 
@@ -50,8 +48,6 @@ function SQLXML() {
     };
     var values = {};
     var statements = {};
-
-    console.log(pSelect);
 
     if (pSelect.selection) {
       var next = document.createElement("next");
@@ -107,8 +103,6 @@ function SQLXML() {
       fields,
       mutations
     );
-
-    allColumnsCnt = 0;
 
     return selectBlock;
   };
@@ -275,14 +269,6 @@ function SQLXML() {
   this.createTable = function(column, table) {   
     if (!table && column !== '*')
       table = sqlHelp.getTableOfColumn(column);
-    
-    if (column === '*')
-      allColumnsCnt++;
-
-    if (allColumnsCnt > 1) {
-      allColumnsCnt = 0;
-      throw new AllColumnsException();
-    }
 
     var fields = { 
       "tabele" : table,
@@ -674,7 +660,9 @@ function SQLXML() {
 
     for (var i = 0; i < tableBlocks.length; i += 2) {
       /* Check only table and column nodes by checking the type of the parent node */
-      if (tableBlocks[i].parentNode.getAttribute("type") === "tables_and_columns") {
+      console.log(tableBlocks[i].parentNode.parentNode);
+
+      //if (tableBlocks[i].parentNode.getAttribute("type") === "tables_and_columns") {
         var table = i;
         var column = i + 1;
         var tableName = null;
@@ -705,7 +693,7 @@ function SQLXML() {
             }
           }
         }         
-      }
+      //}
       
       /* Update table and column in mutation tags */
       mutations[mutationCnt].setAttribute("tabele", tableBlocks[table].innerHTML);

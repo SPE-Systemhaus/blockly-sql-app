@@ -105,6 +105,7 @@ Blockly.Blocks['tables_and_columns'] = {
         var container = document.createElement('mutation');
         container.setAttribute('tabele', table);
         container.setAttribute('Column', column);
+        container.setAttribute('color', this.getColour());
 
         return container;
     },
@@ -121,7 +122,12 @@ Blockly.Blocks['tables_and_columns'] = {
     domToMutation: function (xmlElement) {
         var table = xmlElement.getAttribute("tabele");
         var column = xmlElement.getAttribute("Column");
+        var color = xmlElement.getAttribute("color");
+
         this.updateShape(table, column);
+
+        if (color)
+            this.setColour(color);
     },
     /**
      * The updateShape function is refreshing the tables-Array
@@ -151,22 +157,6 @@ Blockly.Blocks['tables_and_columns'] = {
             return;
 
         sqlHelp.colourTheParent(this);
-        /*
-        var parent = this.getParent();
-
-        if (parent) {
-            if (parent.type == 'select' ||
-                parent.type == 'sub_select' ||
-                parent.type == 'sub_select_where') {
-                //evaluate the group by input if there is this input
-                if (parent.getInput('group_by_have') ||
-                    parent.getInput('group_by')) {
-                    groupbyval(parent);
-                }
-            }
-        }
-        */
-
     }
 };
 
@@ -227,9 +217,6 @@ Blockly.Blocks['tables_and_columns_var'] = {
                 var type = sqlHelp.getType(table, column);
                 block.updateShape(table, column);
                 block.onchange();
-
-
-                console.log(type);
                 block.setOutput(true, type);
 
                 /* Updating parent block */
@@ -269,6 +256,7 @@ Blockly.Blocks['tables_and_columns_var'] = {
         var container = document.createElement('mutation');
         container.setAttribute('tabele', table);
         container.setAttribute('Column', column);
+        container.setAttribute("color", this.getColour());
 
         return container;
     },
@@ -285,7 +273,12 @@ Blockly.Blocks['tables_and_columns_var'] = {
     domToMutation: function (xmlElement) {
         var table = xmlElement.getAttribute("tabele");
         var column = xmlElement.getAttribute("Column");
+        var color = xmlElement.getAttribute("color");
+
         this.updateShape(table, column);
+
+        if (color)     
+            this.setColour(color);
     },
     /**
      * The updateShape function is refreshing the tables-Array

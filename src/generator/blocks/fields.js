@@ -7,8 +7,6 @@ window.BlocklyPlugins = window.BlocklyPlugins || {};
 	  code += block.getFieldValue('tabele') + "."
 		+ block.getFieldValue('Column') + ",";
 	  
-		console.log(block.getFieldValue('tabele'));
-		
 		return code;
 	};
 

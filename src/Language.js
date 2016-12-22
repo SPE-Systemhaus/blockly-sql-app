@@ -22,15 +22,11 @@ function Language() {
                 }
            
                 var xh = new XMLHttpRequest();
-                xh.open("GET", "../common/modules/GoogleBlockly/msg/js/" + lang + ".js", true);
+                xh.open("GET", SQLBlockly.BLOCKLY_PATH + "msg/js/" + lang + ".js", true);
                 xh.responseType = "text";
                 xh.onreadystatechange = function() {
                     if (xh.status === 200 && xh.readyState === 4) {
-                        
-                        console.log(xh.responseText);
-
                         langScript.innerHTML = SQLLang + xh.responseText;
-
                         document.getElementsByTagName("head")[0].appendChild(langScript);
 
                         languageTheDom();
@@ -38,7 +34,6 @@ function Language() {
                     }
                 }
                 xh.send(null);
-
             }
         }
         xhr.send(null);

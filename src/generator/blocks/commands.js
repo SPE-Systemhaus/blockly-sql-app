@@ -9,7 +9,7 @@
 	  var clause = SQLBlockly.SQLGen.valueToCode(block, "Clause", null);
 	  var groupfunction = null;
 	  var groupby = SQLBlockly.SQLGen.statementToCode(block, 'group_by');
-	  var groupbyhaving = SQLBlockly.SQLGen.statementToCode(block, 'group_by_have');
+	  var groupbyhaving = SQLBlockly.SQLGen.valueToCode(block, 'having', null);
 	  var limit = SQLBlockly.SQLGen.valueToCode(block, "limit", null);
 	  var orderby = SQLBlockly.SQLGen.statementToCode(block, 'order_by');
 
@@ -63,6 +63,12 @@
 	  columns = columns.substring(0, columns.length - 1);
 	  tables = tables.substring(0, tables.length - 1);
 
+	  if (columns.charAt(columns.length - 1) === ",")
+	  	columns = columns.substring(0, columns.length - 1);
+
+	  if (tables.charAt(tables.length - 1) === ",")
+		tables = tables.substring(0, tables.length - 1);
+
 	  code += columns + "\nFROM " + tables;
 
 	  if (SQLBlockly.SQLGen.isNotEmpty(clause)) {
@@ -76,24 +82,23 @@
 	  if (SQLBlockly.SQLGen.isNotEmpty(groupby)) {
 			groupby = groupby.substring(0, groupby.length - 1);
 			code += "\nGROUP BY " + groupby;
-	  }
 
-	  if (SQLBlockly.SQLGen.isNotEmpty(groupbyhaving)) {
-			var having = SQLBlockly.SQLGen.valueToCode(block, "having", null);
-			having = having.substring(1, having.length - 1);
-			groupbyhaving = groupbyhaving.substring(0, groupbyhaving.length - 1);
-			code += "\nGROUP BY " + groupbyhaving + "\nHAVING " + having;
-	  }
-
-	  if (SQLBlockly.SQLGen.isNotEmpty(limit)) {
-			limit = limit.substring(1, limit.length - 1);
-			code += "\nLIMIT " + limit;
+			if (SQLBlockly.SQLGen.isNotEmpty(groupbyhaving)) {
+				var having = SQLBlockly.SQLGen.valueToCode(block, "having", null);
+				having = having.substring(1, having.length - 1);
+				code += "\nHAVING " + having;
+			}
 	  }
 
 	  if (SQLBlockly.SQLGen.isNotEmpty(orderby)) {
 			var orderDirection = block.getField("sort").value_;
 			orderby = orderby.substring(0, orderby.length - 1);
 			code += "\nORDER BY " + orderby + " " + orderDirection;
+	  }
+
+	  if (SQLBlockly.SQLGen.isNotEmpty(limit)) {
+			limit = limit.substring(1, limit.length - 1);
+			code += "\nLIMIT " + limit;
 	  }
 
 	  return code;
