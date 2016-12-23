@@ -41,7 +41,7 @@ ODBC (Open Database Connectivity) is used to connect the SQL Blockly App with a 
 * via [GUI](https://technet.microsoft.com/en-us/library/cc879308(v=sql.105).aspx)
 
 ## Parser
-The parser is generated with the help of the [Jison](https://zaa.ch/jison) parser generator. We created a grammar that can parse a set of SQL statements which are relevant for SQL newbies. In the folder docs of this repository a syntax diagram is located, which you can open in a webbrowser to get an overview of the developed *SQL Grammar for Newbies*. Preferably we tried to develop a generic grammar which fits to MSSQL, MySQL, Oracle SQL, DB2 SQL.
+The parser is generated with the help of the [Jison](https://zaa.ch/jison) parser generator. We created a grammar that can parse a set of SQL statements which are relevant for SQL newbies. In the folder docs of this repository a syntax diagram is located, which you can open in a webbrowser to get an overview of the developed *SQL Grammar for Newbies* or see it [here](http://sql.spe-systemhaus.de/doc/syntax_diagram.xhtml) online. Preferably we tried to develop a generic grammar which fits to MSSQL, MySQL, Oracle SQL, DB2 SQL.
 
 **Beware that the app doesn't support joins.**
 
