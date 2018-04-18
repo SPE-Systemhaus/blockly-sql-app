@@ -1,20 +1,20 @@
+%lex
+%options flex
+
 %{
-  var sqlStatement = new SQLStatement();
-  var sqlXML = new SQLXML();
-  var sqlHelp = new SQLHelper();
+  yy.sqlStatement = new SQLStatement();
+  yy.sqlXML = new SQLXML();
+  yy.sqlHelp = new SQLHelper();
 
   function cleanUp() {
-    delete sqlStatement;
-    delete sqlXML;
+    delete yy.sqlStatement;
+    delete yy.sqlXML;
 
-    sqlStatement = new SQLStatement();
-    sqlXML = new SQLXML();
+    yy.sqlStatement = new SQLStatement();
+    yy.sqlXML = new SQLXML();
   }
 %}
 /* description: SQL Lex file */
-
-
-%lex
 %%
 
 /* Special Characters */
@@ -236,11 +236,11 @@
 
 SQL
     : SELECT_COMMAND
-        { sqlXML.printSQLOnWorkspace($1); cleanUp(); }
+        { yy.sqlXML.printSQLOnWorkspace($1); cleanUp(); }
     | UPDATE_COMMAND
-        { sqlXML.printSQLOnWorkspace($1); cleanUp(); }
+        { yy.sqlXML.printSQLOnWorkspace($1); cleanUp(); }
     | INSERT_COMMAND
-        { sqlXML.printSQLOnWorkspace($1); cleanUp(); }
+        { yy.sqlXML.printSQLOnWorkspace($1); cleanUp(); }
     | SQL EOF
     | SQL SEMICOLON
     ;
@@ -248,8 +248,8 @@ SQL
 SELECT_COMMAND
     : SELECT SELECTION DISPLAYED_COLUMNS FROM SELECTED_TABLES WHERE_CLAUSE GROUPBY_CLAUSE ORDERBY_CLAUSE LIMIT_CLAUSE
         {   
-            $$ = sqlXML.createSelect(
-                sqlStatement.setSelect($2, $3, $5, $6, null, $7, $8, $9)
+            $$ = yy.sqlXML.createSelect(
+                yy.sqlStatement.setSelect($2, $3, $5, $6, null, $7, $8, $9)
             );
         }
     ;
@@ -257,8 +257,8 @@ SELECT_COMMAND
 UPDATE_COMMAND
     : UPDATE TABLE_NAME SETS WHERE_CLAUSE
         {
-            $$ = sqlXML.createUpdate(
-                sqlStatement.setUpdate($2, $3, $4)
+            $$ = yy.sqlXML.createUpdate(
+                yy.sqlStatement.setUpdate($2, $3, $4)
             );
         }
     ;
@@ -266,20 +266,20 @@ UPDATE_COMMAND
 INSERT_COMMAND
     : INSERT INTO TABLE_NAME LPAREN INSERT_COLUMN_LIST RPAREN VALUES LPAREN VALUE_LIST RPAREN
         {
-            $$ = sqlXML.createInsert(
-                sqlStatement.setInsert($3, $5, $9)
+            $$ = yy.sqlXML.createInsert(
+                yy.sqlStatement.setInsert($3, $5, $9)
             );
         }
     | INSERT INTO TABLE_NAME VALUES LPAREN VALUE_LIST RPAREN
         {
-            $$ = sqlXML.createInsert(
-                sqlStatement.setInsert($3, '*', $6)
+            $$ = yy.sqlXML.createInsert(
+                yy.sqlStatement.setInsert($3, '*', $6)
             );
         }
     | INSERT INTO TABLE_NAME SETS
         {
-            $$ = sqlXML.createInsert(
-                sqlStatement.setInsert($3, $4)
+            $$ = yy.sqlXML.createInsert(
+                yy.sqlStatement.setInsert($3, $4)
             );
         }
     ;
@@ -333,7 +333,7 @@ GROUPBY_CLAUSE
 
             $$ = { 
                     "expressions" : $2[0], 
-                    "having" : sqlXML.createCompareOperator($4, $6, "=")
+                    "having" : yy.sqlXML.createCompareOperator($4, $6, "=")
                  };
         }
     | GROUPBY EXPRESSIONS HAVING EXPR NEQ EXPR
@@ -343,7 +343,7 @@ GROUPBY_CLAUSE
 
             $$ = { 
                     "expressions" : $2[0], 
-                    "having" : sqlXML.createCompareOperator($4, $6, "!=")
+                    "having" : yy.sqlXML.createCompareOperator($4, $6, "!=")
                  };
         } 
     | GROUPBY EXPRESSIONS HAVING EXPR GT EXPR
@@ -353,7 +353,7 @@ GROUPBY_CLAUSE
 
             $$ = { 
                     "expressions" : $2[0], 
-                    "having" : sqlXML.createCompareOperator($4, $6, ">")
+                    "having" : yy.sqlXML.createCompareOperator($4, $6, ">")
                  };
         }
     | GROUPBY EXPRESSIONS HAVING EXPR LT EXPR
@@ -363,7 +363,7 @@ GROUPBY_CLAUSE
 
             $$ = { 
                     "expressions" : $2[0], 
-                    "having" : sqlXML.createCompareOperator($4, $6, "<")
+                    "having" : yy.sqlXML.createCompareOperator($4, $6, "<")
                  };
         }
     | GROUPBY EXPRESSIONS HAVING EXPR GTE EXPR
@@ -373,7 +373,7 @@ GROUPBY_CLAUSE
 
             $$ = { 
                     "expressions" : $2[0], 
-                    "having" : sqlXML.createCompareOperator($4, $6, ">=")
+                    "having" : yy.sqlXML.createCompareOperator($4, $6, ">=")
                  };
         }
     | GROUPBY EXPRESSIONS HAVING EXPR LTE EXPR
@@ -383,7 +383,7 @@ GROUPBY_CLAUSE
 
             $$ = { 
                     "expressions" : $2[0], 
-                    "having" : sqlXML.createCompareOperator($4, $6, "<=")
+                    "having" : yy.sqlXML.createCompareOperator($4, $6, "<=")
                  };
         }
     | GROUPBY EXPRESSIONS HAVING EXPR LIKE EXPR
@@ -393,7 +393,7 @@ GROUPBY_CLAUSE
 
             $$ = { 
                     "expressions" : $2[0], 
-                    "having" : sqlXML.createCompareOperator($4, $6, "like")
+                    "having" : yy.sqlXML.createCompareOperator($4, $6, "like")
                  };
         }
     | GROUPBY EXPRESSIONS HAVING EXPR IS NULL
@@ -403,7 +403,7 @@ GROUPBY_CLAUSE
 
             $$ = { 
                     "expressions" : $2[0], 
-                    "having" : sqlXML.createCompareOperator($4, null, "isnull")
+                    "having" : yy.sqlXML.createCompareOperator($4, null, "isnull")
                  };
         }
     | GROUPBY EXPRESSIONS HAVING EXPR IS NOT NULL
@@ -413,7 +413,7 @@ GROUPBY_CLAUSE
 
             $$ = { 
                     "expressions" : $2[0], 
-                    "having" : sqlXML.createCompareOperator($4, null, "isnotnull")
+                    "having" : yy.sqlXML.createCompareOperator($4, null, "isnotnull")
                  };
         }    
     ;
@@ -434,7 +434,7 @@ ORDERBY_CLAUSE
 LIMIT_CLAUSE
     : %empty
     | LIMIT NUMBER
-        { $$ = sqlXML.createNumber(parseInt($2)); }
+        { $$ = yy.sqlXML.createNumber(parseInt($2)); }
     ;
 
 SUBQUERY
@@ -450,25 +450,25 @@ SUBQUERY
 DISPLAYED_COLUMNS
     : DISPLAYED_COLUMN
     | DISPLAYED_COLUMNS COMMA DISPLAYED_COLUMN
-        { $$ = sqlXML.addTable($1, $3); }
+        { $$ = yy.sqlXML.addTable($1, $3); }
     ;
 
 DISPLAYED_COLUMN
     : COLUMN_NAME AS_ALIAS
         { $$ = $1; }
     /* | IDENTIFIER PERIOD MULTIPLICATE
-        { $$ = sqlXML.createTable('*', $1); } */
+        { $$ = yy.sqlXML.createTable('*', $1); } */
     | GROUP_FUNCTION LPAREN SELECTION COLUMN_LIST RPAREN AS_ALIAS
         {
             if ($3) {
                 if ($3.toLowerCase() === "distinct")
-                    $4 = sqlXML.createDistinct($4);
+                    $4 = yy.sqlXML.createDistinct($4);
             }
 
             if ($4.getAttribute("type") === "tables_and_columns_var")
                 $4.setAttribute("type", "tables_and_columns");
 
-            $$ = sqlXML.createGroupFunction($1, $4, $6);
+            $$ = yy.sqlXML.createGroupFunction($1, $4, $6);
         }
     | SUBQUERY AS_ALIAS
         {
@@ -476,7 +476,7 @@ DISPLAYED_COLUMN
                 $1.setAttribute("type", "sub_select");
             
             if ($2)
-                $1 = sqlXML.addAlias($1, $2);
+                $1 = yy.sqlXML.addAlias($1, $2);
             
             $$ = $1;
         }
@@ -514,7 +514,7 @@ SETS
 
 COLUMN_LIST
     : COLUMN_NAME { $$ = $1; }
-    | COLUMN_LIST COMMA COLUMN_NAME { $$ = sqlXML.addTable($1, $3); }
+    | COLUMN_LIST COMMA COLUMN_NAME { $$ = yy.sqlXML.addTable($1, $3); }
     ;
 
 VALUE_LIST
@@ -526,33 +526,33 @@ VALUE
     : %empty
     | QUOTED_STRING
     | IDENTIFIER
-        { $$ = sqlXML.createString($1); }
+        { $$ = yy.sqlXML.createString($1); }
     | MINUS IDENTIFIER
-        { $$ = sqlXML.createString($1 + $2); }
+        { $$ = yy.sqlXML.createString($1 + $2); }
     | PLUS IDENTIFIER
-        { $$ = sqlXML.createString($2); }
+        { $$ = yy.sqlXML.createString($2); }
     | NUMBER
-        { $$ = sqlXML.createNumber($1); }
+        { $$ = yy.sqlXML.createNumber($1); }
     | MINUS NUMBER
         {
             var num = ($1) ? $1 + $2 : $2;
-            $$ = sqlXML.createNumber(num);
+            $$ = yy.sqlXML.createNumber(num);
         }
     | PLUS NUMBER
-        { $$ = sqlXML.createNumber($2); }
+        { $$ = yy.sqlXML.createNumber($2); }
     | FUNCTION
     | SUBQUERY
     ;
 
 EXPR
     : BOOL
-        { $$ = sqlXML.createBool(($1.toLowerCase() == "true") ? true : false); }
+        { $$ = yy.sqlXML.createBool(($1.toLowerCase() == "true") ? true : false); }
     | NUMBER
-        { $$ = sqlXML.createNumber(parseInt($1)); }
+        { $$ = yy.sqlXML.createNumber(parseInt($1)); }
     | QUOTED_STRING
     | DATETIME
     | VARIABLE
-        { $$ = sqlXML.createTableVar($1); }
+        { $$ = yy.sqlXML.createTableVar($1); }
     | SUBQUERY
     | FUNCTION
     | GROUP_FUNCTION LPAREN SELECTION EXPR RPAREN
@@ -562,78 +562,78 @@ EXPR
 
             if ($3) {
                 if ($3.toLowerCase() === "distinct")
-                    $4 = sqlXML.createDistinct($4);
+                    $4 = yy.sqlXML.createDistinct($4);
             }
 
-            $$ = sqlXML.createGroupFunction($1, $4);
+            $$ = yy.sqlXML.createGroupFunction($1, $4);
         }
     | EXPR PLUS EXPR
-        { $$ = sqlXML.createMath($1, $3, '+'); }
+        { $$ = yy.sqlXML.createMath($1, $3, '+'); }
     | EXPR MINUS EXPR
-        { $$ = sqlXML.createMath($1, $3, '-'); }
+        { $$ = yy.sqlXML.createMath($1, $3, '-'); }
     | EXPR DIVIDE EXPR
-        { $$ = sqlXML.createMath($1, $3, '/'); }
+        { $$ = yy.sqlXML.createMath($1, $3, '/'); }
     | EXPR MULTIPLICATE EXPR
-        { $$ = sqlXML.createMath($1, $3, '*'); }
+        { $$ = yy.sqlXML.createMath($1, $3, '*'); }
     | EXPR EQ EXPR
-        { $$ = sqlXML.createCompareOperator($1, $3, "="); }
+        { $$ = yy.sqlXML.createCompareOperator($1, $3, "="); }
     | EXPR NEQ EXPR
-        { $$ = sqlXML.createCompareOperator($1, $3, "!="); }
+        { $$ = yy.sqlXML.createCompareOperator($1, $3, "!="); }
     | EXPR GT EXPR
-        { $$ = sqlXML.createCompareOperator($1, $3, ">"); }
+        { $$ = yy.sqlXML.createCompareOperator($1, $3, ">"); }
     | EXPR LT EXPR
-        { $$ = sqlXML.createCompareOperator($1, $3, "<"); }
+        { $$ = yy.sqlXML.createCompareOperator($1, $3, "<"); }
     | EXPR GTE EXPR
-        { $$ = sqlXML.createCompareOperator($1, $3, ">="); }
+        { $$ = yy.sqlXML.createCompareOperator($1, $3, ">="); }
     | EXPR LTE EXPR
-        { $$ = sqlXML.createCompareOperator($1, $3, "<="); }
+        { $$ = yy.sqlXML.createCompareOperator($1, $3, "<="); }
     | EXPR LIKE EXPR
-        { $$ = sqlXML.createCompareOperator($1, $3, "like"); }
+        { $$ = yy.sqlXML.createCompareOperator($1, $3, "like"); }
     | EXPR IN SUBQUERY
-        { $$ = sqlXML.createCompareOperator($1, $3, "in"); }
+        { $$ = yy.sqlXML.createCompareOperator($1, $3, "in"); }
     | EXPR IN LPAREN ARRAY RPAREN
-        { $$ = sqlXML.createCompareOperator($1, $4, "in"); }
+        { $$ = yy.sqlXML.createCompareOperator($1, $4, "in"); }
     | EXPR IS NULL
-        { $$ = sqlXML.createCompareOperator($1, null, "isnull"); }
+        { $$ = yy.sqlXML.createCompareOperator($1, null, "isnull"); }
     | EXPR IS NOT NULL
-        { $$ = sqlXML.createCompareOperator($1, null, "isnotnull"); }
+        { $$ = yy.sqlXML.createCompareOperator($1, null, "isnotnull"); }
     | EXPR AND EXPR
-        { $$ = sqlXML.createAnd($1, $3); }
+        { $$ = yy.sqlXML.createAnd($1, $3); }
     | EXPR OR EXPR
-        { $$ = sqlXML.createOr($1, $3); }
+        { $$ = yy.sqlXML.createOr($1, $3); }
     | NOT EXPR
-        { $$ = sqlXML.negate($2); }
+        { $$ = yy.sqlXML.negate($2); }
     | LPAREN EXPR RPAREN
         { $$ = $2; }
     ;
 
 ARRAY
     : ARRAY_ENTRY
-        { $$ = sqlXML.createArray($1); }
+        { $$ = yy.sqlXML.createArray($1); }
     | ARRAY COMMA ARRAY_ENTRY
-        { $$ = sqlXML.addArray($1, $3); }
+        { $$ = yy.sqlXML.addArray($1, $3); }
     ;
 
 ARRAY_ENTRY
     : QUOTED_STRING
     | NUMBER
-        { $$ = sqlXML.createNumber($1); }
+        { $$ = yy.sqlXML.createNumber($1); }
     | DATETIME
     | BOOL
-        { $$ = sqlXML.createBool(($1.toLowerCase() == "true") ? true : false); }
+        { $$ = yy.sqlXML.createBool(($1.toLowerCase() == "true") ? true : false); }
     ;
 
 QUOTED_STRING
     : QUOTE QUOTE
-        { $$ = sqlXML.createString(""); }
+        { $$ = yy.sqlXML.createString(""); }
     | QUOTE NUMBER QUOTE
-        { $$ = sqlXML.createString($2); }
+        { $$ = yy.sqlXML.createString($2); }
     | QUOTE IDENTIFIER QUOTE
-        { $$ = sqlXML.createString($2); }
+        { $$ = yy.sqlXML.createString($2); }
     | DOUBLEQUOTE NUMBER DOUBLEQUOTE
-        { $$ = sqlXML.createString($2); }
+        { $$ = yy.sqlXML.createString($2); }
     | DOUBLEQUOTE IDENTIFIER DOUBLEQUOTE
-        { $$ = sqlXML.createString($2); } 
+        { $$ = yy.sqlXML.createString($2); } 
     ;
 
 SCHEMA_NAME
@@ -642,9 +642,9 @@ SCHEMA_NAME
 
 DATETIME
     : QUOTE DATE QUOTE
-        { $$ = sqlXML.createDate($2); }
+        { $$ = yy.sqlXML.createDate($2); }
     | QUOTE DATE TIME QUOTE
-        { $$ = sqlXML.createDate($2 + " " + $3); }
+        { $$ = yy.sqlXML.createDate($2 + " " + $3); }
     ;
 
 AS_ALIAS
@@ -662,19 +662,19 @@ TABLE_NAME
 
 COLUMN_NAME
     : MULTIPLICATE
-        { $$ = sqlXML.createTable("*"); }
+        { $$ = yy.sqlXML.createTable("*"); }
     | IDENTIFIER
-        { $$ = sqlXML.createTable($1); }
+        { $$ = yy.sqlXML.createTable($1); }
     | BACKTICKS IDENTIFIER BACKTICKS
-        { $$ = sqlXML.createTable($2); }
+        { $$ = yy.sqlXML.createTable($2); }
     | IDENTIFIER PERIOD MULTIPLICATE
-        { $$ = sqlXML.createTable("*", $1); }
+        { $$ = yy.sqlXML.createTable("*", $1); }
     | BACKTICKS IDENTIFIER BACKTICKS PERIOD MULTIPLICATE
-        { $$ = sqlXML.createTable("*", $2); }
+        { $$ = yy.sqlXML.createTable("*", $2); }
     | IDENTIFIER PERIOD IDENTIFIER
-        { $$ = sqlXML.createTable($3, $1); }
+        { $$ = yy.sqlXML.createTable($3, $1); }
     | BACKTICKS IDENTIFIER BACKTICKS PERIOD BACKTICKS IDENTIFIER BACKTICKS
-        { $$ = sqlXML.createTable($6, $2); }
+        { $$ = yy.sqlXML.createTable($6, $2); }
     
     ;
 
@@ -700,20 +700,20 @@ FUNCTION
 
 DATE_FUNCTION
     : NOW LPAREN RPAREN
-        { $$ = sqlXML.createDateFunction($1); }
+        { $$ = yy.sqlXML.createDateFunction($1); }
     | CURDATE LPAREN RPAREN
-        { $$ = sqlXML.createDateFunction($1); }
+        { $$ = yy.sqlXML.createDateFunction($1); }
     | CURTIME LPAREN RPAREN
-        { $$ = sqlXML.createDateFunction($1); }
+        { $$ = yy.sqlXML.createDateFunction($1); }
     | DATE LPAREN DATE RPAREN
-        { $$ = sqlXML.createDateFunction($1, $3); }
+        { $$ = yy.sqlXML.createDateFunction($1, $3); }
     ;
 
 NUMBER_FUNCTION
     : NUMBER_FUNCTION_ONE_PARAM LPAREN EXPR RPAREN
-        { $$ = sqlXML.createNumberFunction($1, $3); }
+        { $$ = yy.sqlXML.createNumberFunction($1, $3); }
     | NUMBER_FUNCTION_TWO_PARAM LPAREN EXPR COMMA EXPR RPAREN
-        { $$ = sqlXML.createNumberFunction($1, $3, $5); }
+        { $$ = yy.sqlXML.createNumberFunction($1, $3, $5); }
     ;
 
 NUMBER_FUNCTION_ONE_PARAM
@@ -733,11 +733,11 @@ NUMBER_FUNCTION_TWO_PARAM
 
 CHAR_FUNCTION
     : CHAR_FUNCTION_ONE_PARAM LPAREN EXPR RPAREN
-        { $$ = sqlXML.createCharFunction($1, $3); }
+        { $$ = yy.sqlXML.createCharFunction($1, $3); }
     | CHAR_FUNCTION_TWO_PARAM LPAREN EXPR COMMA EXPR RPAREN
-        { $$ = sqlXML.createCharFunction($1, $3, $5); }
+        { $$ = yy.sqlXML.createCharFunction($1, $3, $5); }
     | CHAR_FUNCTION_THREE_PARAM LPAREN EXPR COMMA EXPR COMMA EXPR RPAREN
-        { $$ = sqlXML.createCharFunction($1, $3, $5, $7); }
+        { $$ = yy.sqlXML.createCharFunction($1, $3, $5, $7); }
     ;
 
 CHAR_FUNCTION_ONE_PARAM
@@ -765,7 +765,7 @@ CHAR_FUNCTION_THREE_PARAM
 SELECTION
     : %empty
     | DISTINCT
-        { $$ = sqlXML.createDistinct(); }
+        { $$ = yy.sqlXML.createDistinct(); }
     | ALL
     ;
 
